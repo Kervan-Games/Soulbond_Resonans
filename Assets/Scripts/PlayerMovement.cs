@@ -12,16 +12,20 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     public Transform groundCheck;
     public LayerMask groundLayer;
+
+    [SerializeField] GameObject umbrella;
     
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();   
+        rb = GetComponent<Rigidbody2D>();
+        umbrella.SetActive(false);
     }
 
     void Update()
     {
         Move();
         Jump();
+        OpenUmbrella();
     }
 
     private void Move()
@@ -30,14 +34,33 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(moveInput * maxSpeed, rb.velocity.y);
     }
 
-    void Jump()
+    private void Jump()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.W))
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+    }
+
+    private void OpenUmbrella()
+    {
+        if(!isGrounded && rb.velocity.y < -0.01f)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                rb.gravityScale = 0.3f;
+                umbrella.SetActive(true);
+            } 
+        }
+        else 
+        {
+            rb.gravityScale = 2.0f;
+            umbrella.SetActive(false);
+        }
+
+
     }
 
 }
