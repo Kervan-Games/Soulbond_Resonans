@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
 
     [SerializeField] GameObject umbrella;
+
+    private Vector2 moveInput;
     
     void Start()
     {
@@ -60,7 +63,25 @@ public class PlayerMovement : MonoBehaviour
             umbrella.SetActive(false);
         }
 
-
     }
 
+    public void OnMoveInput(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnUmbrellaOpen(InputAction.CallbackContext context)
+    {
+        //context.performed
+        if (context.started)
+        {
+            // Þemsiye açýldý
+            Debug.Log("Umbrella Opened");
+        }
+        else if (context.canceled)
+        {
+            // Þemsiye kapandý
+            Debug.Log("Umbrella Closed");
+        }
+    }
 }
