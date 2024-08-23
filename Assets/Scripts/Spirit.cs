@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Spirit : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Spirit : MonoBehaviour
     private bool canHit;
     private bool canSing;
     private bool canChangeSing;
+    private bool canShoot;
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
@@ -50,6 +52,7 @@ public class Spirit : MonoBehaviour
         canSing = false;
         canChangeSing = true;
         rb.isKinematic = false;
+        canShoot = true;
     }
 
     void Update()
@@ -68,7 +71,7 @@ public class Spirit : MonoBehaviour
             }
         }
 
-        if ((Input.GetMouseButtonDown(1))) 
+        /*if ((Input.GetMouseButtonDown(1))) 
         {
             if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
@@ -90,6 +93,37 @@ public class Spirit : MonoBehaviour
                 ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
                 playerSpiritThrow.SetCanThrow(false);
                 Debug.Log("target shoot");
+            }
+        }*/
+    }
+
+    public void OnSingPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed && canShoot)
+        {
+            if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
+            {
+                ThrowSpiritRandomDirection();
+                Debug.Log("kinematic shoot");
+                canShoot = false;
+            }
+
+            else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
+            {
+                if (canSing)
+                {
+                    ThrowSpiritBeforeHold();
+                    Debug.Log("before hold shoot");
+                    canShoot = false;
+                }
+            }
+
+            else if (playerSpiritThrow.GetCanThrow()) // throw to target in range
+            {
+                ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
+                playerSpiritThrow.SetCanThrow(false);
+                Debug.Log("target shoot");
+                canShoot = false;
             }
         }
     }

@@ -17,52 +17,60 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject umbrella;
 
     private Vector2 moveInput;
-    
+
+    private bool canUmbrella;
+
+    private float currentSpeed = 0f;
+    private float smoothTime = 0.1f; 
+    private float velocitySmoothing = 0f; 
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         umbrella.SetActive(false);
+        canUmbrella = false;
     }
 
     void Update()
     {
         Move();
-        Jump();
+        GroundCheck();
         OpenUmbrella();
     }
 
     private void Move()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * maxSpeed, rb.velocity.y);
+        float targetSpeed = moveInput.x * maxSpeed;
+        currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
+        rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
     }
 
-    private void Jump()
+    private void GroundCheck()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
     }
 
     private void OpenUmbrella()
     {
         if(!isGrounded && rb.velocity.y < -0.01f)
         {
-            if (Input.GetKey(KeyCode.W))
+            if (canUmbrella)
             {
                 rb.gravityScale = 0.3f;
                 umbrella.SetActive(true);
-            } 
+            }
+            else
+            {
+                rb.gravityScale = 2.0f;
+                umbrella.SetActive(false);
+            }
         }
         else 
         {
             rb.gravityScale = 2.0f;
             umbrella.SetActive(false);
         }
-
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -72,16 +80,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaOpen(InputAction.CallbackContext context)
     {
-        //context.performed
         if (context.started)
         {
-            // Þemsiye açýldý
-            Debug.Log("Umbrella Opened");
+            canUmbrella = true;
         }
         else if (context.canceled)
         {
-            // Þemsiye kapandý
-            Debug.Log("Umbrella Closed");
+            canUmbrella = false;
+        }
+    }
+    
+    public void OnJumpPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
 }
