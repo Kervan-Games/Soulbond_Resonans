@@ -70,36 +70,11 @@ public class Spirit : MonoBehaviour
                 }
             }
         }
-
-        /*if ((Input.GetMouseButtonDown(1))) 
-        {
-            if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
-            {
-                ThrowSpiritRandomDirection(); 
-                Debug.Log("kinematic shoot");
-            }
-
-            else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
-            {
-                if (canSing)
-                {
-                    ThrowSpiritBeforeHold();
-                    Debug.Log("before hold shoot");
-                }
-            }
-
-            else if(playerSpiritThrow.GetCanThrow()) // throw to target in range
-            {
-                ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
-                playerSpiritThrow.SetCanThrow(false);
-                Debug.Log("target shoot");
-            }
-        }*/
     }
 
-    public void OnSingPressed(InputAction.CallbackContext context)
+    public void ThrowSpirit()
     {
-        if (context.performed && canShoot)
+        if (canShoot)
         {
             if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {

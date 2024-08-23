@@ -22,7 +22,9 @@ public class PlayerMovement : MonoBehaviour
 
     private float currentSpeed = 0f;
     private float smoothTime = 0.1f; 
-    private float velocitySmoothing = 0f; 
+    private float velocitySmoothing = 0f;
+
+    private Spirit[] spirits;
 
 
     void Start()
@@ -30,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         umbrella.SetActive(false);
         canUmbrella = false;
+
+        GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
+
+        spirits = new Spirit[spiritObjects.Length];
+        for (int i = 0; i < spiritObjects.Length; i++)
+        {
+            spirits[i] = spiritObjects[i].GetComponent<Spirit>();
+        }
     }
 
     void Update()
@@ -95,6 +105,17 @@ public class PlayerMovement : MonoBehaviour
         if (context.performed && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
+    }
+
+    public void OnSingPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            foreach (Spirit spirit in spirits)
+            {
+                spirit.ThrowSpirit();
+            }
         }
     }
 }
