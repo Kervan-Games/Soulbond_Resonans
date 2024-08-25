@@ -15,8 +15,10 @@ public class Spirit : MonoBehaviour
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
+    private Transform spiritThrowHolderTransform;
     private GameObject player;
     private GameObject spiritHolder;
+    private GameObject spiritThrowHolder;
 
     private Rigidbody2D rb;
 
@@ -26,6 +28,7 @@ public class Spirit : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         spiritHolder = GameObject.FindGameObjectWithTag("SpiritHolder");
+        spiritThrowHolder = GameObject.FindGameObjectWithTag("SpiritThrowHolder");
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
 
@@ -45,6 +48,15 @@ public class Spirit : MonoBehaviour
         else
         {
             Debug.LogError("SpiritHolder is NULL!");
+        }
+
+        if (spiritThrowHolder != null)
+        {
+            spiritThrowHolderTransform = spiritThrowHolder.transform;
+        }
+        else
+        {
+            Debug.LogError("SpiritThrowHolder is NULL!");
         }
 
         canChase = true;
@@ -79,7 +91,7 @@ public class Spirit : MonoBehaviour
             if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
                 ThrowSpiritRandomDirection();
-                Debug.Log("kinematic shoot");
+                //Debug.Log("kinematic shoot");
                 canShoot = false;
             }
 
@@ -88,7 +100,7 @@ public class Spirit : MonoBehaviour
                 if (canSing)
                 {
                     ThrowSpiritBeforeHold();
-                    Debug.Log("before hold shoot");
+                    //Debug.Log("before hold shoot");
                     canShoot = false;
                 }
             }
@@ -97,7 +109,7 @@ public class Spirit : MonoBehaviour
             {
                 ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
                 playerSpiritThrow.SetCanThrow(false);
-                Debug.Log("target shoot");
+                //Debug.Log("target shoot");
                 canShoot = false;
             }
         }
@@ -138,6 +150,7 @@ public class Spirit : MonoBehaviour
 
     public void ThrowSpiritRandomDirection()
     {
+        transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
@@ -158,6 +171,7 @@ public class Spirit : MonoBehaviour
 
     public void ThrowSpiritToTarget(Transform targetTransform)
     {
+        transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
         canSing = false;
         StartCoroutine(MoveTowardsTarget(targetTransform));
@@ -175,6 +189,7 @@ public class Spirit : MonoBehaviour
 
     private void ThrowSpiritBeforeHold()
     {
+        transform.SetParent(spiritThrowHolderTransform);
         canChase = false;
         rb.isKinematic = false;
         Vector2 currentDirection = (playerTransform.position - transform.position).normalized;

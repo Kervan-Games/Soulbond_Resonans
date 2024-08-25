@@ -8,6 +8,8 @@ TagManager:
   - SpiritHolder
   - SpiritThrower
   - Spirit
+  - SpiritThrowHolder
+  - Interactable
   layers:
   - Default
   - TransparentFX

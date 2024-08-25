@@ -26,12 +26,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Spirit[] spirits;
 
+    private bool isFacingRight;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         umbrella.SetActive(false);
         canUmbrella = false;
+        isFacingRight = true;
 
         GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
@@ -47,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         Move();
         GroundCheck();
         OpenUmbrella();
+        HandleFlipping();
     }
 
     private void Move()
@@ -82,6 +86,25 @@ public class PlayerMovement : MonoBehaviour
             umbrella.SetActive(false);
         }
     }
+
+    private void HandleFlipping()
+    {
+        if (moveInput.x > 0 && !isFacingRight)
+        {
+            isFacingRight = true;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1; 
+            transform.localScale = theScale;
+        }
+        else if (moveInput.x < 0 && isFacingRight)
+        {
+            isFacingRight = false;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1; 
+            transform.localScale = theScale;
+        }
+    }
+
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
