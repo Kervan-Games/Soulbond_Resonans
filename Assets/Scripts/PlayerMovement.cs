@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private Spirit[] spirits;
 
     private bool isFacingRight;
+    private bool isDead;
 
 
     void Start()
@@ -35,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         umbrella.SetActive(false);
         canUmbrella = false;
         isFacingRight = true;
+        isDead = false;
 
         GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
@@ -47,10 +49,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Move();
-        GroundCheck();
-        OpenUmbrella();
-        HandleFlipping();
+        if (!isDead)
+        {
+            Move();
+            GroundCheck();
+            OpenUmbrella();
+            HandleFlipping();
+        }
     }
 
     private void Move()
@@ -108,37 +113,76 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
+        if (!isDead)
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
+            
     }
 
     public void OnUmbrellaOpen(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if(!isDead)
         {
-            canUmbrella = true;
-        }
-        else if (context.canceled)
-        {
-            canUmbrella = false;
-        }
+            if (context.started)
+            {
+                canUmbrella = true;
+            }
+            else if (context.canceled)
+            {
+                canUmbrella = false;
+            }
+        }        
     }
     
     public void OnJumpPressed(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded)
+        if (!isDead)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            if (context.performed && isGrounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
         }
+        
     }
 
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (!isDead)
         {
-            foreach (Spirit spirit in spirits)
+            if (context.performed)
             {
-                spirit.ThrowSpirit();
+                foreach (Spirit spirit in spirits)
+                {
+                    spirit.ThrowSpirit();
+                }
             }
         }
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        maxSpeed = speed;
+    }
+
+    public float GetMoveSpeed() 
+    { 
+        return maxSpeed; 
+    }
+
+    public void SetIsDead(bool dead)
+    {
+        isDead = dead;
+    }
+
+    public float GetJumpForce()
+    {
+        return jumpForce;
+    }
+
+    public void SetJumpForce(float force)
+    {
+        jumpForce = force;
     }
 }

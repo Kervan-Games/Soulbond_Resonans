@@ -23,6 +23,7 @@ public class Spirit : MonoBehaviour
     private Rigidbody2D rb;
 
     private PlayerSpiritThrow playerSpiritThrow;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class Spirit : MonoBehaviour
         spiritThrowHolder = GameObject.FindGameObjectWithTag("SpiritThrowHolder");
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
+        playerHealth = player.GetComponent<PlayerHealth>();
 
         if (player != null)
         {
@@ -112,6 +114,8 @@ public class Spirit : MonoBehaviour
                 //Debug.Log("target shoot");
                 canShoot = false;
             }
+            playerHealth.SetDidThrowSpirit(true);
+            playerHealth.SetIsHoldingSpirit(false);
         }
     }
 
@@ -125,6 +129,7 @@ public class Spirit : MonoBehaviour
             rb.isKinematic = true;
             canChase = false;
             canHit = false;
+            playerHealth.SetIsHoldingSpirit(true);
         }
     }
 
