@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerHealth : MonoBehaviour
     private bool didThrowSpirit;
     private float speedMultiplier;
     private float jumpMultiplier;
+
+    public Image healthBar;
 
     void Start()
     {
@@ -47,6 +50,7 @@ public class PlayerHealth : MonoBehaviour
                 currentHealth -= decreaseRate * Time.deltaTime;
                 playerMovement.SetMoveSpeed(currentHealth * speedMultiplier);
                 playerMovement.SetJumpForce(currentHealth * jumpMultiplier);
+                healthBar.fillAmount = currentHealth / 100f;
             }
             else
             {
@@ -60,10 +64,12 @@ public class PlayerHealth : MonoBehaviour
                 currentHealth += increaseRate * Time.deltaTime;
                 playerMovement.SetMoveSpeed(currentHealth * speedMultiplier);
                 playerMovement.SetJumpForce(currentHealth * jumpMultiplier);
+                healthBar.fillAmount = currentHealth / 100f;
             }
             if (currentHealth >= maxHealth)
             {
                 currentHealth = maxHealth;
+                healthBar.fillAmount = currentHealth / 100f;
                 didThrowSpirit = false;
             }
         }
@@ -74,10 +80,38 @@ public class PlayerHealth : MonoBehaviour
     {
         playerMovement.SetIsDead(true);
         currentHealth = 0;
+        healthBar.fillAmount = 0;
         playerMovement.SetMoveSpeed(0.0f);
         rb.velocity = Vector2.zero;
         playerMovement.enabled = false;
         enabled = false; 
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (currentHealth > 0)
+        {
+            currentHealth -= damage;
+            healthBar.fillAmount = currentHealth / 100f;
+        }
+        else
+        {
+            Die();
+        }
+    }
+
+    public void Heal(float heal)
+    {
+        if(currentHealth < maxHealth)
+        {
+            currentHealth += heal;
+            healthBar.fillAmount = currentHealth / 100f;
+        } 
+        else if (currentHealth >= maxHealth)
+        {
+            currentHealth = maxHealth;
+            healthBar.fillAmount = currentHealth / 100f;
+        }
     }
 
     private void HandleDie()
