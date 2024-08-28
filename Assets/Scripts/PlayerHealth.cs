@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
     {
         TakeDamageBySpiritHolding();
         HandleDie();
-        Debug.Log(currentHealth);
+        //Debug.Log(currentHealth);
         //** HEALTH REGEN IS NOT INCLUDED EXCEPT SPIRIT THROW, contact game designer for health regen mechanics.
     }
 

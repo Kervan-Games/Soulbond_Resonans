@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private float velocitySmoothing = 0f;
 
     private Spirit[] spirits;
+    private WalkerSpirit[] walkerSpirits; 
 
     private bool isFacingRight;
     private bool isDead;
@@ -44,6 +45,14 @@ public class PlayerMovement : MonoBehaviour
         for (int i = 0; i < spiritObjects.Length; i++)
         {
             spirits[i] = spiritObjects[i].GetComponent<Spirit>();
+        }
+
+        GameObject[] walkerSpiritObjects = GameObject.FindGameObjectsWithTag("WalkerSpirit");
+
+        walkerSpirits = new WalkerSpirit[walkerSpiritObjects.Length];
+        for (int i = 0; i < walkerSpiritObjects.Length; i++)
+        {
+            walkerSpirits[i] = walkerSpiritObjects[i].GetComponent<WalkerSpirit>();
         }
     }
 
@@ -156,6 +165,10 @@ public class PlayerMovement : MonoBehaviour
                 foreach (Spirit spirit in spirits)
                 {
                     spirit.ThrowSpirit();
+                }
+                foreach (WalkerSpirit walkerSpirit in walkerSpirits)
+                {
+                    walkerSpirit.ThrowSpirit();
                 }
             }
         }
