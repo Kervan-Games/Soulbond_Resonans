@@ -91,7 +91,7 @@ public class WalkerSpirit : MonoBehaviour
         closeToPlayer = false;
     }
 
-    void Update()
+    void Update()//on patrol phase, now spirit can be shot even before chase. if it is not necessary, change it.
     {
         CalculateDistanceToPlayer();
         if (canChase && inRange)

@@ -19,7 +19,7 @@ public class PlayerSpiritThrow : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(canThrowToTarget);
+        //Debug.Log(canThrowToTarget);
         ColorUpdate();
     }
     private void OnTriggerEnter2D(Collider2D other)
