@@ -36,7 +36,6 @@ public class WalkerSpirit : MonoBehaviour
     private Transform currentPoint;
     private bool isWalkingA;
     private bool isWalkingB;
-    private bool moveBool;
     private bool didShoot;
     private bool closeToPlayer;
 
@@ -88,7 +87,6 @@ public class WalkerSpirit : MonoBehaviour
         canTouch = true;
         isWalkingA = false;
         isWalkingB = true;
-        moveBool = true;
         didShoot = false;
         closeToPlayer = false;
     }

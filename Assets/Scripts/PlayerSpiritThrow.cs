@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class PlayerSpiritThrow : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Color startColor;
+    private Color startColor = Color.yellow;
     private bool canThrowToTarget;
     private Transform targetTransform;
-    private bool inRange = false;
+
+    private GameObject currentTarget;
 
     private void Start()
     {
@@ -18,11 +20,7 @@ public class PlayerSpiritThrow : MonoBehaviour
     private void Update()
     {
         Debug.Log(canThrowToTarget);
-        Debug.Log(inRange);
-        if (inRange)
-        {
-            canThrowToTarget = true;
-        }
+        ColorUpdate();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -34,7 +32,20 @@ public class PlayerSpiritThrow : MonoBehaviour
 
             targetTransform = other.transform;
             canThrowToTarget = true;
-            inRange = true;
+            currentTarget = other.gameObject;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("SpiritTarget"))
+        {
+            //spriteRenderer = other.gameObject.GetComponent<SpriteRenderer>();
+           // startColor = spriteRenderer.color;
+            //spriteRenderer.color = Color.green;
+
+            targetTransform = other.transform;
+            canThrowToTarget = true;
         }
     }
 
@@ -53,22 +64,9 @@ public class PlayerSpiritThrow : MonoBehaviour
         }
 
         canThrowToTarget = false;
-        inRange = false;
     }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("SpiritTarget"))
-        {
-            spriteRenderer = other.gameObject.GetComponent<SpriteRenderer>();
-            startColor = spriteRenderer.color;
-            spriteRenderer.color = Color.green;
-
-            targetTransform = other.transform;
-            canThrowToTarget = true;
-            inRange = true;
-        }
-    }
+    
 
     public bool GetCanThrow() 
     { 
@@ -83,5 +81,25 @@ public class PlayerSpiritThrow : MonoBehaviour
     public void SetCanThrow(bool canThrow)
     {
         canThrowToTarget = canThrow;
+    }
+
+    private void ColorUpdate()
+    {
+        if (currentTarget != null)
+        {
+            if (spriteRenderer != null && startColor != null)
+            {
+                if (!canThrowToTarget)
+                {
+                    spriteRenderer.color = startColor;
+                }
+                else if (canThrowToTarget)
+                {
+                    spriteRenderer.color = Color.green;
+                }
+            }
+        }
+        
+
     }
 }
