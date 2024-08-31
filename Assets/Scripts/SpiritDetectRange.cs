@@ -25,5 +25,5 @@ public class SpiritDetectRange : MonoBehaviour
             walkerSpirit.SetCanPatrol(true);
             walkerSpirit.SetInRange(false);
         }
-    }//ardýndan da patrolling scripti yaz bakma olayýný da hareket edilen yöne bak diye sor gptye
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,7 @@ public class Spirit : MonoBehaviour
     private bool canSing;
     private bool canChangeSing;
     private bool canShoot;
+    private bool inRange;
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
@@ -67,10 +69,13 @@ public class Spirit : MonoBehaviour
         canChangeSing = true;
         rb.isKinematic = false;
         canShoot = true;
+        inRange = false;
     }
 
     void Update()
     {
+        CalculateDistanceToPlayer();
+
         if (playerTransform != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
@@ -88,7 +93,7 @@ public class Spirit : MonoBehaviour
 
     public void ThrowSpirit()
     {
-        if (canShoot)
+        if (canShoot && inRange)
         {
             if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
@@ -107,7 +112,7 @@ public class Spirit : MonoBehaviour
                 }
             }
 
-            else if (playerSpiritThrow.GetCanThrow()) // throw to target in range
+            else if (playerSpiritThrow.GetCanThrow() && inRange) // throw to target in range
             {
                 ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
                 playerSpiritThrow.SetCanThrow(false);
@@ -213,5 +218,19 @@ public class Spirit : MonoBehaviour
             yield return null;
         }
         Destroy(gameObject);
+    }
+
+    private void CalculateDistanceToPlayer()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer < chaseRange)
+        {
+            inRange = true;
+        }
+        else
+        {
+            inRange = false;
+        }
     }
 }

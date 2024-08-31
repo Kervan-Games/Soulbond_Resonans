@@ -9,12 +9,21 @@ public class PlayerSpiritThrow : MonoBehaviour
     private Color startColor;
     private bool canThrowToTarget;
     private Transform targetTransform;
+    private bool inRange = false;
 
     private void Start()
     {
         canThrowToTarget = false;
     }
-
+    private void Update()
+    {
+        Debug.Log(canThrowToTarget);
+        Debug.Log(inRange);
+        if (inRange)
+        {
+            canThrowToTarget = true;
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
        if(other.CompareTag("SpiritTarget"))
@@ -25,6 +34,7 @@ public class PlayerSpiritThrow : MonoBehaviour
 
             targetTransform = other.transform;
             canThrowToTarget = true;
+            inRange = true;
         }
     }
 
@@ -43,6 +53,21 @@ public class PlayerSpiritThrow : MonoBehaviour
         }
 
         canThrowToTarget = false;
+        inRange = false;
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("SpiritTarget"))
+        {
+            spriteRenderer = other.gameObject.GetComponent<SpriteRenderer>();
+            startColor = spriteRenderer.color;
+            spriteRenderer.color = Color.green;
+
+            targetTransform = other.transform;
+            canThrowToTarget = true;
+            inRange = true;
+        }
     }
 
     public bool GetCanThrow() 

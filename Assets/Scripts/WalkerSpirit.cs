@@ -38,6 +38,7 @@ public class WalkerSpirit : MonoBehaviour
     private bool isWalkingB;
     private bool moveBool;
     private bool didShoot;
+    private bool closeToPlayer;
 
     void Start()
     {
@@ -89,10 +90,12 @@ public class WalkerSpirit : MonoBehaviour
         isWalkingB = true;
         moveBool = true;
         didShoot = false;
+        closeToPlayer = false;
     }
 
     void Update()
     {
+        CalculateDistanceToPlayer();
         if (canChase && inRange)
         {
             MoveTowardsPlayer();
@@ -124,7 +127,7 @@ public class WalkerSpirit : MonoBehaviour
 
     public void ThrowSpirit()
     {
-        if (canShoot)
+        if (canShoot &&closeToPlayer)
         {
             if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
@@ -151,7 +154,7 @@ public class WalkerSpirit : MonoBehaviour
                 }
             }
 
-            else if (playerSpiritThrow.GetCanThrow()) // throw to target in range
+            else if (playerSpiritThrow.GetCanThrow() && closeToPlayer) // throw to target in range
             {
                 ThrowSpiritToTarget(playerSpiritThrow.GetTargetTransform());
                 playerSpiritThrow.SetCanThrow(false);
@@ -345,5 +348,19 @@ public class WalkerSpirit : MonoBehaviour
         localScale.x *= -1;
         transform.localScale = localScale; 
 
+    }
+
+    private void CalculateDistanceToPlayer()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer < 7f)
+        {
+            closeToPlayer = true;
+        }
+        else
+        {
+            closeToPlayer = false;
+        }
     }
 }
