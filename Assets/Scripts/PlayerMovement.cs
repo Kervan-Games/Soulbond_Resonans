@@ -30,14 +30,21 @@ public class PlayerMovement : MonoBehaviour
     private bool isFacingRight;
     private bool isDead;
 
+    public GameObject singArea;
+    public GameObject singAreaVisual;
+    private Collider2D singAreaCollider;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        singAreaCollider = singArea.GetComponent<Collider2D>();
         umbrella.SetActive(false);
         canUmbrella = false;
         isFacingRight = true;
         isDead = false;
+        singAreaVisual.SetActive(false);
+        singAreaCollider.enabled = false;
 
         GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
@@ -160,7 +167,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead)
         {
-            if (context.performed)
+            if (context.started)
+            {
+                singAreaVisual.SetActive(true);
+                singAreaCollider.enabled = true;
+            }
+
+            if (context.canceled)
             {
                 foreach (Spirit spirit in spirits)
                 {
@@ -170,6 +183,8 @@ public class PlayerMovement : MonoBehaviour
                 {
                     walkerSpirit.ThrowSpirit();
                 }
+                singAreaVisual.SetActive(false);
+                singAreaCollider.enabled = false;
             }
         }
     }

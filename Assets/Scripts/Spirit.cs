@@ -14,13 +14,16 @@ public class Spirit : MonoBehaviour
     private bool canChangeSing;
     private bool canShoot;
     private bool inRange;
+    private bool inSingArea;
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
-    private Transform spiritThrowHolderTransform;
+    private Transform spiritThrowHolderTransform; 
+    private Transform singAreaTransform;//********
     private GameObject player;
     private GameObject spiritHolder;
     private GameObject spiritThrowHolder;
+    private GameObject singArea;//********
 
     private Rigidbody2D rb;
 
@@ -32,6 +35,7 @@ public class Spirit : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         spiritHolder = GameObject.FindGameObjectWithTag("SpiritHolder");
         spiritThrowHolder = GameObject.FindGameObjectWithTag("SpiritThrowHolder");
+        singArea = GameObject.FindGameObjectWithTag("SingArea");//********
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
         playerHealth = player.GetComponent<PlayerHealth>();
@@ -63,6 +67,17 @@ public class Spirit : MonoBehaviour
             Debug.LogError("SpiritThrowHolder is NULL!");
         }
 
+        //*******
+        if (singArea != null)
+        {
+            singAreaTransform = singArea.transform;
+        }
+        else
+        {
+            Debug.LogError("SingArea is NULL!");
+        }
+        //*******
+
         canChase = true;
         canHit = true;
         canSing = false;
@@ -70,6 +85,7 @@ public class Spirit : MonoBehaviour
         rb.isKinematic = false;
         canShoot = true;
         inRange = false;
+        inSingArea = false;//********
     }
 
     void Update()
@@ -82,10 +98,14 @@ public class Spirit : MonoBehaviour
 
             if (distanceToPlayer < chaseRange)
             {
-                if (canChase)
+                if (canChase && !inSingArea)
                 {
                     MoveTowardsPlayer();
                     RotateTowardsPlayer();
+                }
+                else if (inSingArea)
+                {
+                    ThrowSpirit();
                 }
             }
         }
@@ -102,7 +122,7 @@ public class Spirit : MonoBehaviour
                 canShoot = false;
             }
 
-            else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
+            /*else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
             {
                 if (canSing)
                 {
@@ -110,7 +130,7 @@ public class Spirit : MonoBehaviour
                     //Debug.Log("before hold shoot");
                     canShoot = false;
                 }
-            }
+            }*/
 
             else if (playerSpiritThrow.GetCanThrow() && inRange) // throw to target in range
             {
@@ -121,6 +141,20 @@ public class Spirit : MonoBehaviour
             }
             playerHealth.SetDidThrowSpirit(true);
             playerHealth.SetIsHoldingSpirit(false);
+        }
+    }
+
+    public void SetSingPosition()
+    {
+        if (canHit)
+        {
+            transform.SetParent(singAreaTransform);
+            //transform.localPosition = Vector3.zero;
+            transform.rotation = Quaternion.identity;
+            rb.isKinematic = true;
+            canChase = false;
+            canHit = false;
+            playerHealth.SetIsHoldingSpirit(true);
         }
     }
 
@@ -232,5 +266,10 @@ public class Spirit : MonoBehaviour
         {
             inRange = false;
         }
+    }
+    
+    public void SetInSingArea(bool inArea)
+    {
+        inSingArea = inArea;
     }
 }
