@@ -14,7 +14,7 @@ public class Spirit : MonoBehaviour
     private bool canChangeSing;
     private bool canShoot;
     private bool inRange;
-    private bool inSingArea;
+    private bool inSingArea;//*****
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
@@ -103,10 +103,10 @@ public class Spirit : MonoBehaviour
                     MoveTowardsPlayer();
                     RotateTowardsPlayer();
                 }
-                else if (inSingArea)
+                /*else if (inSingArea)
                 {
-                    ThrowSpirit();
-                }
+                    //ThrowSpirit();
+                }*/
             }
         }
     }

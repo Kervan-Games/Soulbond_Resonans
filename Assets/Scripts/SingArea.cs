@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SingArea : MonoBehaviour
 {
-    public float rotationSpeed = 5f;
+    private float rotationSpeed = 5f;
     private Collider2D singCollider;
 
     private void Start()
@@ -34,7 +34,8 @@ public class SingArea : MonoBehaviour
 
         else if (collision.CompareTag("WalkerSpirit"))
         {
-            WalkerSpirit walkerSpirit = collision.GetComponent<WalkerSpirit>();   
+            WalkerSpirit walkerSpirit = collision.GetComponent<WalkerSpirit>();
+            walkerSpirit.SetSingPosition();
         }
     }
 

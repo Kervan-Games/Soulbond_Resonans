@@ -34,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject singAreaVisual;
     private Collider2D singAreaCollider;
 
+    private bool canSing = true;
+    private bool isSinging = false;
+    private float singCoolDown = 3f;
+    private float singDuration = 3f;
+
 
     void Start()
     {
@@ -165,12 +170,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (!isDead)
+        if (!isDead && canSing)
         {
             if (context.started)
             {
                 singAreaVisual.SetActive(true);
                 singAreaCollider.enabled = true;
+                isSinging = true;
+                StartCoroutine(StopSing());
             }
 
             if (context.canceled)
@@ -185,6 +192,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
+                canSing = false;
+                isSinging = false;
+                Debug.Log("Can NOT sing.");
+                StartCoroutine(EnableSing());
             }
         }
     }
@@ -212,5 +223,35 @@ public class PlayerMovement : MonoBehaviour
     public void SetJumpForce(float force)
     {
         jumpForce = force;
+    }
+
+    IEnumerator EnableSing()
+    {
+        yield return new WaitForSeconds(singCoolDown);
+        canSing = true;
+        Debug.Log("Can sing.");
+    }
+
+    IEnumerator StopSing()
+    {
+        yield return new WaitForSeconds(singDuration);
+        if (isSinging)
+        {
+            foreach (Spirit spirit in spirits)
+            {
+                spirit.ThrowSpirit();
+            }
+            foreach (WalkerSpirit walkerSpirit in walkerSpirits)
+            {
+                walkerSpirit.ThrowSpirit();
+            }
+
+            singAreaVisual.SetActive(false);
+            singAreaCollider.enabled = false;
+            canSing = false;
+            isSinging = false;
+            Debug.Log("Sing stopped by duration.");
+            StartCoroutine(EnableSing());
+        }
     }
 }

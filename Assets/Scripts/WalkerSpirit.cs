@@ -17,9 +17,12 @@ public class WalkerSpirit : MonoBehaviour
     private Transform playerTransform;
     private Transform spiritHolderTransform;
     private Transform spiritThrowHolderTransform;
+    private Transform singAreaTransform;//********
     private GameObject player;
     private GameObject spiritHolder;
     private GameObject spiritThrowHolder;
+    private GameObject singArea;//********
+
 
     private Rigidbody2D rb;
 
@@ -38,12 +41,14 @@ public class WalkerSpirit : MonoBehaviour
     private bool isWalkingB;
     private bool didShoot;
     private bool closeToPlayer;
+    private bool inSingArea;//*****
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         spiritHolder = GameObject.FindGameObjectWithTag("SpiritHolder");
         spiritThrowHolder = GameObject.FindGameObjectWithTag("SpiritThrowHolder");
+        singArea = GameObject.FindGameObjectWithTag("SingArea");//********
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
         playerHealth = player.GetComponent<PlayerHealth>();
@@ -76,6 +81,17 @@ public class WalkerSpirit : MonoBehaviour
             Debug.LogError("SpiritThrowHolder is NULL!");
         }
 
+        //*******
+        if (singArea != null)
+        {
+            singAreaTransform = singArea.transform;
+        }
+        else
+        {
+            Debug.LogError("SingArea is NULL!");
+        }
+        //*******
+
         canChase = true;
         canHit = true;
         canSing = false;
@@ -89,6 +105,7 @@ public class WalkerSpirit : MonoBehaviour
         isWalkingB = true;
         didShoot = false;
         closeToPlayer = false;
+        inSingArea = false;//********
     }
 
     void Update()//on patrol phase, now spirit can be shot even before chase. if it is not necessary, change it.
@@ -101,7 +118,7 @@ public class WalkerSpirit : MonoBehaviour
         }
         else if(!inRange && canPatrol)
         {
-            if (!didShoot)
+            if (!didShoot && !inSingArea)
             {
                 Patrol();
             }
@@ -186,6 +203,21 @@ public class WalkerSpirit : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    public void SetSingPosition()
+    {
+        if (canHit)
+        {
+            inSingArea = true; 
+            transform.SetParent(singAreaTransform);
+            //transform.localPosition = Vector3.zero;
+            transform.rotation = Quaternion.identity;
+            rb.isKinematic = true;
+            canChase = false;
+            canHit = false;
+            playerHealth.SetIsHoldingSpirit(true);
+        }
     }
 
     public void ThrowSpiritRandomDirection()
