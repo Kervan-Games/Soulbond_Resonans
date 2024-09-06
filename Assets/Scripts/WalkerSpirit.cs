@@ -43,6 +43,8 @@ public class WalkerSpirit : MonoBehaviour
     private bool closeToPlayer;
     private bool inSingArea;//*****
 
+    private PlayerMovement playerMovement;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -52,6 +54,7 @@ public class WalkerSpirit : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
         playerHealth = player.GetComponent<PlayerHealth>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         currentPoint = pointB.transform;
 
         if (player != null)
@@ -180,6 +183,7 @@ public class WalkerSpirit : MonoBehaviour
                 playerHealth.SetDidThrowSpirit(true);
                 playerHealth.SetIsHoldingSpirit(false);
             }
+            playerMovement.SetIsHoldingSpirit(false);
         }
     }
 
@@ -209,14 +213,18 @@ public class WalkerSpirit : MonoBehaviour
     {
         if (canHit)
         {
+            DisableTheDetectObject();
             inSingArea = true; 
-            transform.SetParent(singAreaTransform);
-            //transform.localPosition = Vector3.zero;
-            transform.rotation = Quaternion.identity;
+            inRange = true;
+            canPatrol = false;
             rb.isKinematic = true;
             canChase = false;
             canHit = false;
+            transform.SetParent(singAreaTransform);
+            transform.rotation = Quaternion.identity;
+            rb.velocity = Vector2.zero;
             playerHealth.SetIsHoldingSpirit(true);
+            playerMovement.SetIsHoldingSpirit(true);
         }
     }
 

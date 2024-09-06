@@ -10,7 +10,6 @@ public class Spirit : MonoBehaviour
     private float moveSpeed = 5f;
     private bool canChase;
     private bool canHit;
-    private bool canSing;
     private bool canChangeSing;
     private bool canShoot;
     private bool inRange;
@@ -29,6 +28,7 @@ public class Spirit : MonoBehaviour
 
     private PlayerSpiritThrow playerSpiritThrow;
     private PlayerHealth playerHealth;
+    private PlayerMovement playerMovement;
 
     void Start()
     {
@@ -39,6 +39,7 @@ public class Spirit : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
         playerHealth = player.GetComponent<PlayerHealth>();
+        playerMovement = player.GetComponent<PlayerMovement>();
 
         if (player != null)
         {
@@ -80,7 +81,6 @@ public class Spirit : MonoBehaviour
 
         canChase = true;
         canHit = true;
-        canSing = false;
         canChangeSing = true;
         rb.isKinematic = false;
         canShoot = true;
@@ -141,6 +141,7 @@ public class Spirit : MonoBehaviour
             }
             playerHealth.SetDidThrowSpirit(true);
             playerHealth.SetIsHoldingSpirit(false);
+            playerMovement.SetIsHoldingSpirit(false);
         }
     }
 
@@ -155,6 +156,7 @@ public class Spirit : MonoBehaviour
             canChase = false;
             canHit = false;
             playerHealth.SetIsHoldingSpirit(true);
+            playerMovement.SetIsHoldingSpirit(true);
         }
     }
 
@@ -178,7 +180,6 @@ public class Spirit : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
         if (canChangeSing)
         {
-            canSing = true;
             canChangeSing = false;
         }
         
@@ -199,7 +200,6 @@ public class Spirit : MonoBehaviour
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         Vector2 targetPosition = (Vector2)transform.position + randomDirection * 50f;
-        canSing = false;
         StartCoroutine(MoveTowardsTarget(targetPosition));
     }
 
@@ -217,7 +217,6 @@ public class Spirit : MonoBehaviour
     {
         transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
-        canSing = false;
         StartCoroutine(MoveTowardsTarget(targetTransform));
     }
 
@@ -238,7 +237,6 @@ public class Spirit : MonoBehaviour
         rb.isKinematic = false;
         Vector2 currentDirection = (playerTransform.position - transform.position).normalized;
         Vector2 oppositePosition = currentDirection * -1;
-        canSing = false;
         StartCoroutine(MoveToOppositeDirection(oppositePosition));
     }
 

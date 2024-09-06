@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -39,6 +41,14 @@ public class PlayerMovement : MonoBehaviour
     private float singCoolDown = 3f;
     private float singDuration = 3f;
 
+    public Image staminaBar;
+    private float maxStamina = 100f;
+    private float currentStamina;
+    private float decreaseRate = 50f;
+    private float increaseRate = 30f;
+    private bool isReloading = false;
+    private bool isHoldingSpirit = false;
+
 
     void Start()
     {
@@ -50,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
         isDead = false;
         singAreaVisual.SetActive(false);
         singAreaCollider.enabled = false;
+
+        currentStamina = maxStamina;
 
         GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
@@ -76,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
             GroundCheck();
             OpenUmbrella();
             HandleFlipping();
+            UpdateStamina();
         }
     }
 
@@ -172,12 +185,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead && canSing)
         {
-            if (context.started)
+            if (context.started && !isReloading)
             {
                 singAreaVisual.SetActive(true);
                 singAreaCollider.enabled = true;
                 isSinging = true;
-                StartCoroutine(StopSing());
+                //StartCoroutine(StopSing());
             }
 
             if (context.canceled)
@@ -192,12 +205,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
-                canSing = false;
+                //canSing = false;
                 isSinging = false;
-                Debug.Log("Can NOT sing.");
-                StartCoroutine(EnableSing());
+                //Debug.Log("Can NOT sing.");
+                //StartCoroutine(EnableSing());
             }
         }
+
     }
 
     public void SetMoveSpeed(float speed)
@@ -225,6 +239,91 @@ public class PlayerMovement : MonoBehaviour
         jumpForce = force;
     }
 
+    
+
+    private void UpdateStamina() 
+    {
+        //Debug.Log("Current Stamina = " + currentStamina); 
+        //Debug.Log("Can Sing = " + canSing);
+        if (isSinging)
+        {
+            if (currentStamina > 0)
+            {
+                if (!isHoldingSpirit)
+                {
+                    currentStamina -= decreaseRate * Time.deltaTime;
+                }
+                else if (isHoldingSpirit)
+                {
+                    currentStamina -= decreaseRate / 2f * Time.deltaTime;
+                }
+                else
+                {
+                    Debug.LogError("Unknown error during stamina regeneration!");
+                }
+
+                staminaBar.fillAmount = currentStamina / 100f;
+            }
+            else
+            {
+                isReloading = true;
+                foreach (Spirit spirit in spirits)
+                {
+                    spirit.ThrowSpirit();
+                }
+                foreach (WalkerSpirit walkerSpirit in walkerSpirits)
+                {
+                    walkerSpirit.ThrowSpirit();
+                }
+                singAreaVisual.SetActive(false);
+                singAreaCollider.enabled = false;
+                //canSing = false;
+                isSinging = false;
+                //Debug.Log("Can NOT sing.");
+                //StartCoroutine(EnableSing());
+            }
+        }
+        else if (!isSinging)
+        {
+            if (currentStamina < maxStamina)
+            {
+                currentStamina += increaseRate * Time.deltaTime;
+                staminaBar.fillAmount = currentStamina / 100f;
+            }
+            if (currentStamina >= maxStamina)
+            {
+                currentStamina = maxStamina;
+                staminaBar.fillAmount = currentStamina / 100f;
+                isReloading = false;
+            }
+        }
+
+        UpdateStaminaBarTransparency();
+    }
+
+    public void SetIsHoldingSpirit(bool isHolding)
+    {
+        isHoldingSpirit = isHolding;
+    }
+
+    void UpdateStaminaBarTransparency()
+    {
+        Color staminaColor = staminaBar.color;
+
+        if (isReloading)
+        {
+            staminaColor.a = 0.3f; 
+        }
+        else
+        {
+            staminaColor.a = 1.0f;
+        }
+
+        staminaBar.color = staminaColor; 
+    }
+
+
+    //******* NOT USING *******
     IEnumerator EnableSing()
     {
         yield return new WaitForSeconds(singCoolDown);
