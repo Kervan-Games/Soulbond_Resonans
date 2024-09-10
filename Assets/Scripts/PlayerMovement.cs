@@ -49,17 +49,27 @@ public class PlayerMovement : MonoBehaviour
     private bool isReloading = false;
     private bool isHoldingSpirit = false;
 
+    public GameObject umbrellaThrow;
+    public GameObject umbrellaThrowVisual;
+    private Collider2D umbrellaThrowCollider;
+    private bool isUsingUmbrella = false;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         singAreaCollider = singArea.GetComponent<Collider2D>();
+        umbrellaThrowCollider = umbrellaThrow.GetComponent<Collider2D>();
         umbrella.SetActive(false);
         canUmbrella = false;
         isFacingRight = true;
         isDead = false;
+
         singAreaVisual.SetActive(false);
         singAreaCollider.enabled = false;
+
+        umbrellaThrowVisual.SetActive(false);
+        umbrellaThrowCollider.enabled = false;
 
         currentStamina = maxStamina;
 
@@ -108,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!isGrounded && rb.velocity.y < -0.01f)
         {
-            if (canUmbrella)
+            if (canUmbrella && isUsingUmbrella == false)
             {
                 rb.gravityScale = 0.3f;
                 umbrella.SetActive(true);
@@ -154,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
             
     }
 
-    public void OnUmbrellaOpen(InputAction.CallbackContext context)
+    public void OnUmbrellaOpen(InputAction.CallbackContext context) // fly with umbrella
     {
         if(!isDead)
         {
@@ -167,6 +177,25 @@ public class PlayerMovement : MonoBehaviour
                 canUmbrella = false;
             }
         }        
+    }
+
+    public void OnUmbrellaUse(InputAction.CallbackContext context) // deflect with umbrella
+    {
+        if (!isDead)
+        {
+            if (context.started)
+            {
+                umbrellaThrowVisual.SetActive(true);
+                umbrellaThrowCollider.enabled = true;
+                isUsingUmbrella = true;
+            }
+            else if (context.canceled)
+            {
+                umbrellaThrowVisual.SetActive(false);
+                umbrellaThrowCollider.enabled = false;
+                isUsingUmbrella = false;
+            }
+        }
     }
     
     public void OnJumpPressed(InputAction.CallbackContext context)

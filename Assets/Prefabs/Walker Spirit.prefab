@@ -431,5 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a6b361972c52614ca8898c9292ce1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectArea: {fileID: 3275894740707190713}
   pointA: {fileID: 3275894741033777675}
   pointB: {fileID: 3275894740638212458}
+  umbrella: {fileID: 0}

@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Umbrella",
+                    "name": "UmbrellaFly",
                     "type": "Button",
                     "id": "f33b57e6-c03e-46f2-ba15-002ba5765f7e",
                     "expectedControlType": "Button",
@@ -45,6 +45,15 @@
                     "name": "Interaction",
                     "type": "Button",
                     "id": "93974ff9-bdf4-4d68-b08e-d49e070ff0d0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UmbrellaDeflect",
+                    "type": "Button",
+                    "id": "14dd1285-f8cf-4657-bb5c-160192606352",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -114,7 +123,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Umbrella",
+                    "action": "UmbrellaFly",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -148,6 +157,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77b6202e-808b-4f34-8fc5-daa743563717",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UmbrellaDeflect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

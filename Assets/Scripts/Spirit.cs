@@ -30,6 +30,12 @@ public class Spirit : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerMovement playerMovement;
 
+    private bool canUmbrella;
+    public GameObject umbrella;
+
+    private float touchRange = 1f;
+    private bool canTouch = true;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -86,6 +92,7 @@ public class Spirit : MonoBehaviour
         canShoot = true;
         inRange = false;
         inSingArea = false;//********
+        canUmbrella = false;
     }
 
     void Update()
@@ -109,13 +116,47 @@ public class Spirit : MonoBehaviour
                 }*/
             }
         }
+
+        if (playerTransform != null)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+            if (distanceToPlayer < touchRange)
+            {
+                if (canHit && canTouch)
+                {
+                    TouchToPlayer();
+                    canTouch = false;
+                }
+            }
+        }
+    }
+    private void TouchToPlayer()
+    {
+        if (canHit)
+        {
+            transform.SetParent(spiritHolderTransform);
+            transform.localPosition = Vector3.zero;
+            transform.rotation = Quaternion.identity;
+            rb.isKinematic = true;
+            canChase = false;
+            canHit = true;
+            playerHealth.SetIsHoldingSpirit(true);
+        }
+
     }
 
-    public void ThrowSpirit()
+    public void ThrowSpirit()// if a bug occurs when holding many spirit and you can not throw some spirits, take a look at canShoot.
     {
         if (canShoot && inRange)
         {
-            if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
+            if (canUmbrella)
+            {
+                ThrowSpiritWithUmbrella();
+                canShoot = false;
+                //didUmbrella = false;
+            }
+            else if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
                 ThrowSpiritRandomDirection();
                 //Debug.Log("kinematic shoot");
@@ -160,7 +201,7 @@ public class Spirit : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    /*private void OnTriggerEnter2D(Collider2D other)
     {
         if ((other.CompareTag("Player")) && canHit)
         {
@@ -172,7 +213,7 @@ public class Spirit : MonoBehaviour
             canHit = false;
             playerHealth.SetIsHoldingSpirit(true);
         }
-    }
+    }*/
 
     private void MoveTowardsPlayer()
     {
@@ -195,26 +236,42 @@ public class Spirit : MonoBehaviour
 
     public void ThrowSpiritRandomDirection()
     {
+        canChase = false;
         transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         Vector2 targetPosition = (Vector2)transform.position + randomDirection * 50f;
-        StartCoroutine(MoveTowardsTarget(targetPosition));
+        StartCoroutine(MoveTowardsTarget(targetPosition, 2f));
     }
 
-    private IEnumerator MoveTowardsTarget(Vector2 targetPosition)
+    private IEnumerator MoveTowardsTarget(Vector2 targetPosition, float speedMultiplier)
     {
         while ((Vector2)transform.position != targetPosition)
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * 2 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * speedMultiplier * Time.deltaTime);
             yield return null;
         }
         Destroy(gameObject);
     }
 
+    public void ThrowSpiritWithUmbrella()
+    {
+        canChase = false;
+        transform.SetParent(spiritThrowHolderTransform); 
+        rb.isKinematic = false; 
+        rb.velocity = Vector2.zero; 
+
+        Vector2 umbrellaDirection = umbrella.transform.up.normalized; 
+        Vector2 targetPosition = (Vector2)transform.position + umbrellaDirection * 50f; 
+
+        StartCoroutine(MoveTowardsTarget(targetPosition, 3f)); 
+    }
+
+
     public void ThrowSpiritToTarget(Transform targetTransform)
     {
+        canChase = false;
         transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
         StartCoroutine(MoveTowardsTarget(targetTransform));
@@ -269,5 +326,10 @@ public class Spirit : MonoBehaviour
     public void SetInSingArea(bool inArea)
     {
         inSingArea = inArea;
+    }
+
+    public void SetUmbrella(bool umbrella)
+    {
+        canUmbrella = umbrella;
     }
 }

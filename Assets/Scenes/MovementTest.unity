@@ -358,6 +358,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24080777}
     m_Modifications:
+    - target: {fileID: 353065648266101963, guid: 57a48b64f35e39d488b921a475e71d76, type: 3}
+      propertyPath: umbrella
+      value: 
+      objectReference: {fileID: 1416152883}
     - target: {fileID: 353065648266101968, guid: 57a48b64f35e39d488b921a475e71d76, type: 3}
       propertyPath: m_Name
       value: Spirit
@@ -1236,7 +1240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211665957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.2756805, y: -0.29143998, z: -10.059425}
+  m_LocalPosition: {x: -5.275607, y: -0.29145, z: -10.059425}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1380,6 +1384,11 @@ Transform:
   m_Father: {fileID: 1703221990}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1416152883 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1416152883, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+  m_PrefabInstance: {fileID: 2535139406167284234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1456736091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 353065648266101974, guid: 57a48b64f35e39d488b921a475e71d76, type: 3}
@@ -2426,6 +2435,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 681190725, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535139406877652488, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5041502
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535139406877652488, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535139406877652488, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535139406877652488, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535139406877652491, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2535139407187634374, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2539,6 +2588,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Walker Spirit
       objectReference: {fileID: 0}
+    - target: {fileID: 3275894741509603374, guid: 23ceb1a0470cc34458fe206eb09d00bc, type: 3}
+      propertyPath: umbrella
+      value: 
+      objectReference: {fileID: 1416152883}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23ceb1a0470cc34458fe206eb09d00bc, type: 3}
 --- !u!1001 &4248120060814892754

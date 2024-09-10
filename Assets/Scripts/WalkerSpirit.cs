@@ -32,7 +32,7 @@ public class WalkerSpirit : MonoBehaviour
     private bool inRange;
     private bool canPatrol;
     private bool canTouch;
-    private SpiritDetectRange detectRange;
+    public GameObject detectArea;
 
     public GameObject pointA;
     public GameObject pointB;
@@ -44,6 +44,9 @@ public class WalkerSpirit : MonoBehaviour
     private bool inSingArea;//*****
 
     private PlayerMovement playerMovement;
+    private bool canUmbrella;
+    public GameObject umbrella;
+    private bool didTouch = false;
 
     void Start()
     {
@@ -109,6 +112,7 @@ public class WalkerSpirit : MonoBehaviour
         didShoot = false;
         closeToPlayer = false;
         inSingArea = false;//********
+        canUmbrella = false;
     }
 
     void Update()//on patrol phase, now spirit can be shot even before chase. if it is not necessary, change it.
@@ -141,34 +145,57 @@ public class WalkerSpirit : MonoBehaviour
                 }
             }
         }
+
+        /*if(detectArea.activeSelf == true && canPatrol == false)
+        {
+            canPatrol = true;
+        }
+        else if(detectArea.activeSelf == false && canPatrol == true)
+        {
+            canPatrol = false;
+        }*/
     }
 
     public void ThrowSpirit()
     {
         if (canShoot &&closeToPlayer)
         {
-            if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
+            if (canUmbrella)
             {
+                DisableTheDetectObject();
+                ThrowSpiritWithUmbrella();
+                canShoot = false;
+                playerHealth.SetIsHoldingSpirit(false);
+                playerMovement.SetIsHoldingSpirit(false);
+                playerHealth.SetDidThrowSpirit(true);
+                //didUmbrella = false;
+            }
+            else if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
+            {
+                DisableTheDetectObject();
                 ThrowSpiritRandomDirection();
                 //Debug.Log("kinematic shoot");
                 canShoot = false;
                 didShoot = true;
 
-                playerHealth.SetDidThrowSpirit(true);
                 playerHealth.SetIsHoldingSpirit(false);
+                playerMovement.SetIsHoldingSpirit(false);
+                playerHealth.SetDidThrowSpirit(true);
             }
 
             else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
             {
                 if (canSing)
                 {
+                    DisableTheDetectObject();
                     ThrowSpiritBeforeHold();
                     //Debug.Log("before hold shoot");
                     canShoot = false;
                     didShoot = true;
 
-                    playerHealth.SetDidThrowSpirit(true);
                     playerHealth.SetIsHoldingSpirit(false);
+                    playerMovement.SetIsHoldingSpirit(false);
+                    playerHealth.SetDidThrowSpirit(true);
                 }
             }
 
@@ -182,8 +209,8 @@ public class WalkerSpirit : MonoBehaviour
 
                 playerHealth.SetDidThrowSpirit(true);
                 playerHealth.SetIsHoldingSpirit(false);
+                playerMovement.SetIsHoldingSpirit(false);
             }
-            playerMovement.SetIsHoldingSpirit(false);
         }
     }
 
@@ -230,20 +257,34 @@ public class WalkerSpirit : MonoBehaviour
 
     public void ThrowSpiritRandomDirection()
     {
+        canChase = false;
         transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         Vector2 targetPosition = (Vector2)transform.position + randomDirection * 50f;
         canSing = false;
-        StartCoroutine(MoveTowardsTarget(targetPosition));
+        StartCoroutine(MoveTowardsTarget(targetPosition, 2f));
     }
 
-    private IEnumerator MoveTowardsTarget(Vector2 targetPosition)
+    public void ThrowSpiritWithUmbrella()
+    {
+        canChase = false;
+        transform.SetParent(spiritThrowHolderTransform); 
+        rb.isKinematic = false;
+        rb.velocity = Vector2.zero;
+
+        Vector2 umbrellaDirection = umbrella.transform.up.normalized; 
+        Vector2 targetPosition = (Vector2)transform.position + umbrellaDirection * 50f; 
+
+        StartCoroutine(MoveTowardsTarget(targetPosition, 3f)); 
+    }
+
+    private IEnumerator MoveTowardsTarget(Vector2 targetPosition, float speedMultiplier)
     {
         while ((Vector2)transform.position != targetPosition)
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * 2 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * speedMultiplier * Time.deltaTime);
             yield return null;
         }
         Destroy(gameObject);
@@ -251,6 +292,7 @@ public class WalkerSpirit : MonoBehaviour
 
     public void ThrowSpiritToTarget(Transform targetTransform)
     {
+        canChase = false;
         transform.SetParent(spiritThrowHolderTransform);
         rb.isKinematic = false;
         canSing = false;
@@ -334,27 +376,30 @@ public class WalkerSpirit : MonoBehaviour
     {
         if (canHit)
         {
+            DisableTheDetectObject();
             transform.SetParent(spiritHolderTransform);
             transform.localPosition = Vector3.zero;
             transform.rotation = Quaternion.identity;
             rb.isKinematic = true;
             canChase = false;
             canHit = false;
+            canPatrol = false;
             playerHealth.SetIsHoldingSpirit(true);
+            didTouch = true;
         }
     }
 
     void DisableTheDetectObject()
     { 
-        Transform detectObject = transform.Find("DetectArea");
-
-        if (detectObject != null)
+        if (detectArea != null)
         {
-            detectObject.gameObject.SetActive(false);
+            detectArea.SetActive(false);
+            canPatrol = false;
+            rb.velocity = Vector2.zero;
         }
         else
         {
-            Debug.LogWarning("DetectArea object couldn't find! -debugWarning");
+            Debug.LogWarning("DetectArea object couldn't find!");
         }
     }
 
@@ -400,5 +445,14 @@ public class WalkerSpirit : MonoBehaviour
         {
             closeToPlayer = false;
         }
+    }
+    public void SetUmbrella(bool umbrella)
+    {
+        canUmbrella = umbrella;
+    }
+
+    public bool GetDidTouch()
+    {
+        return didTouch;
     }
 }

@@ -22,7 +22,10 @@ public class SpiritDetectRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            walkerSpirit.SetCanPatrol(true);
+            if (walkerSpirit.GetDidTouch() == false) 
+            { 
+                walkerSpirit.SetCanPatrol(true);
+            } 
             walkerSpirit.SetInRange(false);
         }
     }
