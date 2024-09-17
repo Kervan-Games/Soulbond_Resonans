@@ -14,6 +14,7 @@ public class Spirit : MonoBehaviour
     private bool canShoot;
     private bool inRange;
     private bool inSingArea;//*****
+    private bool isTouching = false;
 
     private Transform playerTransform;
     private Transform spiritHolderTransform;
@@ -142,6 +143,7 @@ public class Spirit : MonoBehaviour
             canChase = false;
             canHit = true;
             playerHealth.SetIsHoldingSpirit(true);
+            isTouching = true;
         }
 
     }
@@ -183,6 +185,8 @@ public class Spirit : MonoBehaviour
             playerHealth.SetDidThrowSpirit(true);
             playerHealth.SetIsHoldingSpirit(false);
             playerMovement.SetIsHoldingSpirit(false);
+            SetInSingArea(false);
+            isTouching = false;
         }
     }
 
@@ -198,6 +202,8 @@ public class Spirit : MonoBehaviour
             canHit = false;
             playerHealth.SetIsHoldingSpirit(true);
             playerMovement.SetIsHoldingSpirit(true);
+            SetInSingArea(true);
+            
         }
     }
 
@@ -328,8 +334,18 @@ public class Spirit : MonoBehaviour
         inSingArea = inArea;
     }
 
+    public bool GetInSingArea()
+    {
+        return inSingArea;
+    }
+
     public void SetUmbrella(bool umbrella)
     {
         canUmbrella = umbrella;
+    }
+
+    public bool GetIsTouching()
+    {
+        return isTouching;
     }
 }

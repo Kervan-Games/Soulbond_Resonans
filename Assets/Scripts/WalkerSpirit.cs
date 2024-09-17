@@ -42,6 +42,7 @@ public class WalkerSpirit : MonoBehaviour
     private bool didShoot;
     private bool closeToPlayer;
     private bool inSingArea;//*****
+    private bool isTouching = false;
 
     private PlayerMovement playerMovement;
     private bool canUmbrella;
@@ -211,6 +212,7 @@ public class WalkerSpirit : MonoBehaviour
                 playerHealth.SetIsHoldingSpirit(false);
                 playerMovement.SetIsHoldingSpirit(false);
             }
+            isTouching = false;
         }
     }
 
@@ -386,6 +388,7 @@ public class WalkerSpirit : MonoBehaviour
             canPatrol = false;
             playerHealth.SetIsHoldingSpirit(true);
             didTouch = true;
+            isTouching = true;
         }
     }
 
@@ -454,5 +457,15 @@ public class WalkerSpirit : MonoBehaviour
     public bool GetDidTouch()
     {
         return didTouch;
+    }
+
+    public bool GetInSingArea()
+    {
+        return inSingArea;
+    }
+
+    public bool GetIsTouching()
+    {
+        return isTouching;
     }
 }

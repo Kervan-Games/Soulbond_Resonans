@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private float velocitySmoothing = 0f;
 
     private Spirit[] spirits;
+    private Spirit[] strongSpirits;
     private WalkerSpirit[] walkerSpirits; 
 
     private bool isFacingRight;
@@ -79,6 +80,14 @@ public class PlayerMovement : MonoBehaviour
         for (int i = 0; i < spiritObjects.Length; i++)
         {
             spirits[i] = spiritObjects[i].GetComponent<Spirit>();
+        }
+
+        GameObject[] strongSpiritObjects = GameObject.FindGameObjectsWithTag("StrongSpirit");
+
+        strongSpirits = new Spirit[strongSpiritObjects.Length];
+        for (int i = 0; i < strongSpiritObjects.Length; i++)
+        {
+            strongSpirits[i] = strongSpiritObjects[i].GetComponent<Spirit>();
         }
 
         GameObject[] walkerSpiritObjects = GameObject.FindGameObjectsWithTag("WalkerSpirit");
@@ -220,18 +229,56 @@ public class PlayerMovement : MonoBehaviour
                 singAreaCollider.enabled = true;
                 isSinging = true;
                 //StartCoroutine(StopSing());
+
+                foreach (Spirit spirit in spirits)
+                {
+                    if (spirit.GetIsTouching())
+                    {
+                        spirit.ThrowSpirit();
+                    }
+                }
+                foreach (WalkerSpirit walkerSpirit in walkerSpirits)
+                {
+                    if (walkerSpirit.GetIsTouching())
+                    {
+                        walkerSpirit.ThrowSpirit();
+                    }
+                }
+
+                foreach (Spirit strongSpirit in strongSpirits)
+                {
+                    if (strongSpirit.GetIsTouching())
+                    {
+                        strongSpirit.ThrowSpirit();
+                    }
+                }
             }
 
             if (context.canceled)
             {
                 foreach (Spirit spirit in spirits)
                 {
-                    spirit.ThrowSpirit();
+                    if (spirit.GetInSingArea())
+                    {
+                        spirit.ThrowSpirit();
+                    }  
                 }
                 foreach (WalkerSpirit walkerSpirit in walkerSpirits)
                 {
-                    walkerSpirit.ThrowSpirit();
+                    if (walkerSpirit.GetInSingArea())
+                    {
+                        walkerSpirit.ThrowSpirit();
+                    }
                 }
+
+                foreach (Spirit strongSpirit in strongSpirits)
+                {
+                    if (strongSpirit.GetInSingArea())
+                    {
+                        strongSpirit.ThrowSpirit();
+                    }
+                }
+
                 singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
                 //canSing = false;
