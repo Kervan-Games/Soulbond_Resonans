@@ -55,9 +55,12 @@ public class PlayerMovement : MonoBehaviour
     private Collider2D umbrellaThrowCollider;
     private bool isUsingUmbrella = false;
 
+    private Animator animator;
+
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         singAreaCollider = singArea.GetComponent<Collider2D>();
         umbrellaThrowCollider = umbrellaThrow.GetComponent<Collider2D>();
@@ -116,11 +119,17 @@ public class PlayerMovement : MonoBehaviour
         float targetSpeed = moveInput.x * maxSpeed;
         currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
         rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
+        animator.SetFloat("speed", Mathf.Abs(currentSpeed));
     }
 
     private void GroundCheck()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        animator.SetBool("isGrounded", isGrounded);
+        if(!isGrounded)
+        {
+            animator.SetBool("isJumping", false);
+        }
     }
 
     private void OpenUmbrella()
@@ -213,6 +222,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (context.performed && isGrounded)
             {
+                animator.SetBool("isJumping", true);
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
         }
