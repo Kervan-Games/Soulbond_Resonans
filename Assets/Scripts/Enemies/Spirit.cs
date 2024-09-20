@@ -200,7 +200,7 @@ public class Spirit : MonoBehaviour
             rb.isKinematic = true;
             canChase = false;
             canHit = false;
-            playerHealth.SetIsHoldingSpirit(true);
+            //playerHealth.SetIsHoldingSpirit(true);
             playerMovement.SetIsHoldingSpirit(true);
             SetInSingArea(true);
             

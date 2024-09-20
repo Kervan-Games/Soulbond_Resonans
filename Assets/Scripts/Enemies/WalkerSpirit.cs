@@ -252,7 +252,7 @@ public class WalkerSpirit : MonoBehaviour
             transform.SetParent(singAreaTransform);
             transform.rotation = Quaternion.identity;
             rb.velocity = Vector2.zero;
-            playerHealth.SetIsHoldingSpirit(true);
+            //playerHealth.SetIsHoldingSpirit(true);
             playerMovement.SetIsHoldingSpirit(true);
         }
     }

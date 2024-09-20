@@ -407,36 +407,4 @@ public class PlayerMovement : MonoBehaviour
 
         staminaBar.color = staminaColor; 
     }
-
-
-    //******* NOT USING *******
-    IEnumerator EnableSing()
-    {
-        yield return new WaitForSeconds(singCoolDown);
-        canSing = true;
-        Debug.Log("Can sing.");
-    }
-
-    IEnumerator StopSing()
-    {
-        yield return new WaitForSeconds(singDuration);
-        if (isSinging)
-        {
-            foreach (Spirit spirit in spirits)
-            {
-                spirit.ThrowSpirit();
-            }
-            foreach (WalkerSpirit walkerSpirit in walkerSpirits)
-            {
-                walkerSpirit.ThrowSpirit();
-            }
-
-            singAreaVisual.SetActive(false);
-            singAreaCollider.enabled = false;
-            canSing = false;
-            isSinging = false;
-            Debug.Log("Sing stopped by duration.");
-            StartCoroutine(EnableSing());
-        }
-    }
 }
