@@ -256,6 +256,17 @@ public class WalkerSpirit : MonoBehaviour
             playerMovement.SetIsHoldingSpirit(true);
         }
     }
+    public void SetUmbrellaThrow()
+    {
+        inSingArea = false;
+        inRange = true;
+        canPatrol = true;
+        rb.isKinematic = false;
+        canChase = true;
+        transform.SetParent(spiritThrowHolderTransform);
+        //playerHealth.SetIsHoldingSpirit(true);
+        playerMovement.SetIsHoldingSpirit(false);
+    }
 
     public void ThrowSpiritRandomDirection()
     {

@@ -6,6 +6,7 @@ public class SingArea : MonoBehaviour
 {
     private float rotationSpeed = 5f;
     private Collider2D singCollider;
+    public GameObject umbrella;
 
     private void Start()
     {
@@ -36,6 +37,26 @@ public class SingArea : MonoBehaviour
         {
             WalkerSpirit walkerSpirit = collision.GetComponent<WalkerSpirit>();
             walkerSpirit.SetSingPosition();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Spirit"))
+        {
+            Spirit spirit = collision.GetComponent<Spirit>();
+            if (umbrella.activeSelf)
+            {
+                spirit.SetUmbrellaThrow();
+            }
+        }
+        else if (collision.CompareTag("WalkerSpirit"))
+        {
+            WalkerSpirit wspirit = collision.GetComponent<WalkerSpirit>();
+            if (umbrella.activeSelf)
+            {
+                wspirit.SetUmbrellaThrow();
+            }
         }
     }
 

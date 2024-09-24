@@ -238,44 +238,20 @@ public class PlayerMovement : MonoBehaviour
                 singAreaVisual.SetActive(true);
                 singAreaCollider.enabled = true;
                 isSinging = true;
-                //StartCoroutine(StopSing());
-
-                foreach (Spirit spirit in spirits)
-                {
-                    if (spirit.GetIsTouching())
-                    {
-                        spirit.ThrowSpirit();
-                    }
-                }
-                foreach (WalkerSpirit walkerSpirit in walkerSpirits)
-                {
-                    if (walkerSpirit.GetIsTouching())
-                    {
-                        walkerSpirit.ThrowSpirit();
-                    }
-                }
-
-                foreach (Spirit strongSpirit in strongSpirits)
-                {
-                    if (strongSpirit.GetIsTouching())
-                    {
-                        strongSpirit.ThrowSpirit();
-                    }
-                }
             }
 
             if (context.canceled)
             {
                 foreach (Spirit spirit in spirits)
                 {
-                    if (spirit.GetInSingArea())
+                    if (spirit.GetInSingArea() || spirit.GetIsTouching())
                     {
                         spirit.ThrowSpirit();
                     }  
                 }
                 foreach (WalkerSpirit walkerSpirit in walkerSpirits)
                 {
-                    if (walkerSpirit.GetInSingArea())
+                    if (walkerSpirit.GetInSingArea() || walkerSpirit.GetIsTouching())
                     {
                         walkerSpirit.ThrowSpirit();
                     }
@@ -283,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
 
                 foreach (Spirit strongSpirit in strongSpirits)
                 {
-                    if (strongSpirit.GetInSingArea())
+                    if (strongSpirit.GetInSingArea() || strongSpirit.GetIsTouching())
                     {
                         strongSpirit.ThrowSpirit();
                     }

@@ -152,6 +152,7 @@ public class Spirit : MonoBehaviour
     {
         if (canShoot && inRange)
         {
+            rb.velocity = Vector3.zero;
             if (canUmbrella)
             {
                 ThrowSpiritWithUmbrella();
@@ -205,6 +206,15 @@ public class Spirit : MonoBehaviour
             SetInSingArea(true);
             
         }
+    }
+
+    public void SetUmbrellaThrow()
+    {
+        transform.SetParent(spiritThrowHolderTransform);
+        rb.isKinematic = false;
+        canChase = true;
+        playerMovement.SetIsHoldingSpirit(false);
+        SetInSingArea(false);
     }
 
     /*private void OnTriggerEnter2D(Collider2D other)
