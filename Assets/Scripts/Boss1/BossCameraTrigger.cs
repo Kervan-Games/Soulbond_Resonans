@@ -6,19 +6,25 @@ using UnityEngine;
 public class BossCameraTrigger : MonoBehaviour
 {
     public GameObject boss; 
-    public GameObject player; 
+    public GameObject player;
+    public GameObject umbrella;
     public CinemachineVirtualCamera virtualCamera; 
     public float zoomDuration = 2f; //add new zoom duration for offset change if needs
     public float targetOrthoSize = 12f; 
     public Vector3 bossOffset = new Vector3(16, 1, 0); 
     public Vector3 playerOffset = new Vector3(0, 1, 0); 
     private float originalOrthoSize; 
-    private Vector3 originalOffset; 
+    private Vector3 originalOffset;
+    private PlayerMovement playerMovement;
+    private Rigidbody2D playerRB;
+    
 
     private void Start()
     {
         originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
         originalOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerRB = player.GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -26,9 +32,13 @@ public class BossCameraTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             virtualCamera.Follow = boss.transform;
+            playerMovement.SetInLanes(true);
+            playerRB.gravityScale = 0f;
 
             StartCoroutine(SmoothZoom(targetOrthoSize));
             StartCoroutine(SmoothOffset(bossOffset));
+            umbrella.SetActive(true);
+
         }
     }
 
@@ -37,9 +47,12 @@ public class BossCameraTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             virtualCamera.Follow = player.transform;
-
+            playerMovement.SetInLanes(false);
+            playerRB.gravityScale = 2f;
+            playerRB.velocity = Vector3.zero;
             StartCoroutine(SmoothZoom(originalOrthoSize));
-            StartCoroutine(SmoothOffset(playerOffset)); 
+            StartCoroutine(SmoothOffset(playerOffset));
+            umbrella.SetActive(false);
         }
     }
 

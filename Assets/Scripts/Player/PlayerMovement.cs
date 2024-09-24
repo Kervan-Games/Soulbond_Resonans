@@ -57,6 +57,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator animator;
 
+    private bool isInLanes = false;
+
+    private float[] lanePositions = { -32f, -27f, -22f };
+    private int currentLane = 0;
+    public float transitionSpeed = 10f;
+
 
     void Start()
     {
@@ -106,11 +112,49 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead)
         {
-            Move();
-            GroundCheck();
-            OpenUmbrella();
-            HandleFlipping();
-            UpdateStamina();
+            if (!isInLanes)
+            {
+                Move();
+                GroundCheck();
+                OpenUmbrella();
+                HandleFlipping();
+                UpdateStamina();
+            }
+            else if (isInLanes)
+            {
+                rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
+
+                if (Input.GetKeyDown(KeyCode.W) && currentLane < lanePositions.Length - 1)
+                {
+                    currentLane++;
+                }
+
+                if (Input.GetKeyDown(KeyCode.S) && currentLane > 0)
+                {
+                    currentLane--;
+                }
+
+                float targetY = lanePositions[currentLane];
+                float distanceToTarget = targetY - transform.position.y;
+
+                float targetVelocityY = (distanceToTarget > 0) ? transitionSpeed : -transitionSpeed;
+                float newYVelocity = Mathf.Lerp(rb.velocity.y, targetVelocityY, transitionSpeed * Time.deltaTime);
+
+                rb.velocity = new Vector2(rb.velocity.x, newYVelocity);
+
+                if (Mathf.Abs(distanceToTarget) < 0.05f)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    //transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
+                }
+                else if (Mathf.Abs(distanceToTarget) < 1f)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, Mathf.Lerp(rb.velocity.y, 0, transitionSpeed * Time.deltaTime));
+                }
+
+                GroundCheck();
+
+            }
         }
     }
 
@@ -382,5 +426,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         staminaBar.color = staminaColor; 
+    }
+
+    public void SetInLanes(bool lane)
+    {
+        isInLanes = lane;
     }
 }
