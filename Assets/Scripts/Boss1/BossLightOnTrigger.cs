@@ -7,6 +7,7 @@ public class BossLightOnTrigger : MonoBehaviour
     public GameObject darknessObject;
     private SpriteRenderer spriteRenderer;
     public float fadeDuration = 0.5f;
+    public ParticleSystem particleSystem;
 
     private void Start()
     {
@@ -19,6 +20,11 @@ public class BossLightOnTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (particleSystem != null)
+            {
+                particleSystem.Play(); 
+            }
+
             StartCoroutine(FadeOut());
         }
     }
