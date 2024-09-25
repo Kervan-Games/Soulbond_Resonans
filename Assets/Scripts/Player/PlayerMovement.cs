@@ -63,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
     private int currentLane = 0;
     public float transitionSpeed = 10f;
 
+    private bool canShotUmbrella = true;
+
 
     void Start()
     {
@@ -243,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaUse(InputAction.CallbackContext context) // deflect with umbrella
     {
-        if (!isDead)
+        if (!isDead && canShotUmbrella)
         {
             if (context.started)
             {
@@ -431,5 +433,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetInLanes(bool lane)
     {
         isInLanes = lane;
+    }
+
+    public void SetCanUmbrellaShot(bool shot)
+    {
+        canShotUmbrella = shot;
     }
 }

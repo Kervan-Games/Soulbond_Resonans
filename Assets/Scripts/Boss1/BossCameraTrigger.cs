@@ -7,6 +7,7 @@ public class BossCameraTrigger : MonoBehaviour
 {
     public GameObject boss; 
     public GameObject player;
+    public GameObject umbrellaThrow;
     public GameObject umbrella;
     public CinemachineVirtualCamera virtualCamera; 
     public float zoomDuration = 2f; //add new zoom duration for offset change if needs
@@ -38,7 +39,11 @@ public class BossCameraTrigger : MonoBehaviour
             StartCoroutine(SmoothZoom(targetOrthoSize));
             StartCoroutine(SmoothOffset(bossOffset));
             umbrella.SetActive(true);
-
+            playerMovement.SetCanUmbrellaShot(false);
+            if (umbrellaThrow.activeSelf)
+            {
+                umbrellaThrow.SetActive(false);
+            }
         }
     }
 
@@ -53,6 +58,7 @@ public class BossCameraTrigger : MonoBehaviour
             StartCoroutine(SmoothZoom(originalOrthoSize));
             StartCoroutine(SmoothOffset(playerOffset));
             umbrella.SetActive(false);
+            playerMovement.SetCanUmbrellaShot(true);
         }
     }
 
