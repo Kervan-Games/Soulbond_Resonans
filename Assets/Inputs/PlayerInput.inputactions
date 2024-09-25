@@ -58,6 +58,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LaneUp",
+                    "type": "Button",
+                    "id": "298d5a89-f0bd-4ffb-a90d-d24643c31ce6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LaneDown",
+                    "type": "Button",
+                    "id": "e6e1110e-b870-4b9c-8d49-5c79b1f26b9b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -146,6 +164,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "UmbrellaDeflect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e361cc6-c755-4212-a25d-b464990848a5",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LaneUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46bf3d24-f9c7-4f50-846c-40241dc4284f",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LaneDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

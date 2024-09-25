@@ -10,18 +10,19 @@ public class LaneWall : MonoBehaviour
 
     void Start()
     {
-        GameObject[] objects = { gate1, gate2, gate3 };
-        int randomIndex = Random.Range(0, objects.Length);
+        GameObject[] gates = { gate1, gate2, gate3 };
 
-        for (int i = 0; i < objects.Length; i++)
+        int randomIndex = GameManager.Instance.GetRandomGateIndex(gates.Length);
+
+        for (int i = 0; i < gates.Length; i++)
         {
             if (i == randomIndex)
             {
-                objects[i].SetActive(false);
+                gates[i].SetActive(false); 
             }
             else
             {
-                objects[i].SetActive(true);
+                gates[i].SetActive(true);  
             }
         }
     }

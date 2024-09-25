@@ -126,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
 
-                if (Input.GetKeyDown(KeyCode.W) && currentLane < lanePositions.Length - 1)
+                /*if (Input.GetKeyDown(KeyCode.W) && currentLane < lanePositions.Length - 1)
                 {
                     currentLane++;
                 }
@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.S) && currentLane > 0)
                 {
                     currentLane--;
-                }
+                }*/
 
                 float targetY = lanePositions[currentLane];
                 float distanceToTarget = targetY - transform.position.y;
@@ -226,6 +226,27 @@ public class PlayerMovement : MonoBehaviour
             moveInput = context.ReadValue<Vector2>();
         }
             
+    }
+
+    public void OnLaneUp(InputAction.CallbackContext context)
+    {
+        if (!isDead && isInLanes)
+        {
+            if (context.performed && currentLane < lanePositions.Length - 1)
+            {
+                currentLane++;
+            }
+        }
+    }
+    public void OnLaneDown(InputAction.CallbackContext context)
+    {
+        if (!isDead && isInLanes)
+        {
+            if (context.performed && currentLane > 0)
+            {
+                currentLane--;
+            }
+        }
     }
 
     public void OnUmbrellaOpen(InputAction.CallbackContext context) // fly with umbrella
