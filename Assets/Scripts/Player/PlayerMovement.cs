@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject umbrella;
 
     private Vector2 moveInput;
+    private Vector2 laneInput;
 
     private bool canUmbrella;
 
@@ -64,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     public float transitionSpeed = 10f;
 
     private bool canShotUmbrella = true;
+    private bool isUmbrellaOpen = false;
 
 
     void Start()
@@ -124,17 +126,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (isInLanes)
             {
-                rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
-
-                /*if (Input.GetKeyDown(KeyCode.W) && currentLane < lanePositions.Length - 1)
-                {
-                    currentLane++;
-                }
-
-                if (Input.GetKeyDown(KeyCode.S) && currentLane > 0)
-                {
-                    currentLane--;
-                }*/
+                /*rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
 
                 float targetY = lanePositions[currentLane];
                 float distanceToTarget = targetY - transform.position.y;
@@ -152,9 +144,24 @@ public class PlayerMovement : MonoBehaviour
                 else if (Mathf.Abs(distanceToTarget) < 1f)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, Mathf.Lerp(rb.velocity.y, 0, transitionSpeed * Time.deltaTime));
-                }
+                }*/
+
+                float targetSpeed = laneInput.y * maxSpeed;
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime*2);
+                rb.velocity = new Vector2(maxSpeed, currentSpeed);
+                //animator.SetFloat("speed", Mathf.Abs(currentSpeed));
 
                 GroundCheck();
+                if (isGrounded && isUmbrellaOpen)
+                {
+                    umbrella.SetActive(false);
+                    isUmbrellaOpen = false;
+                }
+                else if(!isGrounded && !isUmbrellaOpen)
+                {
+                    umbrella.SetActive(true);
+                    isUmbrellaOpen = true;
+                }
 
             }
         }
@@ -226,6 +233,15 @@ public class PlayerMovement : MonoBehaviour
             moveInput = context.ReadValue<Vector2>();
         }
             
+    }
+
+    public void OnLaneInput(InputAction.CallbackContext context)
+    {
+        if (!isDead)
+        {
+            laneInput = context.ReadValue<Vector2>();
+        }
+
     }
 
     public void OnLaneUp(InputAction.CallbackContext context)
