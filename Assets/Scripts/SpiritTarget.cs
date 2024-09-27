@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class SpiritTarget : MonoBehaviour
 {
+    private bool didHit = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Spirit"))
         {
             StartCoroutine(DestroyAfterDelay(collision));
+            didHit = true;
+            //Debug.Log("HIT");
         }
     }
 
@@ -19,5 +22,10 @@ public class SpiritTarget : MonoBehaviour
         {
             Destroy(collider.gameObject);
         } 
+    }
+
+    public bool GetDidHit()
+    {
+        return didHit;
     }
 }
