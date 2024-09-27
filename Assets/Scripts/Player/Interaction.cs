@@ -8,10 +8,15 @@ public class Interaction : MonoBehaviour
     private bool canInteract;
     private GameObject interactedObject;
     private GameObject eButton;
+    private InteractionCamera interactionCamera;
+    public PlayerMovement playerMovement;
+    private Dialogue dialogue;
 
     private void Start()
     {
         canInteract = false;
+        interactionCamera = GetComponent<InteractionCamera>();
+        dialogue = GetComponent<Dialogue>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -59,8 +64,12 @@ public class Interaction : MonoBehaviour
     {
         if (context.performed && canInteract)
         {
-            Debug.Log("INTERACTED!");
-            // interactedObject.GetComponent<*script*>().function();
+            //Debug.Log("INTERACTED!");
+            interactionCamera.SetIsInteracting(true);
+            eButton.SetActive(false);
+            playerMovement.SetIsInDialogue(true);
+            dialogue.SetIsInDialogue(true);
+            //interactedObject.GetComponent<*script*>().function();
             // or at the beginning check the tag of triggered object, then perform the getComponent and run function
 
         }

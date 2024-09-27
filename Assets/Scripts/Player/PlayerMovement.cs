@@ -67,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
     private bool canShotUmbrella = true;
     private bool isUmbrellaOpen = false;
 
+    private bool isInDialogue = false;
+
 
     void Start()
     {
@@ -118,12 +120,23 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!isInLanes)
             {
-                Move();
-                GroundCheck();
-                OpenUmbrella();
-                HandleFlipping();
-                UpdateStamina();
+                if (!isInDialogue)
+                {
+                    Move();
+                    GroundCheck();
+                    OpenUmbrella();
+                    HandleFlipping();
+                    UpdateStamina();
+                }
+                else if (isInDialogue)
+                {
+                    GroundCheck();
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    animator.SetFloat("speed", 0);
+                }
+                    
             }
+            
             else if (isInLanes)
             {
                 /*rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
@@ -282,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaUse(InputAction.CallbackContext context) // deflect with umbrella
     {
-        if (!isDead && canShotUmbrella)
+        if (!isDead && canShotUmbrella && !isInDialogue)
         {
             if (context.started)
             {
@@ -301,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void OnJumpPressed(InputAction.CallbackContext context)
     {
-        if (!isDead)
+        if (!isDead && !isInDialogue)
         {
             if (context.performed && isGrounded)
             {
@@ -314,7 +327,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && canSing)
+        if (!isDead && canSing && !isInDialogue)
         {
             if (context.started && !isReloading)
             {
@@ -475,5 +488,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetCanUmbrellaShot(bool shot)
     {
         canShotUmbrella = shot;
+    }
+
+    public void SetIsInDialogue(bool inD)
+    {
+        isInDialogue = inD;
     }
 }
