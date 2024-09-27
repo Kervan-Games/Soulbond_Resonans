@@ -198,6 +198,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
+
     private void OpenUmbrella()
     {
         if(!isGrounded && rb.velocity.y < -0.01f)
@@ -319,6 +328,7 @@ public class PlayerMovement : MonoBehaviour
             if (context.performed && isGrounded)
             {
                 animator.SetBool("isJumping", true);
+                animator.SetTrigger("jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
         }
