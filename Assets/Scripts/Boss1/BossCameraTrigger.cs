@@ -59,6 +59,7 @@ public class BossCameraTrigger : MonoBehaviour
             StartCoroutine(SmoothOffset(playerOffset));
             umbrella.SetActive(false);
             playerMovement.SetCanUmbrellaShot(true);
+            Debug.Log("OFF");
         }
     }
 
@@ -88,6 +89,6 @@ public class BossCameraTrigger : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = targetOffset;
+        //virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = targetOffset;
     }
 }
