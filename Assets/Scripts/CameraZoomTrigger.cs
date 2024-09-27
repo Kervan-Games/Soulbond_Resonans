@@ -8,12 +8,14 @@ public class CameraZoomTrigger : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
     public float targetZoom = 6.5f;
     public float zoomDuration = 2f;
+    private bool canZoom = true;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && canZoom)
         {
             StartCoroutine(SmoothZoom(targetZoom));
+            canZoom = false;
         }
     }
 

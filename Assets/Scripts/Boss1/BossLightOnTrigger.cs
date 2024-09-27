@@ -9,6 +9,10 @@ public class BossLightOnTrigger : MonoBehaviour
     public float fadeDuration = 0.5f;
     public ParticleSystem particleSystem;
 
+    public ParticleSystem particle2;//**
+
+    public Animator bossAnimator;//**
+
     private void Start()
     {
         spriteRenderer = darknessObject.GetComponent<SpriteRenderer>();
@@ -22,7 +26,9 @@ public class BossLightOnTrigger : MonoBehaviour
         {
             if (particleSystem != null)
             {
-                particleSystem.Play(); 
+                particleSystem.Play();
+                particle2.Play();//**
+                bossAnimator.SetBool("lightOn", true);//**
             }
 
             StartCoroutine(FadeOut());

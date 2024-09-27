@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class BossLightTrigger : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class BossLightTrigger : MonoBehaviour
     public float fadeDuration = 0.5f;
 
     public ParticleSystem particle;
+    public ParticleSystem particle2;//**
+
+    public Animator bossAnimator;//**
 
     private void Start()
     {
@@ -26,6 +31,8 @@ public class BossLightTrigger : MonoBehaviour
             if (particle != null)
             {
                 particle.Stop();
+                particle2.Stop();//**
+                bossAnimator.SetBool("lightOn", false);//**
             }
 
             StartCoroutine(FadeOut());

@@ -13,14 +13,20 @@ public class BossMovement : MonoBehaviour
 
     private PlayerMovement playerMovement;
 
+    public float followSpeed = 5f; // Boss'un player'ý takip etme hýzý
+    public float verticalOffset = 0f; // Boss'un player'a göre dikey pozisyon ofseti
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        gameObject.SetActive(false);
     }
 
     void Update()
     {
+        FollowPlayerVertically();
+
         //Debug.Log(playerSpeed);
         rb.velocity = new Vector2(bossSpeed, rb.velocity.y);
 
@@ -40,10 +46,21 @@ public class BossMovement : MonoBehaviour
             }
         }
 
-       
-
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, raycastDistance);
         Debug.DrawRay(transform.position, Vector2.right * raycastDistance, Color.red);
+    }
+
+    private void FollowPlayerVertically()
+    {
+        // Player'ýn dikey pozisyonunu al
+        float targetY = player.transform.position.y + verticalOffset;
+        float currentY = rb.position.y;
+
+        // Dikey yönde hedefe doðru hýz ayarla
+        float newYVelocity = (targetY - currentY) * followSpeed;
+
+        // Rigidbody'nin dikey hýzýný güncelle
+        rb.velocity = new Vector2(rb.velocity.x, newYVelocity);
     }
 
     public void SetBossSpeed(float spd)

@@ -19,6 +19,7 @@ public class BossCameraTrigger : MonoBehaviour
     private PlayerMovement playerMovement;
     private Rigidbody2D playerRB;
     private bool isInBoss = false;
+    private bool canEnter = true;
 
     public BossMovement bossMovement;
 
@@ -36,7 +37,7 @@ public class BossCameraTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && canEnter)
         {
             virtualCamera.Follow = boss.transform;
             playerMovement.SetInLanes(true);
@@ -56,7 +57,7 @@ public class BossCameraTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && canEnter)
         {
             isInBoss = false;
             virtualCamera.Follow = player.transform;
@@ -70,6 +71,7 @@ public class BossCameraTrigger : MonoBehaviour
             //Debug.Log("OFF");
             //boss.SetActive(false);
             bossMovement.SetBossSpeed(0);
+            canEnter = false;
         }
     }
 
