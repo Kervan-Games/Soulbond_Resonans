@@ -18,8 +18,14 @@ public class BossCameraTrigger : MonoBehaviour
     private Vector3 originalOffset;
     private PlayerMovement playerMovement;
     private Rigidbody2D playerRB;
-    
+    private bool isInBoss = false;
 
+    public BossMovement bossMovement;
+
+    private void Update()
+    {
+        //Debug.Log(bossOffset);
+    }
     private void Start()
     {
         originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
@@ -44,6 +50,7 @@ public class BossCameraTrigger : MonoBehaviour
             {
                 umbrellaThrow.SetActive(false);
             }
+            isInBoss = true;
         }
     }
 
@@ -51,6 +58,7 @@ public class BossCameraTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            isInBoss = false;
             virtualCamera.Follow = player.transform;
             playerMovement.SetInLanes(false);
             playerRB.gravityScale = 2f;
@@ -59,7 +67,9 @@ public class BossCameraTrigger : MonoBehaviour
             StartCoroutine(SmoothOffset(playerOffset));
             umbrella.SetActive(false);
             playerMovement.SetCanUmbrellaShot(true);
-            Debug.Log("OFF");
+            //Debug.Log("OFF");
+            //boss.SetActive(false);
+            bossMovement.SetBossSpeed(0);
         }
     }
 
@@ -89,6 +99,11 @@ public class BossCameraTrigger : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        //virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = targetOffset;
+        while (isInBoss)
+        {
+            virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = targetOffset;
+            yield return null;
+        }
+        
     }
 }
