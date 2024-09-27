@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private float maxSpeed = 7.5f;
     public float jumpForce = 10f;
-    private float groundCheckRadius = 0.2f;
+    public float groundCheckRadius = 0.2f;
     private bool isGrounded;
 
     private Rigidbody2D rb;
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject umbrellaThrow;
     public GameObject umbrellaThrowVisual;
     private Collider2D umbrellaThrowCollider;
-    private bool isUsingUmbrella = false;
+    private bool isUsingUmbrellaAsThrow = false;
 
     private Animator animator;
 
@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!isGrounded && rb.velocity.y < -0.01f)
         {
-            if (canUmbrella && isUsingUmbrella == false)
+            if (canUmbrella && isUsingUmbrellaAsThrow == false)
             {
                 rb.gravityScale = 0.3f;
                 umbrella.SetActive(true);
@@ -310,13 +310,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 umbrellaThrowVisual.SetActive(true);
                 umbrellaThrowCollider.enabled = true;
-                isUsingUmbrella = true;
+                isUsingUmbrellaAsThrow = true;
             }
             else if (context.canceled)
             {
                 umbrellaThrowVisual.SetActive(false);
                 umbrellaThrowCollider.enabled = false;
-                isUsingUmbrella = false;
+                isUsingUmbrellaAsThrow = false;
             }
         }
     }
@@ -503,5 +503,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetIsInDialogue(bool inD)
     {
         isInDialogue = inD;
+    }
+
+    public bool GetCanUmbrella()
+    {
+        return canUmbrella;
     }
 }
