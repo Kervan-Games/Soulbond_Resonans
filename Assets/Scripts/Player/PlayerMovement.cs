@@ -313,15 +313,17 @@ public class PlayerMovement : MonoBehaviour
         {
             if (context.started)
             {
-                umbrellaThrowVisual.SetActive(true);
+                //umbrellaThrowVisual.SetActive(true);
                 umbrellaThrowCollider.enabled = true;
                 isUsingUmbrellaAsThrow = true;
+                umbrellaScript.SetIsThrowing(true);
             }
             else if (context.canceled)
             {
-                umbrellaThrowVisual.SetActive(false);
+                //umbrellaThrowVisual.SetActive(false);
                 umbrellaThrowCollider.enabled = false;
                 isUsingUmbrellaAsThrow = false;
+                umbrellaScript.SetIsThrowing(false);
             }
         }
     }

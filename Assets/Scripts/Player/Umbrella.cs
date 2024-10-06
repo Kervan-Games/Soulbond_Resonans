@@ -12,8 +12,8 @@ public class Umbrella : MonoBehaviour
     public Transform throwPosition;
     private float followSpeed = 6f;
 
-    private float floatAmplitude = 0.2f;  
-    private float floatFrequency = 2f;    
+    private float floatAmplitude = 0.03f;  
+    private float floatFrequency = 2.1f;    
     private float floatTimer = 0f;
 
     private bool isFlying = false;
@@ -60,7 +60,7 @@ public class Umbrella : MonoBehaviour
         }
         else if(isThrowing)
         {
-            //
+            Debug.Log("Throw");
         }
         else
         {
@@ -117,7 +117,7 @@ public class Umbrella : MonoBehaviour
         floatTimer += Time.fixedDeltaTime * floatFrequency;
         float floatOffset = Mathf.Sin(floatTimer) * floatAmplitude;
 
-        transform.position = new Vector3(transform.position.x, followPosition.position.y + floatOffset, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + floatOffset, transform.position.z);
     }
 
     private void Flying()
