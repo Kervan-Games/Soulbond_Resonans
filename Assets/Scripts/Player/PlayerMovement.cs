@@ -69,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isInDialogue = false;
 
+    public Umbrella umbrellaScript;
+
 
     void Start()
     {
@@ -214,18 +216,21 @@ public class PlayerMovement : MonoBehaviour
             if (canUmbrella && isUsingUmbrellaAsThrow == false)
             {
                 rb.gravityScale = 0.3f;
-                umbrella.SetActive(true);
+                //umbrella.SetActive(true);
+                umbrellaScript.SetIsFlying(true);
             }
             else
             {
                 rb.gravityScale = 2.0f;
-                umbrella.SetActive(false);
+                //umbrella.SetActive(false);
+                umbrellaScript.SetIsFlying(false);
             }
         }
         else 
         {
             rb.gravityScale = 2.0f;
-            umbrella.SetActive(false);
+            //umbrella.SetActive(false);
+            umbrellaScript.SetIsFlying(false);
         }
     }
 
