@@ -49,6 +49,8 @@ public class WalkerSpirit : MonoBehaviour
     public GameObject umbrella;
     private bool didTouch = false;
 
+    private PlayerHide playerHideScript;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -60,6 +62,7 @@ public class WalkerSpirit : MonoBehaviour
         playerHealth = player.GetComponent<PlayerHealth>();
         playerMovement = player.GetComponent<PlayerMovement>();
         currentPoint = pointB.transform;
+        playerHideScript = player.GetComponent<PlayerHide>();
 
         if (player != null)
         {
@@ -119,7 +122,7 @@ public class WalkerSpirit : MonoBehaviour
     void Update()//on patrol phase, now spirit can be shot even before chase. if it is not necessary, change it.
     {
         CalculateDistanceToPlayer();
-        if (canChase && inRange)
+        if (canChase && inRange && playerHideScript.GetIsHiding() == false)
         {
             MoveTowardsPlayer();
             RotateTowardsPlayer();
@@ -138,7 +141,7 @@ public class WalkerSpirit : MonoBehaviour
 
             if (distanceToPlayer < touchRange)
             {
-                if (canHit && canTouch)
+                if (canHit && canTouch && playerHideScript.GetIsHiding() == false)
                 {
                     TouchToPlayer();
                     canTouch = false;
