@@ -54,7 +54,8 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                Die();
+                if(playerMovement.GetIsDead() && playerMovement != null)
+                    Die();
             }
         }
         else if(!isHoldingSpirit && didThrowSpirit)
@@ -76,15 +77,12 @@ public class PlayerHealth : MonoBehaviour
         //else --->>> movespeed = original speed
     }
 
-    private void Die()
+    public void Die()
     {
-        playerMovement.SetIsDead(true);
         currentHealth = 0;
         healthBar.fillAmount = 0;
-        playerMovement.SetMoveSpeed(0.0f);
-        rb.velocity = Vector2.zero;
-        playerMovement.enabled = false;
-        enabled = false; 
+        enabled = false;// optional ?
+        playerMovement.enabled = false;// optional ?
     }
 
     public void TakeDamage(float damage)

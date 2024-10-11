@@ -94,12 +94,12 @@ public class Umbrella : MonoBehaviour
             spirit.ThrowSpirit();
         }
 
-        else if (collision.CompareTag("WalkerSpirit"))
+        /*else if (collision.CompareTag("WalkerSpirit"))
         {
             WalkerSpirit walkerSpirit = collision.GetComponent<WalkerSpirit>();
             walkerSpirit.SetUmbrella(true);
             walkerSpirit.ThrowSpirit();
-        }
+        }*/
     }
 
     private void FollowPlayer()

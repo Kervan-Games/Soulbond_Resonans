@@ -143,6 +143,7 @@ public class WalkerSpirit : MonoBehaviour
             {
                 if (canHit && canTouch && playerHideScript.GetIsHiding() == false)
                 {
+                    playerMovement.Die();
                     TouchToPlayer();
                     canTouch = false;
                     DisableTheDetectObject();

@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isInDialogue = false;
 
     public Umbrella umbrellaScript;
+    private PlayerHealth playerHealth;
 
 
     void Start()
@@ -78,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         singAreaCollider = singArea.GetComponent<Collider2D>();
         umbrellaThrowCollider = umbrellaThrow.GetComponent<Collider2D>();
+        playerHealth = GetComponent<PlayerHealth>();
         umbrella.SetActive(false);
         canUmbrella = false;
         isFacingRight = true;
@@ -515,5 +517,16 @@ public class PlayerMovement : MonoBehaviour
     public bool GetCanUmbrella()
     {
         return canUmbrella;
+    }
+
+    public bool GetIsDead() { return isDead; }
+
+    public void Die()
+    {
+        isDead = true;
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        animator.SetFloat("speed", 0f);// animator setbool isdead ekle -> ölüm animasyonu
+        playerHealth.Die();
+
     }
 }

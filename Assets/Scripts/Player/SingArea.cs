@@ -33,11 +33,11 @@ public class SingArea : MonoBehaviour
             spirit.SetSingPosition();
         }
 
-        else if (collision.CompareTag("WalkerSpirit"))
+        /*else if (collision.CompareTag("WalkerSpirit"))
         {
             WalkerSpirit walkerSpirit = collision.GetComponent<WalkerSpirit>();
             walkerSpirit.SetSingPosition();
-        }
+        }*/
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -50,14 +50,14 @@ public class SingArea : MonoBehaviour
                 spirit.SetUmbrellaThrow();
             }
         }
-        else if (collision.CompareTag("WalkerSpirit"))
+        /*else if (collision.CompareTag("WalkerSpirit"))
         {
             WalkerSpirit wspirit = collision.GetComponent<WalkerSpirit>();
             if (umbrella.activeSelf)
             {
                 wspirit.SetUmbrellaThrow();
             }
-        }
+        }*/
     }
 
     void RotateSlower(float rotationSpeed)
