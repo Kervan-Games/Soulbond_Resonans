@@ -15,6 +15,7 @@ TagManager:
   - StrongSpirit
   - Boss
   - UmbrellaHolder
+  - Weight
   layers:
   - Default
   - TransparentFX
