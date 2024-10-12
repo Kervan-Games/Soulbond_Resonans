@@ -340,7 +340,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void OnJumpPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && !isInDialogue)
+        if (!isDead && !isInDialogue && !isInLanes)
         {
             if (context.performed && isGrounded)
             {

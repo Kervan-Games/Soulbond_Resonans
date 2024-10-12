@@ -22,6 +22,7 @@ public class BossCameraTrigger : MonoBehaviour
     private bool canEnter = true;
 
     public BossMovement bossMovement;
+    public Umbrella umbrellaScript;
 
     private void Update()
     {
@@ -42,6 +43,7 @@ public class BossCameraTrigger : MonoBehaviour
             virtualCamera.Follow = boss.transform;
             playerMovement.SetInLanes(true);
             playerRB.gravityScale = 0f;
+            umbrellaScript.SetIsFlying(true);
 
             StartCoroutine(SmoothZoom(targetOrthoSize));
             StartCoroutine(SmoothOffset(bossOffset));
@@ -60,6 +62,7 @@ public class BossCameraTrigger : MonoBehaviour
         if (other.CompareTag("Player") && canEnter)
         {
             isInBoss = false;
+            umbrellaScript.SetIsFlying(false);
             virtualCamera.Follow = player.transform;
             playerMovement.SetInLanes(false);
             playerRB.gravityScale = 2f;

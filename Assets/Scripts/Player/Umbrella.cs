@@ -39,6 +39,7 @@ public class Umbrella : MonoBehaviour
     private float maxSpeedThrowFollow = 25f;
 
     private bool canSmoothThrowFollow = true;
+    
 
     private void Start()
     {
