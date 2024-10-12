@@ -72,6 +72,8 @@ public class PlayerMovement : MonoBehaviour
     public Umbrella umbrellaScript;
     private PlayerHealth playerHealth;
 
+    private bool inWind = false;
+
 
     void Start()
     {
@@ -213,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OpenUmbrella()
     {
-        if(!isGrounded && rb.velocity.y < -0.01f)
+        if(!isGrounded && rb.velocity.y < -0.01f && !inWind)
         {
             if (canUmbrella && isUsingUmbrellaAsThrow == false)
             {
@@ -227,6 +229,12 @@ public class PlayerMovement : MonoBehaviour
                 //umbrella.SetActive(false);
                 umbrellaScript.SetIsFlying(false);
             }
+        }
+        else if (inWind)
+        {
+            umbrellaScript.SetIsFlying(true);
+            rb.gravityScale = 2.0f;
+
         }
         else 
         {
@@ -528,5 +536,10 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("speed", 0f);// animator setbool isdead ekle -> ölüm animasyonu
         playerHealth.Die();
 
+    }
+
+    public void SetInWind(bool wind)
+    {
+        inWind = wind;
     }
 }

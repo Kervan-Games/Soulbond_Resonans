@@ -5,12 +5,15 @@ using UnityEngine;
 public class Wind : MonoBehaviour
 {
     public Vector2 windDirection = Vector2.right; 
-    public float windForce = 5f;
-    public GameObject umbrella;
+    public float windForce = 25f;
+    public GameObject windUmbrella;
     public PlayerMovement playerMovement;
     public Rigidbody2D playerRB;
     private bool inWind = false;
     private bool isFlying = false;
+    public Umbrella umbrellaScript;
+    private bool isWeightFlying = false;
+    private Rigidbody2D weightRB;
 
     private Coroutine windCoroutine; 
 
@@ -18,14 +21,15 @@ public class Wind : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (windCoroutine == null && playerMovement.GetCanUmbrella())
-            {
-                windCoroutine = StartCoroutine(ApplyWindForce(collision.GetComponent<Rigidbody2D>()));
-                isFlying = true;
-                umbrella.SetActive(true);
-                
-            }
+            isFlying = true;
             inWind = true;
+            umbrellaScript.SetIsFlying(true);
+            playerMovement.SetInWind(true);
+        }
+        else if (collision.CompareTag("Weight"))
+        {
+            weightRB = collision.GetComponent<Rigidbody2D>();
+            isWeightFlying = true; 
         }
     }
 
@@ -33,16 +37,40 @@ public class Wind : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (windCoroutine != null)
-            {
-                StopCoroutine(windCoroutine);
-                umbrella.SetActive(false); 
-                windCoroutine = null;
+           // if (windCoroutine != null)
+            //{
+               // StopCoroutine(windCoroutine);
+                windUmbrella.SetActive(false); 
+                //windCoroutine = null;
                 inWind = false;
                 isFlying = false;
-            }
+                umbrellaScript.SetIsFlying(false);
+                playerMovement.SetInWind(false);
+           // }
+        }
+        else if (collision.CompareTag("Weight"))
+        {
+            isWeightFlying = false;
+            weightRB = null;
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (inWind)
+        {
+            playerRB.AddForce(windDirection.normalized * windForce);    
+        }
+        if (isWeightFlying)
+        {
+            if (weightRB != null)
+                weightRB.AddForce(windDirection.normalized * windForce * 20f);
+            else
+                Debug.LogError("WeightRB is null!");
+        }
+    }
+
+
 
     private void Update()
     {
