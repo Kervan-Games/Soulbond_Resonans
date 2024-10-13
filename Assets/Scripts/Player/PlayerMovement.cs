@@ -74,9 +74,13 @@ public class PlayerMovement : MonoBehaviour
 
     private bool inWind = false;
 
-    private float flipSpeed = 20f; 
+    private float flipSpeed = 25f; 
     private float targetScaleX;
-    private bool isFlipping = false; 
+    private bool isFlipping = false;
+
+    public ParticleSystem runParticles;
+    public ParticleSystem jumpParticles;
+    private TrailRenderer flyTrail;
 
 
     void Start()
@@ -124,6 +128,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         targetScaleX = transform.localScale.x;
+        flyTrail = GetComponent<TrailRenderer>();
     }
 
     void Update()
@@ -198,6 +203,21 @@ public class PlayerMovement : MonoBehaviour
         currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
         rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
         animator.SetFloat("speed", Mathf.Abs(currentSpeed));
+        if(isGrounded && Mathf.Abs(currentSpeed) > 0.1f)
+        {
+            if (runParticles.isPlaying == false)
+            {
+                runParticles.Play();
+            }
+        }
+        else
+        {
+            if (runParticles.isPlaying)
+            {
+                runParticles.Stop();
+            }
+        }
+
     }
 
     private void GroundCheck()
@@ -228,18 +248,21 @@ public class PlayerMovement : MonoBehaviour
                 rb.gravityScale = 0.3f;
                 //umbrella.SetActive(true);
                 umbrellaScript.SetIsFlying(true);
+                flyTrail.emitting = true;
             }
             else
             {
                 rb.gravityScale = 2.0f;
                 //umbrella.SetActive(false);
                 umbrellaScript.SetIsFlying(false);
+                flyTrail.emitting = false;
             }
         }
         else if (inWind)
         {
             umbrellaScript.SetIsFlying(true);
             rb.gravityScale = 2.0f;
+            flyTrail.emitting = true;
 
         }
         else 
@@ -247,6 +270,7 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 2.0f;
             //umbrella.SetActive(false);
             umbrellaScript.SetIsFlying(false);
+            flyTrail.emitting = false;
         }
     }
 
@@ -363,6 +387,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isJumping", true);
                 animator.SetTrigger("jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                jumpParticles.Play();
             }
         }
         

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -20,6 +21,14 @@ public class PlayerHealth : MonoBehaviour
 
     public Image healthBar;
 
+    public ParticleSystem spiritHoldParticle;
+
+    public PostProcessVolume postProcessVolume;
+    private Vignette vignette;
+    private float initialVignette;
+    private float vignetteTarget = 0.8f;
+    private float vignetteVelocity = 0f;
+
     void Start()
     {
         isHoldingSpirit = false;
@@ -29,12 +38,21 @@ public class PlayerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         speedMultiplier = playerMovement.GetMoveSpeed() / maxHealth;
         jumpMultiplier = playerMovement.GetJumpForce() / maxHealth;
+
+        postProcessVolume.profile.TryGetSettings(out vignette);
+        initialVignette = vignette.intensity.value;
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateVignette();
     }
 
     void Update()
     {
         TakeDamageBySpiritHolding();
         HandleDie();
+        
         //Debug.Log(currentHealth);
         //** HEALTH REGEN IS NOT INCLUDED EXCEPT SPIRIT THROW, contact game designer for health regen mechanics.
     }
@@ -128,5 +146,25 @@ public class PlayerHealth : MonoBehaviour
     public void SetIsHoldingSpirit(bool isHolding)
     {
         isHoldingSpirit = isHolding;
+
+        if(isHolding == true)
+        {
+            spiritHoldParticle.Play();
+        }
+        else
+        {
+            spiritHoldParticle.Stop();
+        }
+    }
+
+    private void UpdateVignette()
+    {
+        float healthPercentage = currentHealth / maxHealth;
+
+        vignette.intensity.value = Mathf.Lerp(vignetteTarget, initialVignette, healthPercentage);
+
+        Color vignetteColor = vignette.color.value;
+        vignetteColor.r = Mathf.Lerp(0.15f, 0f, healthPercentage);
+        vignette.color.value = vignetteColor;
     }
 }
