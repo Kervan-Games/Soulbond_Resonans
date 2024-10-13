@@ -74,6 +74,10 @@ public class PlayerMovement : MonoBehaviour
 
     private bool inWind = false;
 
+    private float flipSpeed = 20f; 
+    private float targetScaleX;
+    private bool isFlipping = false; 
+
 
     void Start()
     {
@@ -118,6 +122,8 @@ public class PlayerMovement : MonoBehaviour
         {
             walkerSpirits[i] = walkerSpiritObjects[i].GetComponent<WalkerSpirit>();
         }
+
+        targetScaleX = transform.localScale.x;
     }
 
     void Update()
@@ -246,19 +252,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFlipping()
     {
-        if (moveInput.x > 0 && !isFacingRight)
+        if (moveInput.x > 0 && !isFacingRight && !isFlipping)
         {
             isFacingRight = true;
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1; 
-            transform.localScale = theScale;
+            targetScaleX = Mathf.Abs(transform.localScale.x);
+            isFlipping = true; 
         }
-        else if (moveInput.x < 0 && isFacingRight)
+        else if (moveInput.x < 0 && isFacingRight && !isFlipping)
         {
             isFacingRight = false;
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1; 
-            transform.localScale = theScale;
+            targetScaleX = -Mathf.Abs(transform.localScale.x); 
+            isFlipping = true; 
+        }
+
+        if (isFlipping)
+        {
+            Vector3 currentScale = transform.localScale;
+            currentScale.x = Mathf.MoveTowards(currentScale.x, targetScaleX, flipSpeed * Time.deltaTime);
+            transform.localScale = currentScale;
+
+            if (Mathf.Approximately(currentScale.x, targetScaleX))
+            {
+                isFlipping = false; 
+            }
         }
     }
 

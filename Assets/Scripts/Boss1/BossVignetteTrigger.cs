@@ -8,10 +8,13 @@ public class BossVignetteTrigger : MonoBehaviour
     public PostProcessVolume postProcessVolume;
     private Vignette vignette;
     public float fadeDuration = 2f;
+    private float initialVignette;
 
     private void Start()
     {
         postProcessVolume.profile.TryGetSettings(out vignette);
+        initialVignette = vignette.intensity.value;
+        //Debug.Log("vigntte: " + initialVignette);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,7 +22,7 @@ public class BossVignetteTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StopAllCoroutines();
-            StartCoroutine(ChangeVignetteIntensity(0f, 0.40f));
+            StartCoroutine(ChangeVignetteIntensity(initialVignette, 0.40f));
         }
     }
 
@@ -28,7 +31,7 @@ public class BossVignetteTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StopAllCoroutines();
-            StartCoroutine(ChangeVignetteIntensity(0.40f, 0f));
+            StartCoroutine(ChangeVignetteIntensity(0.40f, initialVignette));
         }
     }
 
