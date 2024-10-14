@@ -1,26 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.PostProcessing;
 
 public class BossVignetteTrigger : MonoBehaviour
 {
-    public Volume postProcessVolume;
+    public PostProcessVolume postProcessVolume;
     private Vignette vignette;
     public float fadeDuration = 2f;
     private float initialVignette;
 
     private void Start()
     {
-        if (postProcessVolume.profile.TryGet<Vignette>(out vignette))
-        {
-            initialVignette = vignette.intensity.value;
-        }
-        else
-        {
-            Debug.LogError("Vignette effect could not found!");
-        }
+        postProcessVolume.profile.TryGetSettings(out vignette);
+        initialVignette = vignette.intensity.value;
+        //Debug.Log("vigntte: " + initialVignette);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
