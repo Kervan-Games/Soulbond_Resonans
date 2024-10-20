@@ -7,7 +7,7 @@ public class BossLightOnTrigger : MonoBehaviour
     public GameObject darknessObject;
     private SpriteRenderer spriteRenderer;
     public float fadeDuration = 0.5f;
-    public ParticleSystem particleSystem;
+    public ParticleSystem particle1; 
 
     public ParticleSystem particle2;//**
 
@@ -24,9 +24,9 @@ public class BossLightOnTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (particleSystem != null)
+            if (particle1 != null)
             {
-                particleSystem.Play();
+                particle1.Play();
                 particle2.Play();//**
                 bossAnimator.SetBool("lightOn", true);//**
             }

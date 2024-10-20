@@ -29,7 +29,6 @@ public class Umbrella : MonoBehaviour
     public GameObject umbrellaOpened;
     public GameObject umbrellaClosed;
     public GameObject windUmbrella;
-    private bool isReachedFlyPosition = false;
 
     private float rotationSpeedZ = 5f; 
 
@@ -141,14 +140,12 @@ public class Umbrella : MonoBehaviour
             windUmbrella.SetActive(true);
             umbrellaClosed.SetActive(false);
             umbrellaOpened.SetActive(false);
-            isReachedFlyPosition = true;
         }
         else
         {
             /*windUmbrella.SetActive(false);
             umbrellaClosed.SetActive(true);
-            umbrellaOpened.SetActive(false);
-            isReachedFlyPosition = false;*/
+            umbrellaOpened.SetActive(false);*/
         }
     }
 

@@ -41,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canSing = true;
     private bool isSinging = false;
-    private float singCoolDown = 3f;
-    private float singDuration = 3f;
 
     public Image staminaBar;
     private float maxStamina = 100f;

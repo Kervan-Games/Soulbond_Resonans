@@ -10,7 +10,6 @@ public class Wind : MonoBehaviour
     public PlayerMovement playerMovement;
     public Rigidbody2D playerRB;
     private bool inWind = false;
-    private bool isFlying = false;
     public Umbrella umbrellaScript;
     private bool isWeightFlying = false;
     private Rigidbody2D weightRB;
@@ -21,7 +20,6 @@ public class Wind : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isFlying = true;
             inWind = true;
             umbrellaScript.SetIsFlying(true);
             playerMovement.SetInWind(true);
@@ -43,7 +41,6 @@ public class Wind : MonoBehaviour
                 windUmbrella.SetActive(false); 
                 //windCoroutine = null;
                 inWind = false;
-                isFlying = false;
                 umbrellaScript.SetIsFlying(false);
                 playerMovement.SetInWind(false);
            // }

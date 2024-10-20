@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -27,7 +28,6 @@ public class PlayerHealth : MonoBehaviour
     private Vignette vignette;
     private float initialVignette;
     private float vignetteTarget = 0.8f;
-    private float vignetteVelocity = 0f;
 
     void Start()
     {
@@ -101,6 +101,7 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = 0;
         enabled = false;// optional ?
         playerMovement.enabled = false;// optional ?
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void TakeDamage(float damage)
