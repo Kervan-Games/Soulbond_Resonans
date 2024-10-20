@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 moveInput;
     private Vector2 laneInput;
+    private Vector2 climbInput;
 
     private bool canUmbrella;
 
@@ -81,6 +82,10 @@ public class PlayerMovement : MonoBehaviour
     public ParticleSystem runParticles;
     public ParticleSystem jumpParticles;
     private TrailRenderer flyTrail;
+
+    private bool isClimbing;
+    private bool canClimb;
+    private bool jumpCancelled = false;
 
 
     void Start()
@@ -144,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
                     OpenUmbrella();
                     HandleFlipping();
                     UpdateStamina();
+                    Climb();
                 }
                 else if (isInDialogue)
                 {
@@ -241,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OpenUmbrella()
     {
-        if(!isGrounded && rb.velocity.y < -0.01f && !inWind)
+        if(!isGrounded && rb.velocity.y < -0.01f && !inWind && !isClimbing)
         {
             if (canUmbrella && isUsingUmbrellaAsThrow == false)
             {
@@ -264,6 +270,10 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 2.0f;
             flyTrail.emitting = true;
 
+        }
+        else if (isClimbing)
+        {
+            rb.gravityScale = 0f;
         }
         else 
         {
@@ -310,6 +320,17 @@ public class PlayerMovement : MonoBehaviour
             moveInput = context.ReadValue<Vector2>();
         }
             
+    }
+
+    public void OnClimbInput(InputAction.CallbackContext context)
+    {
+        if (!isDead)
+        {
+            climbInput = context.ReadValue<Vector2>();
+        }
+        if(context.canceled)
+            jumpCancelled = false;
+
     }
 
     public void OnLaneInput(InputAction.CallbackContext context)
@@ -388,6 +409,15 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetTrigger("jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 jumpParticles.Play();
+            }
+            else if (context.performed && isClimbing)
+            {
+                isClimbing = false;
+                animator.SetBool("isJumping", true);
+                animator.SetTrigger("jump");
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                jumpParticles.Play();
+                jumpCancelled = true;
             }
         }
         
@@ -583,4 +613,58 @@ public class PlayerMovement : MonoBehaviour
     {
         inWind = wind;
     }
+
+    private void Climb()
+    {
+        if (canClimb)
+        {
+            if (climbInput.y >= 0.1 && !jumpCancelled)
+            {
+                isClimbing = true;
+                rb.velocity = new Vector2(rb.velocity.x * 0.75f, 4f);
+            }
+            else if (climbInput.y <= -0.1 && !jumpCancelled)
+            {
+                isClimbing = true;
+                rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f);
+            }
+            else if(isClimbing && !isGrounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x * 0.75f, 0f);
+            }
+            else
+            {
+                isClimbing = false;
+            }
+        }
+        else
+        {
+            isClimbing = false;
+        }
+
+        if(climbInput.y == 0f && jumpCancelled == true)
+        {
+            jumpCancelled = false;
+        }
+
+        if(isClimbing && umbrellaScript.GetIsFlying() == true)
+        {
+            umbrellaScript.SetIsFlying(false);
+        }
+        
+        
+    }
+    
+    public void SetIsClimbing(bool climb)
+    {
+        isClimbing = climb;
+    }
+    public bool GetIsClimbing() { return isClimbing; }
+
+
+    public void SetCanClimb(bool Climb)
+    {
+        canClimb = Climb;
+    }
+    public bool GetCanClimb() { return canClimb; }
 }

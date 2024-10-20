@@ -236,6 +236,11 @@ public class Umbrella : MonoBehaviour
         isFlying = fly;
     }
 
+    public bool GetIsFlying()
+    {
+        return isFlying;
+    }
+
     public void SetIsThrowing(bool throwing)
     {
         isThrowing = throwing;
