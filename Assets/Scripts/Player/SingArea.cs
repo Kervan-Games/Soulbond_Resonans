@@ -7,6 +7,7 @@ public class SingArea : MonoBehaviour
     private float rotationSpeed = 5f;
     private Collider2D singCollider;
     public GameObject umbrella;
+    public ParticleSystem singParticles;
 
     private void Start()
     {
@@ -18,10 +19,23 @@ public class SingArea : MonoBehaviour
         if(singCollider.enabled)
         {
             RotateSlower(rotationSpeed);
+            if(singParticles.isPlaying == false)
+            {
+                singParticles.Play();
+            } 
         }
         else
         {
             RotateFaster();//Add cooldown after cancelling song
+            if(singParticles.isPlaying == true)
+            {
+                singParticles.Stop();
+                var emission = singParticles.emission;
+                emission.rateOverTime = 100f;
+
+                var mainModule = singParticles.main;
+                mainModule.simulationSpeed = 1f;
+            }
         }
     }
 
@@ -31,6 +45,11 @@ public class SingArea : MonoBehaviour
         {
             Spirit spirit = collision.GetComponent<Spirit>();
             spirit.SetSingPosition();
+            var emission = singParticles.emission;
+            emission.rateOverTime = 400f;
+
+            var mainModule = singParticles.main;
+            mainModule.simulationSpeed = 1.25f;
         }
 
         /*else if (collision.CompareTag("WalkerSpirit"))

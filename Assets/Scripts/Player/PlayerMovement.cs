@@ -427,7 +427,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (context.started && !isReloading)
             {
-                singAreaVisual.SetActive(true);
+                //singAreaVisual.SetActive(true);
                 singAreaCollider.enabled = true;
                 isSinging = true;
             }
