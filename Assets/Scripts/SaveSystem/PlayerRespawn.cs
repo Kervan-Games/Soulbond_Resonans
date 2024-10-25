@@ -21,7 +21,7 @@ public class PlayerRespawn : MonoBehaviour
         }
         else
         {
-            Debug.Log("No checkpoint, spawning default.");
+            //Debug.Log("No checkpoint, spawning default.");
         }
     }
 
