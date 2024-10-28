@@ -51,6 +51,8 @@ public class WalkerSpirit : MonoBehaviour
 
     private PlayerHide playerHideScript;
 
+    private Animator _animator;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -63,6 +65,7 @@ public class WalkerSpirit : MonoBehaviour
         playerMovement = player.GetComponent<PlayerMovement>();
         currentPoint = pointB.transform;
         playerHideScript = player.GetComponent<PlayerHide>();
+        _animator = GetComponent<Animator>();
 
         if (player != null)
         {
@@ -126,12 +129,14 @@ public class WalkerSpirit : MonoBehaviour
         {
             MoveTowardsPlayer();
             RotateTowardsPlayer();
+            _animator.SetBool("isChasing", true);
         }
         else if(!inRange && canPatrol)
         {
             if (!didShoot && !inSingArea)
             {
                 Patrol();
+                _animator.SetBool("isChasing", false);
             }
         }
 
@@ -353,14 +358,27 @@ public class WalkerSpirit : MonoBehaviour
     {
         if (canPatrol)
         {
+            //transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+
+            float currentAngle = transform.rotation.eulerAngles.z;
+            if (currentAngle != 0f)
+            {
+                float targetAngle = 0f;
+
+                float smoothedAngle = Mathf.LerpAngle(currentAngle, targetAngle, 3f * Time.deltaTime);
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, smoothedAngle));
+            }
+
             Vector2 point = currentPoint.position - transform.position;
             if (currentPoint == pointB.transform)
             {
                 rb.velocity = new Vector2(patrolSpeed, 0f);
+                transform.localScale = new Vector3(1f, 1f, 1f);
             }
             else
             {
                 rb.velocity = new Vector2(-patrolSpeed, 0f);
+                transform.localScale = new Vector3(-1f, 1f, 1f);
             }
 
             if (isWalkingA && !isWalkingB)
@@ -372,15 +390,14 @@ public class WalkerSpirit : MonoBehaviour
                 currentPoint = pointB.transform;
             }
 
-            /*float angle = Mathf.Atan2(point.y, point.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));*/
-
+            /*
             float targetAngle = Mathf.Atan2(point.y, point.x) * Mathf.Rad2Deg;
             float currentAngle = transform.rotation.eulerAngles.z;
 
-            // Açýlarý yumuþak bir þekilde deðiþtir
             float smoothedAngle = Mathf.LerpAngle(currentAngle, targetAngle, 3f * Time.deltaTime);
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, smoothedAngle));
+            */
+
         }
         else
         {
@@ -394,14 +411,14 @@ public class WalkerSpirit : MonoBehaviour
         if (canHit)
         {
             DisableTheDetectObject();
-            transform.SetParent(spiritHolderTransform);
+            /*transform.SetParent(spiritHolderTransform);
             transform.localPosition = Vector3.zero;
-            transform.rotation = Quaternion.identity;
+            transform.rotation = Quaternion.identity;*/
             rb.isKinematic = true;
             canChase = false;
             canHit = false;
             canPatrol = false;
-            playerHealth.SetIsHoldingSpirit(true);
+            //playerHealth.SetIsHoldingSpirit(true);
             didTouch = true;
             isTouching = true;
         }
