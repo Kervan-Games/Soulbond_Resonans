@@ -8,7 +8,7 @@ public class Mimic : MonoBehaviour
     private bool isRunning = false;
     private bool isStunned = false;
 
-    private float chaseSpeed = 7.5f;
+    private float chaseSpeed = 8f;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -22,9 +22,9 @@ public class Mimic : MonoBehaviour
     private bool didHit = false;
     private bool isPassive = false;
 
-      // ***************** //
-     // ADD SPIRIT THWROW //
-    // ***************** //
+    public GameObject boxVisual;
+    public GameObject vision;
+    public ParticleSystem passiveParticle;
 
     private void Start()
     {
@@ -74,6 +74,7 @@ public class Mimic : MonoBehaviour
 
     private void GetStunned()
     {
+        rb.velocity = Vector3.zero;
         isRunning = false;
         isStunned = true;
         rb.isKinematic = true;
@@ -92,6 +93,10 @@ public class Mimic : MonoBehaviour
             {
                 collision.gameObject.GetComponent<PlayerMovement>().Die();
             }
+        }
+        else if (collision.CompareTag("StrongSpirit"))
+        {
+            didHit = true;
         }
     }
 
@@ -113,18 +118,34 @@ public class Mimic : MonoBehaviour
 
     private void CancelStun()
     {
-        isStunned = false;
-        Debug.Log("Active again!");
-        _collider.isTrigger = true;
-        rb.isKinematic = false;
+        if (!didHit)
+        {
+            isStunned = false;
+            Debug.Log("Active again!");
+            _collider.isTrigger = true;
+            rb.isKinematic = false;
+        }
     }
 
     private void BecomePassive()
     {
+        rb.velocity = Vector3.zero;
         isRunning = false;
         isStunned = true;
-        rb.isKinematic = true;
+
+        //rb.isKinematic = true;    
+
+        if(rb.isKinematic == true)
+        {
+            rb.isKinematic = false;
+        }
+
+
+        rb.gravityScale = 1f;
         _collider.isTrigger = false;
         Debug.Log("Passive!");
+        boxVisual.SetActive(true);
+        vision.SetActive(false);
+        passiveParticle.Play();
     }
 }
