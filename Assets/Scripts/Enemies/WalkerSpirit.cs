@@ -244,6 +244,11 @@ public class WalkerSpirit : MonoBehaviour
         Vector2 direction = playerTransform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
+        if (transform.localScale.x < 0)
+        {
+            angle += 180f;
+        }
+
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
