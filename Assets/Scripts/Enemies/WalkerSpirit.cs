@@ -148,7 +148,7 @@ public class WalkerSpirit : MonoBehaviour
             {
                 if (canHit && canTouch && playerHideScript.GetIsHiding() == false)
                 {
-                    playerMovement.Die();
+                    playerMovement.SetAnimatorIsDeadTrue();
                     TouchToPlayer();
                     canTouch = false;
                     DisableTheDetectObject();
@@ -180,7 +180,7 @@ public class WalkerSpirit : MonoBehaviour
                 playerHealth.SetDidThrowSpirit(true);
                 //didUmbrella = false;
             }
-            else if (rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
+            else if (rb != null && rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction after hold
             {
                 DisableTheDetectObject();
                 ThrowSpiritRandomDirection();
@@ -193,7 +193,7 @@ public class WalkerSpirit : MonoBehaviour
                 playerHealth.SetDidThrowSpirit(true);
             }
 
-            else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
+            else if (rb != null && !rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
             {
                 if (canSing)
                 {

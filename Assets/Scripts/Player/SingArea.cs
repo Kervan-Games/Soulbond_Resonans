@@ -21,7 +21,7 @@ public class SingArea : MonoBehaviour
             RotateSlower(rotationSpeed);
             if(singParticles.isPlaying == false)
             {
-                singParticles.Play();
+                //singParticles.Play();
             } 
         }
         else
@@ -29,7 +29,7 @@ public class SingArea : MonoBehaviour
             RotateFaster();//Add cooldown after cancelling song
             if(singParticles.isPlaying == true)
             {
-                singParticles.Stop();
+                //singParticles.Stop();
                 var emission = singParticles.emission;
                 emission.rateOverTime = 100f;
 

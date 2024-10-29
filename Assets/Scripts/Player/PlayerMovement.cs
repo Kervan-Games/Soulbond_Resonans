@@ -85,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
     private bool canClimb;
     private bool jumpCancelled = false;
 
+    private GameObject rope;
+
 
     void Start()
     {
@@ -142,7 +144,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (!isInDialogue)
                 {
-                    Move();
+                    if (!isClimbing)
+                        Move();
+                    else
+                    {
+                        currentSpeed = 0;
+                        rb.velocity = new Vector2(0f, rb.velocity.y); // here is not necessary 
+                    }
                     GroundCheck();
                     OpenUmbrella();
                     HandleFlipping();
@@ -205,6 +213,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float targetSpeed = moveInput.x * maxSpeed;
         currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
+
         rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
         animator.SetFloat("speed", Mathf.Abs(currentSpeed));
         if(isGrounded && Mathf.Abs(currentSpeed) > 0.1f)
@@ -284,13 +293,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFlipping()
     {
-        if (moveInput.x > 0 && !isFacingRight && !isFlipping)
+        if (moveInput.x > 0 && !isFacingRight && !isFlipping && !isClimbing)
         {
             isFacingRight = true;
             targetScaleX = Mathf.Abs(transform.localScale.x);
             isFlipping = true; 
         }
-        else if (moveInput.x < 0 && isFacingRight && !isFlipping)
+        else if (moveInput.x < 0 && isFacingRight && !isFlipping && !isClimbing)
         {
             isFacingRight = false;
             targetScaleX = -Mathf.Abs(transform.localScale.x); 
@@ -427,7 +436,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (context.started && !isReloading)
             {
-                //singAreaVisual.SetActive(true);
+                singAreaVisual.SetActive(true);
                 singAreaCollider.enabled = true;
                 isSinging = true;
             }
@@ -620,11 +629,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 isClimbing = true;
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, 4f);
+                if(isFacingRight)
+                    transform.position = new Vector3(rope.transform.position.x - 0.75f, transform.position.y, transform.position.z);
+                else
+                    transform.position = new Vector3(rope.transform.position.x + 0.75f, transform.position.y, transform.position.z);
             }
             else if (climbInput.y <= -0.1 && !jumpCancelled)
             {
                 isClimbing = true;
-                rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f);
+                rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f); 
             }
             else if(isClimbing && !isGrounded)
             {
@@ -665,4 +678,17 @@ public class PlayerMovement : MonoBehaviour
         canClimb = Climb;
     }
     public bool GetCanClimb() { return canClimb; }
+
+    public void SetAnimatorIsDeadTrue()
+    {
+        isDead = true;
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        animator.SetFloat("speed", 0f);
+        animator.SetBool("isDead", true);
+    }
+
+    public void SetRope(GameObject _rope)
+    {
+        rope = _rope;
+    }
 }

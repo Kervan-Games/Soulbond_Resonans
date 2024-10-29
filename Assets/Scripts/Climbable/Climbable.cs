@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Climbable : MonoBehaviour
 {
+    public GameObject theRope;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerMovement>().SetCanClimb(true);
+            PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
+            playerMovement.SetCanClimb(true);
+            playerMovement.SetRope(theRope);
         }
     }
 
@@ -16,7 +19,8 @@ public class Climbable : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerMovement>().SetCanClimb(false);
+            PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
+            playerMovement.SetCanClimb(false);
         }
     }
 }
