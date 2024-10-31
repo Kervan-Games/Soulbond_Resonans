@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    public Vector2 windDirection = Vector2.right; 
+    private Vector2 windDirection;
     public float windForce = 25f;
+    public float horizontalForce = 1f;
     public GameObject windUmbrella;
     public PlayerMovement playerMovement;
     public Rigidbody2D playerRB;
@@ -14,7 +15,12 @@ public class Wind : MonoBehaviour
     private bool isWeightFlying = false;
     private Rigidbody2D weightRB;
 
-    private Coroutine windCoroutine; 
+    private Coroutine windCoroutine;
+
+    private void Start()
+    {
+        windDirection = transform.up;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -56,7 +62,8 @@ public class Wind : MonoBehaviour
     {
         if (inWind)
         {
-            playerRB.AddForce(windDirection.normalized * windForce);    
+            Vector2 windForceVector = windDirection.normalized * windForce;
+            playerRB.AddForce(new Vector2(windForceVector.x * horizontalForce, windForceVector.y));
         }
         if (isWeightFlying)
         {
@@ -87,6 +94,6 @@ public class Wind : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)windDirection.normalized * 2f); 
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)windDirection.normalized * 5f); 
     }
 }

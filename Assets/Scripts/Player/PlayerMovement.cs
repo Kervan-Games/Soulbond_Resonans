@@ -274,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
         else if (inWind)
         {
             umbrellaScript.SetIsFlying(true);
-            rb.gravityScale = 2.0f;
+            rb.gravityScale = 0f;
             flyTrail.emitting = true;
 
         }
