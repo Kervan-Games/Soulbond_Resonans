@@ -629,7 +629,18 @@ public class PlayerMovement : MonoBehaviour
             {
                 isClimbing = true;
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, 4f);
-                if(isFacingRight)
+                animator.SetBool("isClimbing", true);
+
+                if (rb.velocity.y > 0)
+                {
+                    animator.SetFloat("climbSpeed", 4f);
+                }
+                else
+                {
+                    animator.SetFloat("climbSpeed", 0f);
+                }
+
+                if (isFacingRight)
                     transform.position = new Vector3(rope.transform.position.x - 0.75f, transform.position.y, transform.position.z);
                 else
                     transform.position = new Vector3(rope.transform.position.x + 0.75f, transform.position.y, transform.position.z);
@@ -637,20 +648,35 @@ public class PlayerMovement : MonoBehaviour
             else if (climbInput.y <= -0.1 && !jumpCancelled)
             {
                 isClimbing = true;
-                rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f); 
+                rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f);
+                animator.SetBool("isClimbing", true);
+                if(rb.velocity.y < 0)
+                {
+                    animator.SetFloat("climbSpeed", -4f);
+                }
+                else
+                {
+                    animator.SetFloat("climbSpeed", 0f);
+                }
+                
             }
             else if(isClimbing && !isGrounded)
             {
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, 0f);
+                animator.SetBool("isClimbing", true);
+                animator.SetFloat("climbSpeed", 0f);
             }
             else
             {
                 isClimbing = false;
+                animator.SetBool("isClimbing", false);
+                animator.SetFloat("climbSpeed", 0f);
             }
         }
         else
         {
             isClimbing = false;
+            animator.SetBool("isClimbing", false);
         }
 
         if(climbInput.y == 0f && jumpCancelled == true)
