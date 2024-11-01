@@ -103,6 +103,13 @@ public class PlayerHealth : MonoBehaviour
         playerMovement.enabled = false;// optional ?
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    public void DieVisual()
+    {
+        currentHealth = 0;
+        healthBar.fillAmount = 0;
+        enabled = false;// optional ?
+        playerMovement.enabled = false;// optional ?
+    }
 
     public void TakeDamage(float damage)
     {

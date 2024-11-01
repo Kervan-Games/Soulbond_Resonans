@@ -607,6 +607,12 @@ public class PlayerMovement : MonoBehaviour
 
     public bool GetIsDead() { return isDead; }
 
+    public void DieVisual()
+    {
+
+        playerHealth.DieVisual();
+    }
+
     public void Die()
     {
         isDead = true;
@@ -631,6 +637,11 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, 4f);
                 animator.SetBool("isClimbing", true);
 
+                if (runParticles.isPlaying)
+                {
+                    runParticles.Stop();
+                }
+
                 if (rb.velocity.y > 0)
                 {
                     animator.SetFloat("climbSpeed", 4f);
@@ -650,7 +661,13 @@ public class PlayerMovement : MonoBehaviour
                 isClimbing = true;
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, -4f);
                 animator.SetBool("isClimbing", true);
-                if(rb.velocity.y < 0)
+
+                if (runParticles.isPlaying)
+                {
+                    runParticles.Stop();
+                }
+
+                if (rb.velocity.y < 0)
                 {
                     animator.SetFloat("climbSpeed", -4f);
                 }
