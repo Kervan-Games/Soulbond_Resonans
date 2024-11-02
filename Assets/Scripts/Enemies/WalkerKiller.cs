@@ -8,7 +8,7 @@ public class WalkerKiller : MonoBehaviour
     {
         if (collision.CompareTag("WalkerSpirit"))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<WalkerSpirit>().SetDidHit(true);
             Destroy(gameObject);
         }
     }

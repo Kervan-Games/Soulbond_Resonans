@@ -53,6 +53,8 @@ public class WalkerSpirit : MonoBehaviour
 
     private Animator _animator;
 
+    private bool didHit = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -120,18 +122,19 @@ public class WalkerSpirit : MonoBehaviour
         closeToPlayer = false;
         inSingArea = false;//********
         canUmbrella = false;
+
     }
 
     void Update()//on patrol phase, now spirit can be shot even before chase. if it is not necessary, change it.
     {
         CalculateDistanceToPlayer();
-        if (canChase && inRange && playerHideScript.GetIsHiding() == false)
+        if (!didHit && canChase && inRange && playerHideScript.GetIsHiding() == false)
         {
             MoveTowardsPlayer();
             RotateTowardsPlayer();
             _animator.SetBool("isChasing", true);
         }
-        else if(!inRange && canPatrol)
+        else if(!inRange && canPatrol && !didHit)
         {
             if (!didShoot && !inSingArea)
             {
@@ -154,6 +157,13 @@ public class WalkerSpirit : MonoBehaviour
                     DisableTheDetectObject();
                 }
             }
+        }
+
+        if (didHit)
+        {
+            Patrol();
+            _animator.SetBool("isChasing", false);
+            detectArea.SetActive(false);
         }
 
         /*if(detectArea.activeSelf == true && canPatrol == false)
@@ -504,5 +514,10 @@ public class WalkerSpirit : MonoBehaviour
     public bool GetIsTouching()
     {
         return isTouching;
+    }
+
+    public void SetDidHit(bool hit)
+    {
+        didHit = hit;
     }
 }
