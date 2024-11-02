@@ -94,7 +94,7 @@ public class Mimic : MonoBehaviour
                 collision.gameObject.GetComponent<PlayerMovement>().Die();
             }
         }
-        else if (collision.CompareTag("StrongSpirit"))
+        else if (collision.CompareTag("StrongSpirit") || collision.CompareTag("Spirit"))
         {
             didHit = true;
         }

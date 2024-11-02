@@ -10,6 +10,8 @@ public class Eye : MonoBehaviour
     public GameObject vision;
     private bool canBlink = true;
 
+    public SpriteRenderer visionSpriteRenderer;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -44,6 +46,20 @@ public class Eye : MonoBehaviour
     public void StopCoroutineBlink()
     {
         canBlink = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("StrongSpirit") || collision.CompareTag("Spirit"))
+        {
+            canBlink = false;
+            visionSpriteRenderer.color = Color.green;
+            Color visionColor = visionSpriteRenderer.color;
+            visionColor.a = 0.5f;
+            visionSpriteRenderer.color = visionColor;
+            animator.SetBool("isClosed", true);
+
+        }
     }
 
 }

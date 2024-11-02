@@ -17,6 +17,9 @@ public class EyeVision : MonoBehaviour
         {
             eye.StopCoroutineBlink();
             spriteRenderer_.color = Color.red;
+            Color visionColor = spriteRenderer_.color;
+            visionColor.a = 0.55f;
+            spriteRenderer_.color = visionColor;
             collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
         }
     }
