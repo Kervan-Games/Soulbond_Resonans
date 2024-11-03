@@ -46,7 +46,7 @@ public class WalkerSpirit : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private bool canUmbrella;
-    public GameObject umbrella;
+    private GameObject umbrella;
     private bool didTouch = false;
 
     private PlayerHide playerHideScript;
@@ -68,6 +68,7 @@ public class WalkerSpirit : MonoBehaviour
         currentPoint = pointB.transform;
         playerHideScript = player.GetComponent<PlayerHide>();
         _animator = GetComponent<Animator>();
+        umbrella = GameObject.FindGameObjectWithTag("Umbrella");
 
         if (player != null)
         {
@@ -106,6 +107,10 @@ public class WalkerSpirit : MonoBehaviour
             Debug.LogError("SingArea is NULL!");
         }
         //*******
+        if (umbrella == null)
+        {
+            Debug.LogError("Umbrella is NULL!");
+        }
 
         canChase = true;
         canHit = true;

@@ -16,6 +16,8 @@ TagManager:
   - Boss
   - UmbrellaHolder
   - Weight
+  - SpiritBox
+  - Umbrella
   layers:
   - Default
   - TransparentFX

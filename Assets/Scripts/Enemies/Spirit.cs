@@ -32,10 +32,11 @@ public class Spirit : MonoBehaviour
     private PlayerMovement playerMovement;
 
     private bool canUmbrella;
-    public GameObject umbrella;
+    private GameObject umbrella;
 
     private float touchRange = 1f;
     private bool canTouch = true;
+
 
     void Start()
     {
@@ -47,6 +48,9 @@ public class Spirit : MonoBehaviour
         playerSpiritThrow = GameObject.FindGameObjectWithTag("SpiritThrower").GetComponent<PlayerSpiritThrow>();
         playerHealth = player.GetComponent<PlayerHealth>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        umbrella = GameObject.FindGameObjectWithTag("Umbrella");
+
+
 
         if (player != null)
         {
@@ -85,6 +89,11 @@ public class Spirit : MonoBehaviour
             Debug.LogError("SingArea is NULL!");
         }
         //*******
+        if (umbrella == null)
+        {
+            Debug.LogError("Umbrella is NULL!");
+        }
+        
 
         canChase = true;
         canHit = true;

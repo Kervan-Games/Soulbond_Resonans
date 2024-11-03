@@ -87,6 +87,10 @@ public class PlayerMovement : MonoBehaviour
 
     private GameObject rope;
 
+    private GameObject[] spiritObjects;
+    private GameObject[] strongSpiritObjects;  
+    private GameObject[] walkerSpiritObjects;
+
 
     void Start()
     {
@@ -108,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
         currentStamina = maxStamina;
 
-        GameObject[] spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
+        spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
         spirits = new Spirit[spiritObjects.Length];
         for (int i = 0; i < spiritObjects.Length; i++)
@@ -116,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
             spirits[i] = spiritObjects[i].GetComponent<Spirit>();
         }
 
-        GameObject[] strongSpiritObjects = GameObject.FindGameObjectsWithTag("StrongSpirit");
+        strongSpiritObjects = GameObject.FindGameObjectsWithTag("StrongSpirit");
 
         strongSpirits = new Spirit[strongSpiritObjects.Length];
         for (int i = 0; i < strongSpiritObjects.Length; i++)
@@ -124,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
             strongSpirits[i] = strongSpiritObjects[i].GetComponent<Spirit>();
         }
 
-        GameObject[] walkerSpiritObjects = GameObject.FindGameObjectsWithTag("WalkerSpirit");
+        walkerSpiritObjects = GameObject.FindGameObjectsWithTag("WalkerSpirit");
 
         walkerSpirits = new WalkerSpirit[walkerSpiritObjects.Length];
         for (int i = 0; i < walkerSpiritObjects.Length; i++)
@@ -733,5 +737,32 @@ public class PlayerMovement : MonoBehaviour
     public void SetRope(GameObject _rope)
     {
         rope = _rope;
+    }
+
+    public void UpdateSpiritAmounts()
+    {
+        spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
+
+        spirits = new Spirit[spiritObjects.Length];
+        for (int i = 0; i < spiritObjects.Length; i++)
+        {
+            spirits[i] = spiritObjects[i].GetComponent<Spirit>();
+        }
+
+        strongSpiritObjects = GameObject.FindGameObjectsWithTag("StrongSpirit");
+
+        strongSpirits = new Spirit[strongSpiritObjects.Length];
+        for (int i = 0; i < strongSpiritObjects.Length; i++)
+        {
+            strongSpirits[i] = strongSpiritObjects[i].GetComponent<Spirit>();
+        }
+
+        walkerSpiritObjects = GameObject.FindGameObjectsWithTag("WalkerSpirit");
+
+        walkerSpirits = new WalkerSpirit[walkerSpiritObjects.Length];
+        for (int i = 0; i < walkerSpiritObjects.Length; i++)
+        {
+            walkerSpirits[i] = walkerSpiritObjects[i].GetComponent<WalkerSpirit>();
+        }
     }
 }

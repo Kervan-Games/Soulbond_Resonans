@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "SpiritBoxInteraction",
+                    "type": "Button",
+                    "id": "899f6afc-1b31-4977-acb8-1a6329ca4a50",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -292,6 +301,17 @@
                     "action": "Climb",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "08532551-5af6-4da3-8130-dad4baeca7e8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpiritBoxInteraction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
