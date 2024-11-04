@@ -1,15 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class EyeVision : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer_;
     public Eye eye;
+    private bool hasVisual = false;
 
     private void Start()
     {
         spriteRenderer_ = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (hasVisual)
+        {
+            eye.MoveTowardsPlayer();
+            eye.RotateTowardsPlayer();
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,7 +31,16 @@ public class EyeVision : MonoBehaviour
             Color visionColor = spriteRenderer_.color;
             visionColor.a = 0.55f;
             spriteRenderer_.color = visionColor;
-            collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
+            hasVisual = true;
+            eye.AnimatorSetChaseTrigger();
+
+            //eye.MoveTowardsPlayer();
+            //eye.RotateTowardsPlayer();
+            //collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
         }
     }
+    public bool GetHasVisual() { return hasVisual; }
+
+
+    
 }

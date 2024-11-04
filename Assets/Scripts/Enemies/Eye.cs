@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class Eye : MonoBehaviour
@@ -11,9 +12,13 @@ public class Eye : MonoBehaviour
     private bool canBlink = true;
 
     public SpriteRenderer visionSpriteRenderer;
+    private GameObject player;
+    private float moveSpeed = 10f;
+    private bool canChase = true;
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         StartCoroutine(ToggleEyeState());
     }
@@ -60,6 +65,41 @@ public class Eye : MonoBehaviour
             animator.SetBool("isClosed", true);
 
         }
+        else if (collision.CompareTag("Player") && collision != null)
+        {
+            collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
+            canChase = false;
+        }
+    }
+
+    public void MoveTowardsPlayer()
+    {
+        if (canChase)
+        {
+            Vector2 direction = (player.transform.position - transform.position).normalized;
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+        }
+    }
+
+    public void RotateTowardsPlayer()
+    {
+        if (canChase)
+        {
+            Vector2 direction = player.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            if (transform.localScale.x < 0)
+            {
+                angle += 180f;
+            }
+
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+    }
+
+    public void AnimatorSetChaseTrigger()
+    {
+        animator.SetTrigger("chase");
     }
 
 }
