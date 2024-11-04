@@ -15,7 +15,7 @@ public class SpiritBoxInteraction : MonoBehaviour
         {
             if(box != null)
             {
-                
+                box.StartRising();
             }
             else
             {

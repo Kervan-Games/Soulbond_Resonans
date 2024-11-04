@@ -15,6 +15,8 @@ public class SpiritBox : MonoBehaviour
     public GameObject Spirit;
     public ParticleSystem SpawnParticle;
 
+    private bool canRise = true;
+
     private PlayerMovement playerMovement;
     private void Start()
     {
@@ -32,17 +34,16 @@ public class SpiritBox : MonoBehaviour
                 ResetRising();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            StartRising();
-        }
     }
 
-    private void StartRising()
+    public void StartRising()
     {
-        SpiritVisual.transform.position = InitialLocation.position;
-        isRising = true;
+        if (canRise)
+        {
+            SpiritVisual.transform.position = InitialLocation.position;
+            isRising = true;
+            canRise = false;
+        }
     }
 
     private void ResetRising()
@@ -57,5 +58,6 @@ public class SpiritBox : MonoBehaviour
         Instantiate(Spirit, TargetLocation.position, Quaternion.identity);
         SpiritVisual.transform.position = InitialLocation.position;
         playerMovement.UpdateSpiritAmounts();
+        canRise = true;
     }
 }

@@ -57955,6 +57955,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mimic
       objectReference: {fileID: 0}
+    - target: {fileID: 2068199176389865902, guid: 72681f7b1f790cc4dbc8a0ca52400301, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72681f7b1f790cc4dbc8a0ca52400301, type: 3}
 --- !u!4 &2075226779246017725 stripped
