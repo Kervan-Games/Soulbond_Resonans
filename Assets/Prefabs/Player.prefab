@@ -25788,6 +25788,7 @@ MonoBehaviour:
   animator: {fileID: 2535139406167284236}
   rb: {fileID: 2535139407295901035}
   maxSpeed: 7.5
+  playerMovement: {fileID: 2535139407295901033}
 --- !u!96 &1128626034
 TrailRenderer:
   serializedVersion: 2

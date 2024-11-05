@@ -5,7 +5,12 @@ using UnityEngine;
 public class JumpPad : MonoBehaviour
 {
     public float bounce = 12f;
-    public Rigidbody2D playerRB;
+    private Rigidbody2D playerRB;
+
+    private void Start()
+    {
+        playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
