@@ -14,7 +14,7 @@ public class EyeVision : MonoBehaviour
         spriteRenderer_ = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (hasVisual)
         {

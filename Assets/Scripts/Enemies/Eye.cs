@@ -13,15 +13,19 @@ public class Eye : MonoBehaviour
 
     public SpriteRenderer visionSpriteRenderer;
     private GameObject player;
-    private float moveSpeed = 10f;
+    public float moveSpeed = 10f;
     private bool canChase = true;
+
+    private PlayerHide playerHide;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
+        playerHide = player.GetComponent<PlayerHide>();
         StartCoroutine(ToggleEyeState());
     }
+
 
     private IEnumerator ToggleEyeState()
     {
@@ -74,16 +78,21 @@ public class Eye : MonoBehaviour
 
     public void MoveTowardsPlayer()
     {
-        if (canChase)
+        if (canChase && playerHide.GetIsHiding() == false)
         {
             Vector2 direction = (player.transform.position - transform.position).normalized;
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+            animator.SetBool("canChase", true);
+        }
+        else
+        {
+            animator.SetBool("canChase", false);
         }
     }
 
     public void RotateTowardsPlayer()
     {
-        if (canChase)
+        if (canChase && playerHide.GetIsHiding() == false)
         {
             Vector2 direction = player.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -100,6 +109,11 @@ public class Eye : MonoBehaviour
     public void AnimatorSetChaseTrigger()
     {
         animator.SetTrigger("chase");
+    }
+
+    public void SetCanChase(bool can)
+    {
+        canChase = can;
     }
 
 }

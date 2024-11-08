@@ -6,7 +6,7 @@ using UnityEngine;
 public class WalkerSpirit : MonoBehaviour
 {
     private float touchRange = 1f;
-    private float moveSpeed = 5f;
+    public float moveSpeed = 5f;
     private float patrolSpeed = 2.5f;
     private bool canChase;
     private bool canHit;
