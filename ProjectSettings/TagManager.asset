@@ -18,6 +18,8 @@ TagManager:
   - Weight
   - SpiritBox
   - Umbrella
+  - Rock
+  - RockGround
   layers:
   - Default
   - TransparentFX
