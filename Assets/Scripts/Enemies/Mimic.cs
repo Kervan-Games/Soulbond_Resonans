@@ -91,7 +91,7 @@ public class Mimic : MonoBehaviour
         {
             if (canKill)
             {
-                collision.gameObject.GetComponent<PlayerMovement>().Die();
+                collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
             }
         }
         else if (collision.CompareTag("StrongSpirit") || collision.CompareTag("Spirit"))
@@ -106,7 +106,7 @@ public class Mimic : MonoBehaviour
         {
             if (canKill)
             {
-                collision.gameObject.GetComponent<PlayerMovement>().Die();
+                collision.gameObject.GetComponent<PlayerMovement>().SetAnimatorIsDeadTrue();
             }
         }
     }
@@ -147,5 +147,10 @@ public class Mimic : MonoBehaviour
         boxVisual.SetActive(true);
         vision.SetActive(false);
         passiveParticle.Play();
+    }
+
+    public void SetDidHit(bool hitt)
+    {
+        didHit = hitt;
     }
 }

@@ -18,6 +18,9 @@ public class SpiritBox : MonoBehaviour
     private bool canRise = true;
 
     private PlayerMovement playerMovement;
+    public GameObject mimic;
+
+    public bool isFake = false;
     private void Start()
     {
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -40,9 +43,19 @@ public class SpiritBox : MonoBehaviour
     {
         if (canRise)
         {
-            SpiritVisual.transform.position = InitialLocation.position;
-            isRising = true;
-            canRise = false;
+            if (!isFake)
+            {
+                SpiritVisual.transform.position = InitialLocation.position;
+                isRising = true;
+                canRise = false;
+            }
+            else if (isFake)
+            {
+                SpiritVisual.transform.position = InitialLocation.position;
+                SpiritVisual.GetComponent<SpriteRenderer>().color = Color.red;
+                isRising = true;
+                canRise = false;
+            }
         }
     }
 
@@ -55,9 +68,26 @@ public class SpiritBox : MonoBehaviour
             SpawnParticle.Play();
         }
 
-        Instantiate(Spirit, TargetLocation.position, Quaternion.identity);
-        SpiritVisual.transform.position = InitialLocation.position;
-        playerMovement.UpdateSpiritAmounts();
-        canRise = true;
+        if (!isFake)
+        {
+            Instantiate(Spirit, TargetLocation.position, Quaternion.identity);
+            SpiritVisual.transform.position = InitialLocation.position;
+            playerMovement.UpdateSpiritAmounts();
+            canRise = true;
+        }
+        else if (isFake)
+        {
+            SpiritVisual.transform.position = InitialLocation.position;
+            SpiritVisual.SetActive(false);
+            if (mimic != null)
+            {
+                mimic.SetActive(true);
+            }
+            
+            gameObject.SetActive(false);
+        }
+
+
+        
     }
 }

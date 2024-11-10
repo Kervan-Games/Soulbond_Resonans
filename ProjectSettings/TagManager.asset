@@ -20,6 +20,7 @@ TagManager:
   - Umbrella
   - Rock
   - RockGround
+  - Mimic
   layers:
   - Default
   - TransparentFX
