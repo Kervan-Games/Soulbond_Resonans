@@ -133,17 +133,17 @@ public class Mimic : MonoBehaviour
         isRunning = false;
         isStunned = true;
 
-        //rb.isKinematic = true;    
+        rb.isKinematic = true;    
 
-        if(rb.isKinematic == true)
+        /*if(rb.isKinematic == true)
         {
             rb.isKinematic = false;
-        }
+        }*/
 
 
         rb.gravityScale = 1f;
         _collider.isTrigger = false;
-        Debug.Log("Passive!");
+        //Debug.Log("Passive!");
         boxVisual.SetActive(true);
         vision.SetActive(false);
         passiveParticle.Play();
