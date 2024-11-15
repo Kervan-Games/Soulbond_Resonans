@@ -656,9 +656,9 @@ public class PlayerMovement : MonoBehaviour
                 }
 
                 if (isFacingRight)
-                    transform.position = new Vector3(rope.transform.position.x - 0.55f, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(rope.transform.position.x - 0.59f, transform.position.y, transform.position.z);
                 else
-                    transform.position = new Vector3(rope.transform.position.x + 0.55f, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(rope.transform.position.x + 0.59f, transform.position.y, transform.position.z);
             }
             else if (climbInput.y <= -0.1 && !jumpCancelled)
             {
