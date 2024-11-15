@@ -29,6 +29,9 @@ public class PlayerHealth : MonoBehaviour
     private float initialVignette;
     private float vignetteTarget = 0.8f;
 
+    public GameObject dieMenu;
+    private bool isDead = false;
+
     void Start()
     {
         isHoldingSpirit = false;
@@ -101,7 +104,16 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = 0;
         enabled = false;// optional ?
         playerMovement.enabled = false;// optional ?
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // open die menu
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // open die menu
+
+        if (!isDead)
+        {
+            dieMenu.SetActive(true);
+            Time.timeScale = 0f;
+            isDead = true;
+        }
+        
+
     }
     public void DieVisual()
     {

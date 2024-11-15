@@ -91,6 +91,9 @@ public class PlayerMovement : MonoBehaviour
     private GameObject[] strongSpiritObjects;  
     private GameObject[] walkerSpiritObjects;
 
+    private bool isPaused = false;
+    public GameObject pauseMenu;
+
 
     void Start()
     {
@@ -326,7 +329,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        if (!isDead)
+        if (!isDead && !isPaused)
         {
             moveInput = context.ReadValue<Vector2>();
         }
@@ -335,7 +338,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnClimbInput(InputAction.CallbackContext context)
     {
-        if (!isDead)
+        if (!isDead && !isPaused)
         {
             climbInput = context.ReadValue<Vector2>();
         }
@@ -346,7 +349,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnLaneInput(InputAction.CallbackContext context)
     {
-        if (!isDead)
+        if (!isDead && !isPaused)
         {
             laneInput = context.ReadValue<Vector2>();
         }
@@ -355,7 +358,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnLaneUp(InputAction.CallbackContext context)
     {
-        if (!isDead && isInLanes)
+        if (!isDead && isInLanes && !isPaused)
         {
             if (context.performed && currentLane < lanePositions.Length - 1)
             {
@@ -365,7 +368,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnLaneDown(InputAction.CallbackContext context)
     {
-        if (!isDead && isInLanes)
+        if (!isDead && isInLanes && !isPaused)
         {
             if (context.performed && currentLane > 0)
             {
@@ -376,7 +379,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaOpen(InputAction.CallbackContext context) // fly with umbrella
     {
-        if(!isDead)
+        if(!isDead && !isPaused)
         {
             if (context.started)
             {
@@ -391,7 +394,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaUse(InputAction.CallbackContext context) // deflect with umbrella
     {
-        if (!isDead && canShotUmbrella && !isInDialogue)
+        if (!isDead && canShotUmbrella && !isInDialogue && !isPaused)
         {
             if (context.started)
             {
@@ -412,7 +415,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void OnJumpPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && !isInDialogue && !isInLanes)
+        if (!isDead && !isInDialogue && !isInLanes && !isPaused)
         {
             if (context.performed && isGrounded)
             {
@@ -434,9 +437,35 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public void OnPausePressed(InputAction.CallbackContext context)
+    {
+        if (!isDead)
+        {
+            if (!isPaused)
+            {
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0f;
+                isPaused = true;
+            }
+            else
+            {
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1f;
+                isPaused = false;
+            }
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
+
+    }
+
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && canSing && !isInDialogue)
+        if (!isDead && canSing && !isInDialogue && !isPaused)
         {
             if (context.started && !isReloading)
             {
