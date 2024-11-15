@@ -101,7 +101,7 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = 0;
         enabled = false;// optional ?
         playerMovement.enabled = false;// optional ?
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // open die menu
     }
     public void DieVisual()
     {
