@@ -138752,32 +138752,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3468436609397040690, guid: 09981b5f605feff469049b4c2981e949, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.42
+      value: 0.53
       objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_FlipY
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_MaskInteraction
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8337821599368559846, guid: 09981b5f605feff469049b4c2981e949, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 33912ca32b5a8c34a8961bb6eb773ba1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09981b5f605feff469049b4c2981e949, type: 3}
 --- !u!1 &8260555281228759325

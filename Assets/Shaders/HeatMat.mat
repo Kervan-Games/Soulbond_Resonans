@@ -60,10 +60,10 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AngleOffset: 30
-    - _AngleSpeed: 10
+    - _AngleSpeed: 2
     - _Blend: 0
     - _CastShadows: 1
-    - _CellDensity: 2
+    - _CellDensity: 1
     - _Cull: 2
     - _DecalAngleFadeSupported: 1
     - _DecalMeshBiasType: 0
@@ -75,9 +75,9 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Speed: 0.125
+    - _Speed: 0.5
     - _SrcBlend: 1
-    - _Strength: 0.04
+    - _Strength: 0.075
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZTest: 4
