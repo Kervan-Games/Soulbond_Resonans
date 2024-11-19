@@ -669,6 +669,7 @@ public class PlayerMovement : MonoBehaviour
                 isClimbing = true;
                 rb.velocity = new Vector2(rb.velocity.x * 0.75f, 4f);
                 animator.SetBool("isClimbing", true);
+                flyTrail.emitting = false;
 
                 if (runParticles.isPlaying)
                 {
