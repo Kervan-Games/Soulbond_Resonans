@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
 
     public ParticleSystem spiritHoldParticle;
 
-    public PostProcessVolume postProcessVolume;
+    public Volume volume;
     private Vignette vignette;
     private float initialVignette;
     private float vignetteTarget = 0.8f;
@@ -42,8 +43,10 @@ public class PlayerHealth : MonoBehaviour
         speedMultiplier = playerMovement.GetMoveSpeed() / maxHealth;
         jumpMultiplier = playerMovement.GetJumpForce() / maxHealth;
 
-        postProcessVolume.profile.TryGetSettings(out vignette);
-        initialVignette = vignette.intensity.value;
+        if (volume.profile.TryGet<Vignette>(out vignette))
+        {
+            initialVignette = vignette.intensity.value;
+        }
     }
 
     private void FixedUpdate()
@@ -75,8 +78,7 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                if(playerMovement.GetIsDead() && playerMovement != null)
-                    Die();
+                playerMovement.SetAnimatorIsDeadTrue();
             }
         }
         else if(!isHoldingSpirit && didThrowSpirit)
@@ -132,7 +134,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            Die();
+            playerMovement.SetAnimatorIsDeadTrue();
         }
     }
 
@@ -154,7 +156,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            Die();
+            playerMovement.SetAnimatorIsDeadTrue();
         }
     }
 
@@ -181,10 +183,13 @@ public class PlayerHealth : MonoBehaviour
     {
         float healthPercentage = currentHealth / maxHealth;
 
-        vignette.intensity.value = Mathf.Lerp(vignetteTarget, initialVignette, healthPercentage);
+        if (vignette != null)
+        {
+            vignette.intensity.Override(Mathf.Lerp(vignetteTarget, initialVignette, healthPercentage));
 
-        Color vignetteColor = vignette.color.value;
-        vignetteColor.r = Mathf.Lerp(0.15f, 0f, healthPercentage);
-        vignette.color.value = vignetteColor;
+            Color vignetteColor = vignette.color.value;
+            vignetteColor.r = Mathf.Lerp(0.1f, 0f, healthPercentage);
+            vignette.color.Override(vignetteColor);
+        }
     }
 }

@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -93,6 +96,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isPaused = false;
     public GameObject pauseMenu;
+
+    public Volume volume;
 
 
     void Start()
@@ -445,6 +450,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 pauseMenu.SetActive(true);
                 Time.timeScale = 0f;
+                SetDepthOfField(true);
                 isPaused = true;
             }
             else
@@ -452,6 +458,7 @@ public class PlayerMovement : MonoBehaviour
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1f;
                 isPaused = false;
+                SetDepthOfField(false);
             }
         }
         else
@@ -651,6 +658,7 @@ public class PlayerMovement : MonoBehaviour
         isDead = true;
         rb.velocity = new Vector2(0f, rb.velocity.y);
         animator.SetFloat("speed", 0f);// animator setbool isdead ekle -> ölüm animasyonu
+        SetDepthOfField(true);
         playerHealth.Die();
 
     }
@@ -794,5 +802,14 @@ public class PlayerMovement : MonoBehaviour
         {
             walkerSpirits[i] = walkerSpiritObjects[i].GetComponent<WalkerSpirit>();
         }
+    }
+
+    private void SetDepthOfField(bool depth)
+    {
+        if (volume.profile.TryGet<DepthOfField>(out DepthOfField depthOfField))
+        {
+            depthOfField.active = depth; 
+        }
+
     }
 }

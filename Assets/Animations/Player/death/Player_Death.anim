@@ -43,8 +43,6 @@ AnimationClip:
       value: {fileID: 21300000, guid: 3451e6379a42f5147af8eb719212f75d, type: 3}
     - time: 1.375
       value: {fileID: 21300000, guid: a971551171fc96c46af91a467480be18, type: 3}
-    - time: 1.5
-      value: {fileID: 21300000, guid: a6e39cfcad4d68f4dbe3ab05087424b4, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -76,13 +74,12 @@ AnimationClip:
     - {fileID: 21300000, guid: 3a025d64ff61e95498d801ffb78716f3, type: 3}
     - {fileID: 21300000, guid: 3451e6379a42f5147af8eb719212f75d, type: 3}
     - {fileID: 21300000, guid: a971551171fc96c46af91a467480be18, type: 3}
-    - {fileID: 21300000, guid: a6e39cfcad4d68f4dbe3ab05087424b4, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.625
+    m_StopTime: 1.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -109,7 +106,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.5
+  - time: 1.375
     functionName: Die
     data: 
     objectReferenceParameter: {fileID: 0}
