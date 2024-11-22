@@ -804,12 +804,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void SetDepthOfField(bool depth)
+    public void SetDepthOfField(bool depth)
     {
         if (volume.profile.TryGet<DepthOfField>(out DepthOfField depthOfField))
         {
             depthOfField.active = depth; 
         }
 
+    }
+
+    public void SetIsPaused(bool isp)
+    {
+        isPaused = isp;
     }
 }

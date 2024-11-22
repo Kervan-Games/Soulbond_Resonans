@@ -6263,7 +6263,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195625876}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1054280360}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: ResumeButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &195625876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11119,7 +11131,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 625678848}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 781205630}
+        m_TargetAssemblyTypeName: DieMenu, Assembly-CSharp
+        m_MethodName: QuitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &625678848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13527,6 +13551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 781205629}
+  - component: {fileID: 781205630}
   m_Layer: 5
   m_Name: DieMenu
   m_TagString: Untagged
@@ -13555,6 +13580,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &781205630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781205628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b554eea4ba5be46bc20be02b29d82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &789052356
 GameObject:
   m_ObjectHideFlags: 0
@@ -22928,6 +22965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1054280359}
+  - component: {fileID: 1054280360}
   m_Layer: 5
   m_Name: 'PauseMenu '
   m_TagString: Untagged
@@ -22956,6 +22994,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1054280360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054280358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774d19a7a2e0b3d429fd4e41bb73491e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1066470480
 GameObject:
   m_ObjectHideFlags: 0
@@ -35851,7 +35901,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1517668378}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 781205630}
+        m_TargetAssemblyTypeName: DieMenu, Assembly-CSharp
+        m_MethodName: RetryButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1517668378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53363,7 +53425,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1807759260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1054280360}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: QuitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1807759260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55017,7 +55091,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1912177426}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1054280360}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: RetryButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1912177426
 MonoBehaviour:
   m_ObjectHideFlags: 0
