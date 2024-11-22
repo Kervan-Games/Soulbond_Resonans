@@ -15,6 +15,8 @@ public class GroundTrigger : MonoBehaviour
     private bool canParticle = false;
     private bool canHit = true;
 
+    public GameObject rocks;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -30,6 +32,11 @@ public class GroundTrigger : MonoBehaviour
 
     private void ColliderDisabler()
     {
+        foreach (Collider2D childCollider in rocks.GetComponentsInChildren<Collider2D>())
+        {
+            childCollider.isTrigger = true;
+        }
+
         rockCollider.isTrigger = true;
         selfCollider.isTrigger= true;
         dieCollider.SetActive(false);
@@ -53,6 +60,9 @@ public class GroundTrigger : MonoBehaviour
         {
             canHit = false;
             selfRB.isKinematic = false;
+            selfCollider.isTrigger = true;
+            selfCollider.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            rocks.SetActive(true);
             if (canParticle)
             {
                 collisionParticle.Play();
