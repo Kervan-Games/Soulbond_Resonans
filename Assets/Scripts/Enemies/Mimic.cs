@@ -8,7 +8,7 @@ public class Mimic : MonoBehaviour
     private bool isRunning = false;
     private bool isStunned = false;
 
-    private float chaseSpeed = 8f;
+    private float chaseSpeed = 10f;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -26,6 +26,10 @@ public class Mimic : MonoBehaviour
     public GameObject vision;
     public ParticleSystem passiveParticle;
 
+    [SerializeField] private float acceleration = 0.1f; 
+
+    private Vector2 targetVelocity;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,16 +45,20 @@ public class Mimic : MonoBehaviour
         playerPosition = player.transform.position;
         //Debug.Log(playerPosition.x - transform.position.x);
 
-        if (hasVisual && !isRunning && !isStunned && !didHit && !isPassive)
+        if (hasVisual && !isStunned && !didHit && !isPassive)
         {
             StartRunning();
             isRunning = true;
         }
+        else
+        {
+            SmoothStop();
+        }
 
-        if (!isPassive && !didHit && isRunning && Mathf.Abs(rb.velocity.x) <= 0.1f)
+        /*if (!isPassive && !didHit && isRunning && Mathf.Abs(rb.velocity.x) <= 0.01f)
         {
             GetStunned();
-        }
+        }*/
 
         if (didHit && !isPassive)
         {
@@ -60,7 +68,16 @@ public class Mimic : MonoBehaviour
 
     }
 
-    private void StartRunning()
+    private void SmoothStop()
+    {
+        rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, 2f * Time.deltaTime);
+        if (rb.velocity.magnitude < 0.01f)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    /*private void StartRunning()
     {
         if(playerPosition.x - transform.position.x > 0)
         {
@@ -70,6 +87,21 @@ public class Mimic : MonoBehaviour
         {
             rb.velocity = new Vector3(-chaseSpeed, 0f, 0f);
         }
+    }*/
+
+    private void StartRunning()
+    {
+        float direction = playerPosition.x - transform.position.x;
+
+        if (direction > 0)
+        {
+            targetVelocity = new Vector2(chaseSpeed, 0f); 
+        }
+        else if (direction < 0)
+        {
+            targetVelocity = new Vector2(-chaseSpeed, 0f); 
+        }
+        rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, acceleration * Time.deltaTime);
     }
 
     private void GetStunned()

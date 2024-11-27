@@ -5285,6 +5285,7 @@ MonoBehaviour:
   boxVisual: {fileID: 2068199176389865902}
   vision: {fileID: 2068199174927310956}
   passiveParticle: {fileID: 2068199175215742945}
+  acceleration: 2
 --- !u!1 &2562705940399291336
 GameObject:
   m_ObjectHideFlags: 0
