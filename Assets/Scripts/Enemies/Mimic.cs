@@ -5,7 +5,6 @@ using UnityEngine;
 public class Mimic : MonoBehaviour
 {
     private bool hasVisual = false;
-    private bool isRunning = false;
     private bool isStunned = false;
 
     private float chaseSpeed = 10f;
@@ -48,7 +47,6 @@ public class Mimic : MonoBehaviour
         if (hasVisual && !isStunned && !didHit && !isPassive)
         {
             StartRunning();
-            isRunning = true;
         }
         else
         {
@@ -107,7 +105,6 @@ public class Mimic : MonoBehaviour
     private void GetStunned()
     {
         rb.velocity = Vector3.zero;
-        isRunning = false;
         isStunned = true;
         rb.isKinematic = true;
         Debug.Log("Stunned!");
@@ -162,7 +159,6 @@ public class Mimic : MonoBehaviour
     private void BecomePassive()
     {
         rb.velocity = Vector3.zero;
-        isRunning = false;
         isStunned = true;
 
         rb.isKinematic = true;    

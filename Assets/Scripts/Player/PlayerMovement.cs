@@ -256,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            animator.SetBool("isUmbrellaFly", false);
+            animator.SetBool("isUmbrellaFly", false); 
         }
     }
 
