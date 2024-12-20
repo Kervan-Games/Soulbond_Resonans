@@ -16,7 +16,7 @@ public class PlayerAnimatorSpeedReducer : MonoBehaviour
     {
         isDead = playerMovement.GetIsDead();
         speed = rb.velocity.magnitude;
-        if (speed > 0.1f && speed <= maxSpeed && !isDead) 
+        if (speed > 0.1f && speed <= maxSpeed && !isDead && playerMovement.GetCanUmbrella() == false) 
         {
             animator.speed = speed / maxSpeed;
         }

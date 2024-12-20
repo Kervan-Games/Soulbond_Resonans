@@ -252,6 +252,11 @@ public class PlayerMovement : MonoBehaviour
         if(!isGrounded)
         {
             animator.SetBool("isJumping", false);
+            animator.SetBool("isUmbrellaFly", false);
+        }
+        else
+        {
+            animator.SetBool("isUmbrellaFly", false);
         }
     }
 
@@ -274,6 +279,10 @@ public class PlayerMovement : MonoBehaviour
                 //umbrella.SetActive(true);
                 umbrellaScript.SetIsFlying(true);
                 flyTrail.emitting = true;
+                if(!isGrounded)
+                    animator.SetBool("isUmbrellaFly", true);
+                else
+                    animator.SetBool("isUmbrellaFly", false);
             }
             else
             {
@@ -281,6 +290,7 @@ public class PlayerMovement : MonoBehaviour
                 //umbrella.SetActive(false);
                 umbrellaScript.SetIsFlying(false);
                 flyTrail.emitting = false;
+                animator.SetBool("isUmbrellaFly", false);
             }
         }
         else if (inWind)
