@@ -7,12 +7,14 @@ public class Mimic : MonoBehaviour
     private bool hasVisual = false;
     private bool isStunned = false;
 
-    private float chaseSpeed = 10f;
+    private float chaseSpeed = 14f;
+    private Animator animator;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Color initialColor;
     private Collider2D _collider;
+    public Collider2D physCollider;
 
     private GameObject player;
     private Vector3 playerPosition;
@@ -25,7 +27,9 @@ public class Mimic : MonoBehaviour
     public GameObject vision;
     public ParticleSystem passiveParticle;
 
-    [SerializeField] private float acceleration = 0.1f; 
+    [SerializeField] private float acceleration = 0.85f;
+
+    private float speed;
 
     private Vector2 targetVelocity;
 
@@ -36,7 +40,8 @@ public class Mimic : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         if (_collider == null) Debug.LogError("AAAÐ");
         initialColor = spriteRenderer.color;
-        player = GameObject.FindGameObjectWithTag("Player"); 
+        player = GameObject.FindGameObjectWithTag("Player");
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -63,6 +68,7 @@ public class Mimic : MonoBehaviour
             BecomePassive();
             isPassive = true;
         }
+        UpdateAnimation();
 
     }
 
@@ -163,10 +169,10 @@ public class Mimic : MonoBehaviour
 
         rb.isKinematic = true;    
 
-        /*if(rb.isKinematic == true)
+        if(rb.isKinematic == true)
         {
             rb.isKinematic = false;
-        }*/
+        }
 
 
         rb.gravityScale = 1f;
@@ -175,10 +181,33 @@ public class Mimic : MonoBehaviour
         boxVisual.SetActive(true);
         vision.SetActive(false);
         passiveParticle.Play();
+
+        canKill = false;
+        _collider.isTrigger = true;
+        physCollider.isTrigger = true;
+        spriteRenderer.enabled = false;
     }
 
     public void SetDidHit(bool hitt)
     {
         didHit = hitt;
+    }
+
+    void UpdateAnimation()
+    {
+        speed = rb.velocity.magnitude;
+        animator.speed = speed / chaseSpeed;
+
+        /*if (transform.position.x > playerPosition.x)*/if(rb.velocity.x < 0f && canKill)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if(rb.velocity.x > 0f && canKill)
+        {
+            spriteRenderer.flipX = true;
+        }
+        
+
+
     }
 }
