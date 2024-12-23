@@ -198,11 +198,11 @@ public class Mimic : MonoBehaviour
         speed = rb.velocity.magnitude;
         animator.speed = speed / chaseSpeed;
 
-        /*if (transform.position.x > playerPosition.x)*/if(rb.velocity.x < 0f && canKill)
+        if (transform.position.x > playerPosition.x) /*if(rb.velocity.x < 0f && canKill)*/
         {
             spriteRenderer.flipX = false;
         }
-        else if(rb.velocity.x > 0f && canKill)
+        else /*if(rb.velocity.x > 0f && canKill)*/
         {
             spriteRenderer.flipX = true;
         }
