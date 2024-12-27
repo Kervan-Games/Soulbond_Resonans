@@ -156,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (!isInDialogue)
                 {
-                    if (!isClimbing)
+                    if (!isClimbing && !isSinging)
                         Move();
                     else
                     {
@@ -165,7 +165,10 @@ public class PlayerMovement : MonoBehaviour
                     }
                     GroundCheck();
                     OpenUmbrella();
-                    HandleFlipping();
+                    if (!isSinging)
+                    {
+                        HandleFlipping();
+                    }
                     UpdateStamina();
                     Climb();
                 }
@@ -482,49 +485,55 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && canSing && !isInDialogue && !isPaused)
+        if (!isDead && canSing && !isInDialogue && !isPaused && isGrounded && !isClimbing)
         {
             if (context.started && !isReloading)
             {
-                singAreaVisual.SetActive(true);
-                singAreaCollider.enabled = true;
-                isSinging = true;
+                
             }
 
             if (context.canceled)
             {
-                foreach (Spirit spirit in spirits)
-                {
-                    if (spirit.GetInSingArea() || spirit.GetIsTouching())
-                    {
-                        spirit.ThrowSpirit();
-                    }  
-                }
-                foreach (WalkerSpirit walkerSpirit in walkerSpirits)
-                {
-                    if (walkerSpirit.GetInSingArea() || walkerSpirit.GetIsTouching())
-                    {
-                        walkerSpirit.ThrowSpirit();
-                    }
-                }
+                //ThrowAllTouchingSpirits();
 
-                foreach (Spirit strongSpirit in strongSpirits)
-                {
-                    if (strongSpirit.GetInSingArea() || strongSpirit.GetIsTouching())
-                    {
-                        strongSpirit.ThrowSpirit();
-                    }
-                }
-
-                singAreaVisual.SetActive(false);
+                //singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
-                //canSing = false;
                 isSinging = false;
-                //Debug.Log("Can NOT sing.");
-                //StartCoroutine(EnableSing());
             }
         }
 
+    }
+
+    public void SetSingAreaCollider(bool sett)
+    {
+        isSinging = true;
+        singAreaCollider.enabled = sett;
+    }
+
+    public void ThrowAllTouchingSpirits()
+    {
+        foreach (Spirit spirit in spirits)
+        {
+            if (spirit.GetInSingArea() || spirit.GetIsTouching())
+            {
+                spirit.ThrowSpirit();
+            }
+        }
+        foreach (WalkerSpirit walkerSpirit in walkerSpirits)
+        {
+            if (walkerSpirit.GetInSingArea() || walkerSpirit.GetIsTouching())
+            {
+                walkerSpirit.ThrowSpirit();
+            }
+        }
+
+        foreach (Spirit strongSpirit in strongSpirits)
+        {
+            if (strongSpirit.GetInSingArea() || strongSpirit.GetIsTouching())
+            {
+                strongSpirit.ThrowSpirit();
+            }
+        }
     }
 
     public void SetMoveSpeed(float speed)
@@ -588,12 +597,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     walkerSpirit.ThrowSpirit();
                 }
-                singAreaVisual.SetActive(false);
+                //singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
-                //canSing = false;
                 isSinging = false;
-                //Debug.Log("Can NOT sing.");
-                //StartCoroutine(EnableSing());
+
             }
         }
         else if (!isSinging)

@@ -25025,7 +25025,7 @@ GameObject:
   - component: {fileID: 2535139406306569035}
   - component: {fileID: 2535139406306569032}
   - component: {fileID: 2535139406306569033}
-  - component: {fileID: 2535139406306569038}
+  - component: {fileID: 273325338}
   m_Layer: 0
   m_Name: SingArea
   m_TagString: SingArea
@@ -25076,8 +25076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5605d2a7d3ef5444bf46e921bd54032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &2535139406306569038
-BoxCollider2D:
+--- !u!58 &273325338
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -25089,19 +25089,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0073986053, y: 2.2169654}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.2165184, y: 1.176247}
-  m_EdgeRadius: 0
+  m_Radius: 4.52
 --- !u!1 &2535139406877652491
 GameObject:
   m_ObjectHideFlags: 0
