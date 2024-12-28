@@ -9,6 +9,10 @@ public class SingArea : MonoBehaviour
     public GameObject umbrella;
     public ParticleSystem singParticles;
 
+    public GameObject emissionPoint;
+    private float moveSpeed = 8f;    
+    private float destroyThreshold = 0.1f; 
+
     private void Start()
     {
         singCollider = GetComponent<Collider2D>();
@@ -22,14 +26,37 @@ public class SingArea : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Spirit"))
-        {
-            Spirit spirit = collision.GetComponent<Spirit>();
-            spirit.SetSingPosition();
-            var emission = singParticles.emission;
-            emission.rateOverTime = 400f;
+        {   
+            Spirit spirit = collision.gameObject.GetComponent<Spirit>();
+            spirit.SetCanChase(false);
+            spirit.SetCanHit(false);
+            if(spirit.GetDidTouch())
+                spirit.ThrowSpirit();
+            else
+                StartCoroutine(MoveToEmissionPoint(collision.gameObject));
+            
+        }
+    }
 
-            var mainModule = singParticles.main;
-            mainModule.simulationSpeed = 1.25f;
+    private IEnumerator MoveToEmissionPoint(GameObject spirit)
+    {
+        while (spirit != null) // Eðer obje hâlâ varsa
+        {
+            // Spirit'in mevcut konumundan emissionPoint'in konumuna doðru hareket et
+            spirit.transform.position = Vector3.MoveTowards(
+                spirit.transform.position,
+                emissionPoint.transform.position,
+                moveSpeed * Time.deltaTime
+            );
+
+            // Spirit hedefe yeterince yakýnsa yok et
+            if (Vector3.Distance(spirit.transform.position, emissionPoint.transform.position) < destroyThreshold)
+            {
+                Destroy(spirit);
+                yield break;
+            }
+
+            yield return null; // Bir sonraki frame'e kadar bekle
         }
     }
 

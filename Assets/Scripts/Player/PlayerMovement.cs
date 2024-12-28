@@ -166,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     GroundCheck();
                     OpenUmbrella();
-                    if (!isSinging)
+                    if (!isSinging || isFlipping)
                     {
                         HandleFlipping();
                     }
@@ -223,6 +223,8 @@ public class PlayerMovement : MonoBehaviour
 
             }
         }
+        if (isDead && isFlipping)
+            HandleFlipping();
     }
 
     private void Move()
@@ -596,14 +598,14 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 isReloading = true;
-                foreach (Spirit spirit in spirits)
+                /*foreach (Spirit spirit in spirits)
                 {
                     spirit.ThrowSpirit();
                 }
                 foreach (WalkerSpirit walkerSpirit in walkerSpirits)
                 {
                     walkerSpirit.ThrowSpirit();
-                }
+                }*/
                 //singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
                 isSinging = false;

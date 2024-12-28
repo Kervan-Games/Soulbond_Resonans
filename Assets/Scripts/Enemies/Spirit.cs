@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Spirit : MonoBehaviour
 {
-    private float chaseRange = 7f;
+    private float chaseRange = 8f;
     private float moveSpeed = 5f;
     private bool canChase;
     private bool canHit;
@@ -36,6 +36,7 @@ public class Spirit : MonoBehaviour
 
     private float touchRange = 1f;
     private bool canTouch = true;
+    private bool didTouch = false;
 
 
     void Start()
@@ -153,6 +154,7 @@ public class Spirit : MonoBehaviour
             canHit = true;
             playerHealth.SetIsHoldingSpirit(true);
             isTouching = true;
+            didTouch = true;
         }
 
     }
@@ -215,6 +217,15 @@ public class Spirit : MonoBehaviour
             SetInSingArea(true);
             
         }
+    }
+    public void SetCanChase(bool canChase_)
+    {
+        canChase = canChase_;
+    }
+
+    public void SetCanHit(bool canHit_)
+    {
+        canHit = canHit_;
     }
 
     public void SetUmbrellaThrow()
@@ -366,5 +377,10 @@ public class Spirit : MonoBehaviour
     public bool GetIsTouching()
     {
         return isTouching;
+    }
+
+    public bool GetDidTouch() 
+    { 
+        return didTouch; 
     }
 }
