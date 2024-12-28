@@ -482,24 +482,29 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
     public void OnSingPressed(InputAction.CallbackContext context)
     {
         if (!isDead && canSing && !isInDialogue && !isPaused && isGrounded && !isClimbing)
         {
             if (context.started && !isReloading)
             {
-                
+                animator.SetBool("isSinging", true);
+                isSinging = true;
             }
 
             if (context.canceled)
             {
                 //ThrowAllTouchingSpirits();
-
+                animator.SetBool("isSinging", false);
                 //singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
                 isSinging = false;
             }
+        }
+        else
+        {
+            animator.SetBool("isSinging", false);
+            isSinging = false;
         }
 
     }
@@ -632,7 +637,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isReloading)
         {
-            staminaColor.a = 0.3f; 
+            staminaColor.a = 0.3f;
+            animator.SetBool("isSinging", false);
         }
         else
         {
