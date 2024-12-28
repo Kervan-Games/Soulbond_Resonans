@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject pauseMenu;
 
     public Volume volume;
+    public GameObject newScreamVisual;
 
 
     void Start()
@@ -498,6 +499,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isSinging", false);
                 //singAreaVisual.SetActive(false);
                 singAreaCollider.enabled = false;
+                newScreamVisual.SetActive(false);
                 isSinging = false;
             }
         }
@@ -505,13 +507,13 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("isSinging", false);
             isSinging = false;
+            newScreamVisual.SetActive(false);
         }
 
     }
 
     public void SetSingAreaCollider(bool sett)
     {
-        isSinging = true;
         singAreaCollider.enabled = sett;
     }
 
@@ -625,6 +627,11 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateStaminaBarTransparency();
     }
+    public void SetSingAreaColliderTrue()
+    {
+        SetSingAreaCollider(true);
+        newScreamVisual.SetActive(true);
+    }
 
     public void SetIsHoldingSpirit(bool isHolding)
     {
@@ -639,6 +646,8 @@ public class PlayerMovement : MonoBehaviour
         {
             staminaColor.a = 0.3f;
             animator.SetBool("isSinging", false);
+            SetSingAreaCollider(false);
+            newScreamVisual.SetActive(false);
         }
         else
         {
