@@ -40,23 +40,23 @@ public class SingArea : MonoBehaviour
 
     private IEnumerator MoveToEmissionPoint(GameObject spirit)
     {
-        while (spirit != null) // Eðer obje hâlâ varsa
+        while (spirit != null) 
         {
-            // Spirit'in mevcut konumundan emissionPoint'in konumuna doðru hareket et
             spirit.transform.position = Vector3.MoveTowards(
                 spirit.transform.position,
                 emissionPoint.transform.position,
                 moveSpeed * Time.deltaTime
             );
 
-            // Spirit hedefe yeterince yakýnsa yok et
             if (Vector3.Distance(spirit.transform.position, emissionPoint.transform.position) < destroyThreshold)
             {
+                //umbrella.spiritcount ++;
+                //4 farklý visual objesi, 1i default sprite 3ü animasyonlu efsunlu, counta göre diðerlerini setactive false yap birini true
                 Destroy(spirit);
                 yield break;
             }
 
-            yield return null; // Bir sonraki frame'e kadar bekle
+            yield return null; 
         }
     }
 
