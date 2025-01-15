@@ -24717,7 +24717,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1349949906}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 1.5
+  simulationSpeed: 2.75
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -24960,7 +24960,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 15
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -25980,8 +25980,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 0}
-        key1: {r: 1, g: 1, b: 1, a: 0.9676471}
+        key0: {r: 1, g: 1, b: 1, a: 0.67058825}
+        key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -25997,7 +25997,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 11372
+        atime1: 60716
         atime2: 60716
         atime3: 0
         atime4: 0
@@ -26006,7 +26006,7 @@ ParticleSystem:
         atime7: 0
         m_Mode: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -29513,14 +29513,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1416152883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.48, y: 0.31, z: 0}
+  m_LocalPosition: {x: -1.4799805, y: 0.31000137, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4157561421956849022}
   - {fileID: 1437883360}
-  m_Father: {fileID: 2535139407187634375}
-  m_RootOrder: 3
+  m_Father: {fileID: 443220207553575882}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1416152889
 MonoBehaviour:
@@ -30022,7 +30022,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 4.52
+  m_Radius: 6
 --- !u!1 &2535139406877652491
 GameObject:
   m_ObjectHideFlags: 0
@@ -30251,7 +30251,7 @@ Transform:
   - {fileID: 2535139407295901034}
   - {fileID: 2535139406306569035}
   - {fileID: 2535139407256590710}
-  - {fileID: 1416152884}
+  - {fileID: 443220207553575882}
   - {fileID: 1845078227}
   - {fileID: 246899212}
   - {fileID: 1571075238}
@@ -30822,6 +30822,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 0}
   volume: {fileID: 0}
   newScreamVisual: {fileID: 519277716}
+  screamParticle: {fileID: 1349949909}
 --- !u!114 &2535139407295901039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31115,3 +31116,35 @@ CapsuleCollider2D:
   m_Offset: {x: 2.3500013, y: 5.433942}
   m_Size: {x: 1.5311718, y: 8.855696}
   m_Direction: 0
+--- !u!1 &5029692700825833233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443220207553575882}
+  m_Layer: 0
+  m_Name: UmbrellaRotate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443220207553575882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5029692700825833233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1416152884}
+  m_Father: {fileID: 2535139407187634375}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
