@@ -38,7 +38,12 @@ public class Umbrella : MonoBehaviour
     private float maxSpeedThrowFollow = 25f;
 
     private bool canSmoothThrowFollow = true;
-    
+
+    public GameObject umbrellaTurn;
+    public float umbrellaOffset = 2f;
+    public float smoothSpeed = 2f;
+    private Coroutine adjustYPositionCoroutine;
+
 
     private void Start()
     {
@@ -63,6 +68,7 @@ public class Umbrella : MonoBehaviour
                 umbrellaClosed.SetActive(false);
                 FollowThrowPosition();
             }
+            SmoothAdjustYPosition(umbrellaOffset);
         }
         else
         {
@@ -77,6 +83,7 @@ public class Umbrella : MonoBehaviour
             {
                 canSmoothThrowFollow = true;
             }
+            SmoothAdjustYPosition(0f);
         }
 
         if (!isFlying)
@@ -84,6 +91,76 @@ public class Umbrella : MonoBehaviour
             ResetFlyingSpeed(); 
         }
     }
+
+    private void SmoothAdjustYPosition(float targetYOffset)
+    {
+        // Hedef pozisyonu hesapla
+        float targetY = followPosition.position.y + targetYOffset;
+
+        // Mevcut y pozisyonunu al
+        Vector3 currentPosition = transform.position;
+
+        // Hedef y pozisyonuna doðru sabit hýzda yaklaþ
+        float newY = Mathf.MoveTowards(currentPosition.y, targetY, smoothSpeed * Time.deltaTime);
+
+        // Yeni pozisyonu uygula
+        transform.position = new Vector3(currentPosition.x, newY, currentPosition.z);
+    }
+
+    private IEnumerator SmoothAdjustYPositionCoroutine(float targetYOffset)
+    {
+        while (true)
+        {
+            // Hedef pozisyonu hesapla
+            float targetY = followPosition.position.y + targetYOffset;
+
+            // Mevcut y pozisyonunu al
+            Vector3 currentPosition = transform.position;
+
+            // Hedef y pozisyonuna doðru sabit hýzda yaklaþ
+            float newY = Mathf.MoveTowards(currentPosition.y, targetY, smoothSpeed * Time.deltaTime);
+
+            // Yeni pozisyonu uygula
+            transform.position = new Vector3(currentPosition.x, newY, currentPosition.z);
+
+            // Hedefe ulaþýldýysa coroutine'i sonlandýr
+            if (Mathf.Abs(currentPosition.y - targetY) < 0.01f)
+            {
+                break;
+            }
+
+            yield return null; // Bir sonraki frame'e kadar bekle
+        }
+    }
+
+    public void StartAdjustYPosition(float targetYOffset)
+    {
+        // Var olan coroutine'i durdur
+        if (adjustYPositionCoroutine != null)
+        {
+            StopCoroutine(adjustYPositionCoroutine);
+        }
+
+        // Yeni coroutine baþlat
+        adjustYPositionCoroutine = StartCoroutine(SmoothAdjustYPositionCoroutine(targetYOffset));
+    }
+
+    public void StopAdjustYPosition()
+    {
+        // Coroutine'i durdur
+        if (adjustYPositionCoroutine != null)
+        {
+            StopCoroutine(adjustYPositionCoroutine);
+            adjustYPositionCoroutine = null;
+        }
+    }
+
+
+
+
+
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -106,7 +183,7 @@ public class Umbrella : MonoBehaviour
     {
         Vector3 targetPosition = (followPosition.position);
         targetPosition.x -= 0.3f;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+        umbrellaTurn.transform.position = Vector3.Lerp(umbrellaTurn.transform.position, targetPosition, followSpeed * Time.deltaTime);
     }
 
     private void Idle()
@@ -114,7 +191,7 @@ public class Umbrella : MonoBehaviour
         floatTimer += Time.fixedDeltaTime * floatFrequency;
         float floatOffset = Mathf.Sin(floatTimer) * floatAmplitude;
 
-        transform.position = new Vector3(transform.position.x, transform.position.y + floatOffset, transform.position.z);
+        umbrellaTurn.transform.position = new Vector3(umbrellaTurn.transform.position.x, umbrellaTurn.transform.position.y + floatOffset, umbrellaTurn.transform.position.z);
     }
 
     private void Flying()
@@ -122,7 +199,7 @@ public class Umbrella : MonoBehaviour
         Vector3 targetPosition = flyPosition.position;
         targetPosition.x -= 0.3f;
 
-        Vector3 currentPosition = transform.position;
+        Vector3 currentPosition = umbrellaTurn.transform.position;
 
         speedMultiplier += speedIncreaseRate * Time.deltaTime;
         speedMultiplier = Mathf.Clamp(speedMultiplier, 1f, maxMultiplier); 
@@ -131,9 +208,9 @@ public class Umbrella : MonoBehaviour
         float newY = Mathf.Lerp(currentPosition.y, targetPosition.y, followSpeed * 3f * Time.deltaTime * speedMultiplier);
         float newZ = currentPosition.z;
 
-        transform.position = new Vector3(newX, newY, newZ);
+        umbrellaTurn.transform.position = new Vector3(newX, newY, newZ);
 
-        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+        float distanceToTarget = Vector3.Distance(umbrellaTurn.transform.position, targetPosition);
 
         if (distanceToTarget < 0.5f)
         {
@@ -154,17 +231,17 @@ public class Umbrella : MonoBehaviour
         Vector3 targetPosition = throwPosition.position;
         targetPosition.x -= 0.3f; 
 
-        float distanceToTarget = Vector3.Distance(transform.position, targetPosition); 
+        float distanceToTarget = Vector3.Distance(umbrellaTurn.transform.position, targetPosition); 
         float thresholdDistance = 0.25f;
         windUmbrella.SetActive(false);
 
         if (canSmoothThrowFollow)
         {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, maxSpeedThrowFollow * 1.5f * Time.deltaTime);
+            umbrellaTurn.transform.position = Vector3.Lerp(umbrellaTurn.transform.position, targetPosition, maxSpeedThrowFollow * 1.5f * Time.deltaTime);
         }
         else
         {
-            transform.position = throwPosition.position;
+            umbrellaTurn.transform.position = throwPosition.position;
         }
 
         if (distanceToTarget <= thresholdDistance)
@@ -186,12 +263,12 @@ public class Umbrella : MonoBehaviour
     private void SmoothResetZRotation()
     {
 
-        float currentZRotation = transform.eulerAngles.z;
+        float currentZRotation = umbrellaTurn.transform.eulerAngles.z;
         float newZRotation = Mathf.LerpAngle(currentZRotation, targetZRotation, Time.deltaTime * rotationSpeedZ);
 
         if (isResetting)
         {
-            transform.rotation = Quaternion.Euler(0, 0, newZRotation);
+            umbrellaTurn.transform.rotation = Quaternion.Euler(0, 0, newZRotation);
         }
 
         if (Mathf.Abs(newZRotation - targetZRotation) < 0.01f)
@@ -211,12 +288,12 @@ public class Umbrella : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        Vector2 direction = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
+        Vector2 direction = new Vector2(mousePos.x - umbrellaTurn.transform.position.x, mousePos.y - umbrellaTurn.transform.position.y);
 
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        umbrellaTurn.transform.rotation = Quaternion.Lerp(umbrellaTurn.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     void RotateFaster()
@@ -224,8 +301,8 @@ public class Umbrella : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        Vector2 direction = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
-        transform.up = direction;
+        Vector2 direction = new Vector2(mousePos.x - umbrellaTurn.transform.position.x, mousePos.y - umbrellaTurn.transform.position.y);
+        umbrellaTurn.transform.up = direction;
     }
 
     public void SetIsFlying(bool fly)

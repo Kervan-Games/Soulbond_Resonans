@@ -52642,6 +52642,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1695301941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5086255164852166949, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+  m_PrefabInstance: {fileID: 2535139406167284234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1703221989
 GameObject:
   m_ObjectHideFlags: 0
@@ -140093,6 +140098,18 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[1].countCurve.minCurve.m_Curve.Array.data[1].outWeight
       value: 0.33333334
       objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1416152889, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: umbrellaTurn
+      value: 
+      objectReference: {fileID: 1695301941}
     - target: {fileID: 2535139407187634374, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -140173,6 +140190,14 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 340222925}
+    - target: {fileID: 5600401664530461133, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600401664530461133, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
 --- !u!1 &2535139406390851585 stripped
