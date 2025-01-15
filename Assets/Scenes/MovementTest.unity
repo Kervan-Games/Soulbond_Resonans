@@ -139895,7 +139895,11 @@ PrefabInstance:
       objectReference: {fileID: 1289486637}
     - target: {fileID: 378770715, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.04
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 378770715, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.48
       objectReference: {fileID: 0}
     - target: {fileID: 1416152884, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -139915,7 +139919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1416152889, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: radiusForThrow
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1416152889, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: umbrellaRotate
@@ -139927,7 +139931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1416152889, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: rotationSpeedForThrow
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 443220207553575882, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_LocalPosition.x

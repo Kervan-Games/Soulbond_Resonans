@@ -52,6 +52,7 @@ public class Umbrella : MonoBehaviour
     private Coroutine rotateCoroutine;
     private bool isMovingThrow = false;
     private bool isRotating = false;
+    private float tempRadius;
 
 
     private void Awake()
@@ -265,13 +266,13 @@ public class Umbrella : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        mousePos.z = 0; 
+        mousePos.z = 0;
 
-        Vector3 direction = (mousePos - transform.position).normalized; 
-        Vector3 targetPosition = transform.position + direction * radius; 
+        Vector3 direction = (mousePos - throwPosition).normalized;
+        Vector3 targetPosition = throwPosition + direction * radius; 
 
         Vector3 moveDirection = targetPosition - transform.position;
-        float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg - 90f;
+        float targetAngle = Mathf.Atan2(targetPosition.y - throwPosition.y, targetPosition.x - throwPosition.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
         while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f)
