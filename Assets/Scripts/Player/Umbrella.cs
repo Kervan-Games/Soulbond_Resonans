@@ -267,10 +267,10 @@ public class Umbrella : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
         mousePos.z = 0; 
 
-        Vector3 direction = (mousePos - throwPosition).normalized; 
-        Vector3 targetPosition = throwPosition + direction * radius; 
+        Vector3 direction = (mousePos - transform.position).normalized; 
+        Vector3 targetPosition = transform.position + direction * radius; 
 
-        Vector3 moveDirection = targetPosition - umbrellaRotate.transform.position;
+        Vector3 moveDirection = targetPosition - transform.position;
         float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
@@ -280,7 +280,7 @@ public class Umbrella : MonoBehaviour
 
             gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         Invoke("ReturnToInitialPosition", 1f);

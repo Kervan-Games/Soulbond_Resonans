@@ -11,11 +11,13 @@ public class SingArea : MonoBehaviour
 
     public GameObject emissionPoint;
     private float moveSpeed = 8f;    
-    private float destroyThreshold = 0.1f; 
+    private float destroyThreshold = 0.1f;
+    private SpiritEconomy spiritEconomy;
 
     private void Start()
     {
         singCollider = GetComponent<Collider2D>();
+        spiritEconomy = GameObject.FindGameObjectWithTag("Umbrella").GetComponent<SpiritEconomy>();
     }
 
     void Update()
@@ -53,6 +55,7 @@ public class SingArea : MonoBehaviour
                 //umbrella.spiritcount ++;
                 //4 farklý visual objesi, 1i default sprite 3ü animasyonlu efsunlu, counta göre diðerlerini setactive false yap birini true
                 Destroy(spirit);
+                spiritEconomy.IncreaseSpiritCount();
                 yield break;
             }
 
