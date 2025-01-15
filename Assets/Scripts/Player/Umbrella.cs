@@ -45,11 +45,13 @@ public class Umbrella : MonoBehaviour
     private bool didTurn = false;
     public float rotationSpeedForThrow = 5f;
     public float moveSpeedForThrow = 1f;
-    public float radiusForThrow = 5f;
+    public float radiusForThrow = 4f;
 
     private Vector3 throwDirection; 
     private bool hasThrowDirection = false;
     private Coroutine rotateCoroutine;
+    private bool isMovingThrow = false;
+    private bool isRotating = false;
 
 
     private void Awake()
@@ -75,7 +77,7 @@ public class Umbrella : MonoBehaviour
                 didTurn = false;
             }
         }
-        else if(isThrowing)
+        else if(isThrowing || isMovingThrow)
         {
             if (umbrellaCollider.enabled)
             {
@@ -108,7 +110,6 @@ public class Umbrella : MonoBehaviour
         {
             ResetFlyingSpeed(); 
         }
-        Debug.Log(isThrowing);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -252,32 +253,45 @@ public class Umbrella : MonoBehaviour
 
     void RotateSlower(Vector3 throwPosition, float rotationSpeed, float moveSpeed, float radius)
     {
-        if (!hasThrowDirection) // Hareket yönü daha önce ayarlanmadýysa
+        if (!isRotating)
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            throwDirection = (mousePos - throwPosition).normalized; // Mouse yönünü hesapla
-            hasThrowDirection = true; // Hareket yönü ayarlandý
+            isRotating = true;
+            isMovingThrow = true;
+            rotateCoroutine = StartCoroutine(RotateAndMove(throwPosition, rotationSpeed, moveSpeed, radius));
         }
+    }
 
-        // Döndürme
-        float targetAngle = Mathf.Atan2(throwDirection.y, throwDirection.x) * Mathf.Rad2Deg - 90f;
+    private IEnumerator RotateAndMove(Vector3 throwPosition, float rotationSpeed, float moveSpeed, float radius)
+    {
+        Vector3 mousePos = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        mousePos.z = 0; 
+
+        Vector3 direction = (mousePos - throwPosition).normalized; 
+        Vector3 targetPosition = throwPosition + direction * radius; 
+
+        Vector3 moveDirection = targetPosition - umbrellaRotate.transform.position;
+        float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-        // Hareket
-        Vector3 targetPosition = throwPosition + throwDirection * radius;
-        umbrellaRotate.transform.position = Vector3.MoveTowards(umbrellaRotate.transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-        float distanceToThrowPosition = Vector3.Distance(umbrellaRotate.transform.position, targetPosition);
-
-        // Hedefe ulaþýldýðýnda baþa dön
-        if (distanceToThrowPosition < 0.1f)
+        while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f)
         {
-            hasThrowDirection = false; // Tekrar kullanýlabilir hale getir
-            SetIsThrowing(false); // isThrowing durumunu false yap
-            Idle(); // Idle durumuna geç
+            umbrellaRotate.transform.position = Vector3.MoveTowards(umbrellaRotate.transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+            gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            yield return null;
         }
+
+        Invoke("ReturnToInitialPosition", 1f);
+    }
+
+    void ReturnToInitialPosition()
+    {
+        isRotating = false;
+        rotateCoroutine = null;
+        isThrowing = false;
+        isMovingThrow = false;
     }
 
 
