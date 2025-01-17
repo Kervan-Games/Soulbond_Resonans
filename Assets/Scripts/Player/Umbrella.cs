@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Umbrella : MonoBehaviour
 {
-    private float rotationSpeed = 5f;
+    //private float rotationSpeed = 5f;
     private Collider2D umbrellaCollider;
 
     public Transform followPosition;
@@ -49,7 +49,7 @@ public class Umbrella : MonoBehaviour
     public float throwSpeedMultiplier = 1f;
 
     private Vector3 throwDirection; 
-    private bool hasThrowDirection = false;
+    //private bool hasThrowDirection = false;
     private Coroutine rotateCoroutine;
     private bool isMovingThrow = false;
     private bool isRotating = false;
@@ -82,7 +82,7 @@ public class Umbrella : MonoBehaviour
                 didTurn = false;
             }
         }
-        else if(isThrowing || isMovingThrow)
+        else if((isThrowing || isMovingThrow) && spiritEco.GetSpiritCount() > 0)
         {
             if (umbrellaCollider.enabled)
             {
@@ -297,6 +297,7 @@ public class Umbrella : MonoBehaviour
 
     void ReturnToInitialPosition()
     {
+        spiritEco.DecreaseSpiritCount();
         isRotating = false;
         rotateCoroutine = null;
         isThrowing = false;

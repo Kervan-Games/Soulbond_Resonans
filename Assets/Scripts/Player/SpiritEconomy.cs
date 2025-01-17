@@ -23,18 +23,22 @@ public class SpiritEconomy : MonoBehaviour
     {
         if (BulletSpirit != null)
         {
-            GameObject spawnedBullet = Instantiate(BulletSpirit, spawnPoint.position, Quaternion.identity);
-            Rigidbody2D rb = spawnedBullet.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            if (spiritCount > 0)
             {
-                rb.velocity = transform.up * bulletSpeed; 
+                GameObject spawnedBullet = Instantiate(BulletSpirit, spawnPoint.position, Quaternion.identity);
+                Rigidbody2D rb = spawnedBullet.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.velocity = transform.up * bulletSpeed;
+                }
+                //spiritCount--;
+                StartCoroutine(DestroyAfterTime(spawnedBullet, 5f));
             }
-
-            StartCoroutine(DestroyAfterTime(spawnedBullet, 5f));
+            
         }
         else
         {
-            Debug.LogWarning("BulletSpirit prefab atanmamýþ!");
+            Debug.LogWarning("BulletSpirit is NULL!");
         }
     }
 
@@ -46,6 +50,13 @@ public class SpiritEconomy : MonoBehaviour
         {
             Destroy(obj);
         }
+    }
+
+    public int GetSpiritCount() { return spiritCount; }
+
+    public void DecreaseSpiritCount()
+    {
+        spiritCount--;
     }
 
 }
