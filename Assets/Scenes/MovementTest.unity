@@ -139962,7 +139962,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1416152889, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: rotationSpeedForThrow
-      value: 15
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 443220207553575882, guid: 17d0a94601c5da444bf41f6b233d182b, type: 3}
       propertyPath: m_LocalPosition.x
