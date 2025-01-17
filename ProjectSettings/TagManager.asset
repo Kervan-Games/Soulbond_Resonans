@@ -21,6 +21,7 @@ TagManager:
   - Rock
   - RockGround
   - Mimic
+  - BulletSpirit
   layers:
   - Default
   - TransparentFX

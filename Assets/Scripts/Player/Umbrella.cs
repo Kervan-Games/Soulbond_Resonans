@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Umbrella : MonoBehaviour
 {
-    private float rotationSpeed = 5f;
+    //private float rotationSpeed = 5f;
     private Collider2D umbrellaCollider;
 
     public Transform followPosition;
@@ -46,12 +46,16 @@ public class Umbrella : MonoBehaviour
     public float rotationSpeedForThrow = 5f;
     public float moveSpeedForThrow = 1f;
     public float radiusForThrow = 4f;
+    public float throwSpeedMultiplier = 1f;
 
     private Vector3 throwDirection; 
-    private bool hasThrowDirection = false;
+    //private bool hasThrowDirection = false;
     private Coroutine rotateCoroutine;
     private bool isMovingThrow = false;
     private bool isRotating = false;
+    private float tempRadius;
+    private SpiritEconomy spiritEco;
+
 
 
     private void Awake()
@@ -62,6 +66,7 @@ public class Umbrella : MonoBehaviour
     private void Start()
     {
         umbrellaCollider = GetComponent<Collider2D>();
+        spiritEco = GetComponent<SpiritEconomy>();
     }
 
     void FixedUpdate()
@@ -77,7 +82,7 @@ public class Umbrella : MonoBehaviour
                 didTurn = false;
             }
         }
-        else if(isThrowing || isMovingThrow)
+        else if((isThrowing || isMovingThrow) && spiritEco.GetSpiritCount() > 0)
         {
             if (umbrellaCollider.enabled)
             {
@@ -182,7 +187,7 @@ public class Umbrella : MonoBehaviour
         targetPosition.x -= 0.3f; 
 
         float distanceToTarget = Vector3.Distance(umbrellaRotate.transform.position, targetPosition); 
-        float thresholdDistance = 0.25f;
+        //float thresholdDistance = 0.25f;
         windUmbrella.SetActive(false);
 
         if (canSmoothThrowFollow)
@@ -261,33 +266,38 @@ public class Umbrella : MonoBehaviour
         }
     }
 
-    private IEnumerator RotateAndMove(Vector3 throwPosition, float rotationSpeed, float moveSpeed, float radius)
+    private IEnumerator RotateAndMove(Vector3 throwPosition, float rotationSpeed, float baseMoveSpeed, float radius)
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        mousePos.z = 0; 
+        mousePos.z = 0;
 
-        Vector3 direction = (mousePos - transform.position).normalized; 
-        Vector3 targetPosition = transform.position + direction * radius; 
+        Vector3 direction = (mousePos - throwPosition).normalized;
+        Vector3 targetPosition = throwPosition + direction * radius;
 
-        Vector3 moveDirection = targetPosition - transform.position;
-        float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg - 90f;
+        float targetAngle = Mathf.Atan2(targetPosition.y - throwPosition.y, targetPosition.x - throwPosition.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
-        while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f)
+        while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f ||
+               Quaternion.Angle(gameObject.transform.rotation, targetRotation) > 0.1f)
         {
-            umbrellaRotate.transform.position = Vector3.MoveTowards(umbrellaRotate.transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            float distance = Vector3.Distance(umbrellaRotate.transform.position, targetPosition);
+            float dynamicSpeed = Mathf.Lerp(baseMoveSpeed * 0.5f, baseMoveSpeed * 1.5f, distance / radius) * throwSpeedMultiplier;
+
+            dynamicSpeed = Mathf.Clamp(dynamicSpeed, 0f, 12.5f);
+            umbrellaRotate.transform.position = Vector3.MoveTowards(umbrellaRotate.transform.position, targetPosition, dynamicSpeed * Time.deltaTime);
 
             gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             yield return new WaitForFixedUpdate();
         }
-
+        spiritEco.ThrowSpirit();
         Invoke("ReturnToInitialPosition", 1f);
     }
 
     void ReturnToInitialPosition()
     {
+        spiritEco.DecreaseSpiritCount();
         isRotating = false;
         rotateCoroutine = null;
         isThrowing = false;
