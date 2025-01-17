@@ -140087,6 +140087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b8617d597db284c85e63d95b2a3ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spiritCount: 0
   bulletSpeed: 12.5
   spawnPoint: {fileID: 1769636720}
   BulletSpirit: {fileID: 9143142105527969624, guid: 5ef6bfd107ce06d4d84735724e78ea3b, type: 3}

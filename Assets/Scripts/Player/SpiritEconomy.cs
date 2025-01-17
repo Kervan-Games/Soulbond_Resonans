@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpiritEconomy : MonoBehaviour
 {
-    private int spiritCount = 0;
+    [SerializeField] private int spiritCount = 0;
     public float bulletSpeed = 10f;
     public Transform spawnPoint;
     public GameObject BulletSpirit;

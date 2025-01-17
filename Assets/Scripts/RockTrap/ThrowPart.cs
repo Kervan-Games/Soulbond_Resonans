@@ -10,8 +10,11 @@ public class ThrowPart : MonoBehaviour
     {
         if (collision.CompareTag("Spirit") || collision.CompareTag("BulletSpirit"))
         {
-            rockRB.isKinematic = false;
-            groundTrigger.SetCanParticle(true);
+            if(rockRB != null && groundTrigger != null)
+            {
+                rockRB.isKinematic = false;
+                groundTrigger.SetCanParticle(true);
+            }
         }
     }
 }
