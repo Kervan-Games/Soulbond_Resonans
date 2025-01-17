@@ -277,7 +277,7 @@ public class Umbrella : MonoBehaviour
         float targetAngle = Mathf.Atan2(targetPosition.y - throwPosition.y, targetPosition.x - throwPosition.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
-        while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f)
+        while (Vector3.Distance(umbrellaRotate.transform.position, targetPosition) > 0.1f || Quaternion.Angle(gameObject.transform.rotation, targetRotation) > 0.1f)
         {
             umbrellaRotate.transform.position = Vector3.MoveTowards(umbrellaRotate.transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
