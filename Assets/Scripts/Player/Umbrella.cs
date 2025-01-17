@@ -53,6 +53,7 @@ public class Umbrella : MonoBehaviour
     private bool isMovingThrow = false;
     private bool isRotating = false;
     private float tempRadius;
+    private SpiritEconomy spiritEco;
 
 
     private void Awake()
@@ -63,6 +64,7 @@ public class Umbrella : MonoBehaviour
     private void Start()
     {
         umbrellaCollider = GetComponent<Collider2D>();
+        spiritEco = GetComponent<SpiritEconomy>();
     }
 
     void FixedUpdate()
@@ -283,7 +285,7 @@ public class Umbrella : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
-
+        spiritEco.ThrowSpirit();
         Invoke("ReturnToInitialPosition", 1f);
     }
 

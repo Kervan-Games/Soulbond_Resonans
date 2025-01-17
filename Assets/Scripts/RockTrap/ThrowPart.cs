@@ -8,7 +8,7 @@ public class ThrowPart : MonoBehaviour
     public GroundTrigger groundTrigger;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Spirit"))
+        if (collision.CompareTag("Spirit") || collision.CompareTag("BulletSpirit"))
         {
             rockRB.isKinematic = false;
             groundTrigger.SetCanParticle(true);

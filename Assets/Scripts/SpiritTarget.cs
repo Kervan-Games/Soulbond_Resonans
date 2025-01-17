@@ -7,7 +7,7 @@ public class SpiritTarget : MonoBehaviour
     private bool didHit = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Spirit"))
+        if(collision.CompareTag("Spirit") || collision.CompareTag("BulletSpirit"))
         {
             StartCoroutine(DestroyAfterDelay(collision));
             didHit = true;
