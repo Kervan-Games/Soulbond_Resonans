@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canUmbrella;
 
-    private float currentSpeed = 0f;
+    private float currentSpeed = 0f; 
     private float smoothTime = 0.1f; 
     private float velocitySmoothing = 0f;
 
@@ -102,6 +102,8 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem screamParticle;
 
+    private bool isJumpPressedDown = false;
+    private bool isInJumpPad = false;
 
     void Start()
     {
@@ -456,9 +458,21 @@ public class PlayerMovement : MonoBehaviour
                 jumpParticles.Play();
                 jumpCancelled = true;
             }
+            else if(context.performed && isInJumpPad)
+            {
+                isJumpPressedDown = true;
+                StartCoroutine(ResetIsJumpPressed());
+            }
         }
         
     }
+    private IEnumerator ResetIsJumpPressed()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("jump false");
+        isJumpPressedDown = false;
+    }
+
 
     public void OnPausePressed(InputAction.CallbackContext context)
     {
@@ -863,4 +877,25 @@ public class PlayerMovement : MonoBehaviour
     {
         isPaused = isp;
     }
+
+    public void SetCurrentSpeed(float speed)
+    {
+        currentSpeed = speed;
+    }
+
+    public bool GetIsFacingRight()
+    {
+        return isFacingRight;
+    }
+
+    public bool GetIsJumpPressedDown() 
+    { 
+        return isJumpPressedDown; 
+    }
+
+    public void SetIsInJumpPad(bool isIn)
+    {
+        isInJumpPad = isIn;
+    }
+
 }
