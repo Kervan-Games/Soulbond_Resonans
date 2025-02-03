@@ -458,7 +458,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpParticles.Play();
                 jumpCancelled = true;
             }
-            else if(context.performed && isInJumpPad)
+            else if(context.performed && isInJumpPad && !isJumpPressedDown)
             {
                 isJumpPressedDown = true;
                 StartCoroutine(ResetIsJumpPressed());
@@ -469,7 +469,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator ResetIsJumpPressed()
     {
         yield return new WaitForSeconds(0.5f);
-        Debug.Log("jump false");
+        //Debug.Log("jump false");
         isJumpPressedDown = false;
     }
 

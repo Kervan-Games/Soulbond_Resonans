@@ -12,10 +12,18 @@ public class JumpPad : MonoBehaviour
     private bool canJump = true;
     private bool isInCooldown = false;
 
+    private float jumpCoolDown = 5f;
+
+    private SpriteRenderer spriteRenderer;
+    private Color initColor;
+    private Color coolDownColor;
     private void Start()
     {
         playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         playerMovement = playerRB.gameObject.GetComponent<PlayerMovement>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        initColor = spriteRenderer.color;
+        coolDownColor = new Color(initColor.r, initColor.g, initColor.b, 100);
     }
 
     private void Update()
@@ -23,11 +31,10 @@ public class JumpPad : MonoBehaviour
         if (playerMovement.GetIsJumpPressedDown() && canJump)
         {
             Jump();
+            isInCooldown = true;
             canJump = false;
-
-            // cooldowna girsin;
-            // rengi solsun
-            // canJump ve renk düzelsin coroutine'i baslat
+            spriteRenderer.color = new Color(initColor.r, initColor.g, initColor.b, 0.25f);
+            StartCoroutine(JumpPadCoolDown());
 
         }
     }
@@ -63,5 +70,20 @@ public class JumpPad : MonoBehaviour
             canJump = false;
             playerMovement.SetIsInJumpPad(false);
         }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && !isInCooldown)
+        {
+            canJump = true;
+            playerMovement.SetIsInJumpPad(true);
+        }
+    }
+
+    private IEnumerator JumpPadCoolDown()
+    {
+        yield return new WaitForSeconds(jumpCoolDown);
+        spriteRenderer.color = initColor;
+        isInCooldown = false;
     }
 }
