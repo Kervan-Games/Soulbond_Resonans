@@ -38,6 +38,8 @@ public class Spirit : MonoBehaviour
     private bool canTouch = true;
     private bool didTouch = false;
 
+    private bool didThrow = false;
+
 
     void Start()
     {
@@ -106,11 +108,15 @@ public class Spirit : MonoBehaviour
         canUmbrella = false;
     }
 
-    void Update()
+    private void Update()
     {
         CalculateDistanceToPlayer();
+    }
 
-        if (playerTransform != null)
+    void FixedUpdate()
+    {
+
+        if (playerTransform != null && !didTouch)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -128,7 +134,7 @@ public class Spirit : MonoBehaviour
             }
         }
 
-        if (playerTransform != null)
+        if (playerTransform != null && !didTouch)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -141,15 +147,21 @@ public class Spirit : MonoBehaviour
                 }
             }
         }
+        if (didTouch && canShoot && !didThrow)
+        {
+            Vector3 targetPosition = spiritHolderTransform.position;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, 6f * Time.deltaTime);
+            //Debug.Log("FOLLOWING");
+        }
     }
     private void TouchToPlayer()
     {
         if (canHit)
         {
-            transform.SetParent(spiritHolderTransform);
-            transform.localPosition = Vector3.zero;
+            //transform.SetParent(spiritHolderTransform);
+            //transform.localPosition = Vector3.zero;
             transform.rotation = Quaternion.identity;
-            rb.isKinematic = true;
+            //rb.isKinematic = true;
             canChase = false;
             canHit = true;
             playerHealth.SetIsHoldingSpirit(true);
@@ -161,6 +173,7 @@ public class Spirit : MonoBehaviour
 
     public void ThrowSpirit()// if a bug occurs when holding many spirit and you can not throw some spirits, take a look at canShoot.
     {
+        didThrow = true;
         if (canShoot && inRange)
         {
             rb.velocity = Vector3.zero;
@@ -177,15 +190,12 @@ public class Spirit : MonoBehaviour
                 canShoot = false;
             }
 
-            /*else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
+            else if (!rb.isKinematic && !playerSpiritThrow.GetCanThrow()) // throw to random direction before hold
             {
-                if (canSing)
-                {
-                    ThrowSpiritBeforeHold();
-                    //Debug.Log("before hold shoot");
-                    canShoot = false;
-                }
-            }*/
+                ThrowSpiritRandomDirection();
+                //Debug.Log("before hold shoot");
+                canShoot = false;
+            }
 
             else if (playerSpiritThrow.GetCanThrow() && inRange) // throw to target in range
             {
@@ -199,6 +209,7 @@ public class Spirit : MonoBehaviour
             playerMovement.SetIsHoldingSpirit(false);
             SetInSingArea(false);
             isTouching = false;
+            didThrow = true;
         }
     }
 
