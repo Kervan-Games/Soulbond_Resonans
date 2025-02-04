@@ -123,7 +123,7 @@ public class Umbrella : MonoBehaviour
         {
             Spirit spirit = collision.GetComponent<Spirit>();
             spirit.SetUmbrella(true);
-            spirit.ThrowSpirit();
+            //spirit.ThrowSpirit();
         }
 
         /*else if (collision.CompareTag("WalkerSpirit"))
