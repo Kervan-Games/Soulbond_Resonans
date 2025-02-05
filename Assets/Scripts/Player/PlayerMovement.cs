@@ -105,6 +105,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpPressedDown = false;
     private bool isInJumpPad = false;
 
+    // ATTACK PHASE:
+    private bool attackPhase = false;
+    private bool isAttacking = false;
+    private bool canAttack = true;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -157,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead)
         {
-            if (!isInLanes)
+            if (!isInLanes && !attackPhase)
             {
                 if (!isInDialogue)
                 {
@@ -225,6 +230,25 @@ public class PlayerMovement : MonoBehaviour
                     isUmbrellaOpen = true;
                 }
 
+            }
+            else if (attackPhase)
+            {
+                if (!isAttacking)
+                {
+                    Move();
+                }
+                else
+                {
+                    currentSpeed = 0;
+                    rb.velocity = new Vector2(0f, rb.velocity.y); // here is not necessary 
+                }
+                GroundCheck();
+                OpenUmbrella();
+                if (!isAttacking || isFlipping)
+                {
+                    HandleFlipping();
+                }
+                UpdateStamina();
             }
         }
         if (isDead && isFlipping)
