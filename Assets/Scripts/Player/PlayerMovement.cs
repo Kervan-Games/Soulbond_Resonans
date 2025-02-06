@@ -160,6 +160,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (!attackPhase)
+            {
+                animator.SetTrigger("attackPhase");
+                attackPhase = true;
+            }
+        }
         if (!isDead)
         {
             if (!isInLanes && !attackPhase)
@@ -527,32 +535,47 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnSingPressed(InputAction.CallbackContext context)
     {
-        if (!isDead && canSing && !isInDialogue && !isPaused && isGrounded && !isClimbing)
+        if (!attackPhase)
         {
-            if (context.started && !isReloading)
+            if (!isDead && canSing && !isInDialogue && !isPaused && isGrounded && !isClimbing)
             {
-                animator.SetBool("isSinging", true);
-                isSinging = true;
-            }
+                if (context.started && !isReloading)
+                {
+                    animator.SetBool("isSinging", true);
+                    isSinging = true;
+                }
 
-            if (context.canceled)
+                if (context.canceled)
+                {
+                    //ThrowAllTouchingSpirits();
+                    animator.SetBool("isSinging", false);
+                    //singAreaVisual.SetActive(false);
+                    singAreaCollider.enabled = false;
+                    //newScreamVisual.SetActive(false);
+                    isSinging = false;
+                    screamParticle.Stop();
+                }
+            }
+            else
             {
-                //ThrowAllTouchingSpirits();
                 animator.SetBool("isSinging", false);
-                //singAreaVisual.SetActive(false);
-                singAreaCollider.enabled = false;
-                //newScreamVisual.SetActive(false);
                 isSinging = false;
+                //newScreamVisual.SetActive(false);
                 screamParticle.Stop();
+
             }
         }
-        else
+        else if (attackPhase)
         {
-            animator.SetBool("isSinging", false);
-            isSinging = false;
-            //newScreamVisual.SetActive(false);
-            screamParticle.Stop();
-            
+            if (!isDead && canAttack && !isPaused && isGrounded && !isClimbing)
+            {
+                if (context.performed)
+                {
+                    animator.SetTrigger("attack");
+                    canAttack = false;
+                }
+
+            }
         }
 
     }
@@ -920,6 +943,11 @@ public class PlayerMovement : MonoBehaviour
     public void SetIsInJumpPad(bool isIn)
     {
         isInJumpPad = isIn;
+    }
+
+    public void SetCanAttackTrue()
+    {
+        canAttack = true;
     }
 
 }
