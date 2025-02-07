@@ -241,6 +241,11 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (attackPhase)
             {
+                if (umbrellaThrow.activeSelf)
+                {
+                    umbrellaThrow.SetActive(false);
+                }
+
                 if (!isAttacking)
                 {
                     Move();
@@ -474,7 +479,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead && !isInDialogue && !isInLanes && !isPaused)
         {
-            if (context.performed && isGrounded)
+            if (context.performed && isGrounded && !isSinging && !isAttacking)
             {
                 animator.SetBool("isJumping", true);
                 animator.SetTrigger("jump");
@@ -573,6 +578,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     animator.SetTrigger("attack");
                     canAttack = false;
+                    isAttacking = true;
                 }
 
             }
@@ -948,6 +954,9 @@ public class PlayerMovement : MonoBehaviour
     public void SetCanAttackTrue()
     {
         canAttack = true;
+        isAttacking = false;
     }
+
+    public bool GetIsAttacking() { return isAttacking; }
 
 }

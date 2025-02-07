@@ -30,6 +30,15 @@ public class GroundTrigger : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            GroundHit();
+        }
+    }
+
+
     private void ColliderDisabler()
     {
         foreach (Collider2D childCollider in rocks.GetComponentsInChildren<Collider2D>())
