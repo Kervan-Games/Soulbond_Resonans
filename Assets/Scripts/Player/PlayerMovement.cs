@@ -110,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isAttacking = false;
     private bool canAttack = true;
 
+    private bool isCrouching = false;
+    private bool canCrouch = true;
+    [SerializeField] private Collider2D standCollider;
+    [SerializeField] private Collider2D crouchCollider;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -156,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
 
         targetScaleX = transform.localScale.x;
         flyTrail = GetComponent<TrailRenderer>();
+        standCollider.enabled = true;
+        crouchCollider.enabled = false;
     }
 
     void Update()
@@ -570,7 +577,11 @@ public class PlayerMovement : MonoBehaviour
 
             }
         }
-        else if (attackPhase)
+    }
+
+    public void OnAttackPressed(InputAction.CallbackContext context)
+    {
+        if (attackPhase)
         {
             if (!isDead && canAttack && !isPaused && isGrounded && !isClimbing)
             {
@@ -583,6 +594,35 @@ public class PlayerMovement : MonoBehaviour
 
             }
         }
+    }
+
+    public void OnCrouchPressed(InputAction.CallbackContext context)
+    {
+        if(!isDead && !isPaused && isGrounded && !isClimbing && !isSinging && canCrouch)
+        {
+            if (context.performed)
+            {
+                if (isCrouching == false)
+                {
+                    isCrouching = true;
+                    standCollider.enabled = false;
+                    crouchCollider.enabled = true;
+                    maxSpeed = 3.5f;
+                    //Debug.Log("Crouching");
+                }
+                else if (isCrouching == true)
+                {
+                    isCrouching = false;
+                    standCollider.enabled = true;
+                    crouchCollider.enabled = false;
+                    maxSpeed = 7.5f;
+                    //Debug.Log("NOT Crouching");
+                }
+            }
+        }
+    }
+    public void OnParryPressed(InputAction.CallbackContext context)
+    {
 
     }
 
@@ -958,5 +998,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public bool GetIsAttacking() { return isAttacking; }
+
+    public void SetCanCrouch(bool cannCrouch)
+    {
+        canCrouch = cannCrouch;
+    }
 
 }
