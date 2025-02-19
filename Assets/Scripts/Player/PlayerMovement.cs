@@ -118,6 +118,8 @@ public class PlayerMovement : MonoBehaviour
     private bool canParry = true;
     private float parryCoolDown = 1f;
 
+    private bool isParrying = false;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -184,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (!isInDialogue)
                 {
-                    if (!isClimbing && !isSinging)
+                    if (!isClimbing && !isSinging && !isParrying)
                         Move();
                     else
                     {
@@ -256,7 +258,7 @@ public class PlayerMovement : MonoBehaviour
                     umbrellaThrow.SetActive(false);
                 }
 
-                if (!isAttacking)
+                if (!isAttacking && !isParrying)
                 {
                     Move();
                 }
@@ -267,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 GroundCheck();
                 OpenUmbrella();
-                if (!isAttacking || isFlipping)
+                if ((!isAttacking && !isParrying) || isFlipping)
                 {
                     HandleFlipping();
                 }
@@ -489,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDead && !isInDialogue && !isInLanes && !isPaused)
         {
-            if (context.performed && isGrounded && !isSinging && !isAttacking)
+            if (context.performed && isGrounded && !isSinging && !isAttacking && !isParrying)
             {
                 animator.SetBool("isJumping", true);
                 animator.SetTrigger("jump");
@@ -586,7 +588,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (attackPhase)
         {
-            if (!isDead && canAttack && !isPaused && isGrounded && !isClimbing)
+            if (!isDead && canAttack && !isPaused && isGrounded && !isClimbing && !isParrying)
             {
                 if (context.performed)
                 {
@@ -632,6 +634,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("PARRY!");
                 canParry = false;
+                isParrying = true;
+                animator.SetBool("isParrying", true);
                 StartCoroutine(ParryCoolDown());
             }
         }
@@ -641,6 +645,12 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(parryCoolDown);
         canParry = true;
+    }
+
+    public void SetIsParryingFalse()
+    {
+        animator.SetBool("isParrying", false);
+        isParrying = false;
     }
 
     public void SetSingAreaCollider(bool sett)
