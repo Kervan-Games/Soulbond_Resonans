@@ -21,6 +21,8 @@ public class Puncher : MonoBehaviour
 
     private bool isStunned = false;
     private bool isFacingRight = true;
+
+    public float parryPushStrength = 75f;
     private void Start()
     {
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -36,9 +38,13 @@ public class Puncher : MonoBehaviour
         {
             MoveToPlayer();
         }
+        else if (isStunned)
+        {
+            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }
         else 
         {
-            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
          
     }
@@ -54,7 +60,7 @@ public class Puncher : MonoBehaviour
 
         if (distance <= stoppingRange && !isAttacking && !isStunned)
         {
-            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             isAttacking = true;
             Debug.Log("charging");
             StartCoroutine(Attack());
@@ -85,7 +91,7 @@ public class Puncher : MonoBehaviour
     private void MoveToPlayer()
     {
         Vector2 direction  = new Vector2(playerTransform.position.x - transform.position.x, 0).normalized;
-        rb.velocity = direction * moveSpeed;
+        rb.velocity = new Vector2 (direction.x * moveSpeed, rb.velocity.y);
     }
 
     private void HandleFlipping()
@@ -107,6 +113,17 @@ public class Puncher : MonoBehaviour
         isStunned = true;
         Debug.Log("stunned!");
         // geriye dogru biraz it facing right degerine gore yon alarak
+        if (isFacingRight)
+        {
+            Vector2 dir = new Vector2(-1f,1f);
+            rb.AddForce(dir * parryPushStrength, ForceMode2D.Impulse);
+        }
+        else if (!isFacingRight)
+        {
+            Vector2 dir = new Vector2(1f, 1f);
+            rb.AddForce(dir * parryPushStrength, ForceMode2D.Impulse);
+            Debug.Log("cu");
+        }
         StartCoroutine(Stun());
     }
 
