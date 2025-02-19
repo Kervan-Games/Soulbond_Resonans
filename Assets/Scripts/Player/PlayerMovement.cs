@@ -632,7 +632,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (context.performed && canParry && !isAttacking)
             {
-                Debug.Log("PARRY!");
+                //Debug.Log("PARRY!");
                 canParry = false;
                 isParrying = true;
                 animator.SetBool("isParrying", true);
@@ -1030,5 +1030,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canCrouch = cannCrouch;
     }
+
+    public bool GetIsParrying() { return isParrying; }
 
 }
