@@ -115,6 +115,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Collider2D standCollider;
     [SerializeField] private Collider2D crouchCollider;
 
+    private bool canParry = true;
+    private float parryCoolDown = 1f;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -623,7 +626,21 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnParryPressed(InputAction.CallbackContext context)
     {
+        if (attackPhase && !isDead && !isPaused && isGrounded && !isClimbing && !isSinging)
+        {
+            if (context.performed && canParry && !isAttacking)
+            {
+                Debug.Log("PARRY!");
+                canParry = false;
+                StartCoroutine(ParryCoolDown());
+            }
+        }
+    }
 
+    private IEnumerator ParryCoolDown()
+    {
+        yield return new WaitForSeconds(parryCoolDown);
+        canParry = true;
     }
 
     public void SetSingAreaCollider(bool sett)

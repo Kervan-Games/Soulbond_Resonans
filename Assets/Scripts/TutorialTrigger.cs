@@ -14,7 +14,7 @@ public class TutorialTrigger : MonoBehaviour
 
         if (tutorialCanvas == null)
         {
-            Debug.LogError("TutorialCanvas script is not found in the scene!");
+            //Debug.LogError("TutorialCanvas script is not found in the scene!");
         }
     }
 
