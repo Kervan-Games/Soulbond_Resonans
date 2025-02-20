@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 5280859019186272239}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Puncher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -439,8 +439,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthImage: {fileID: 5964220265612562304}
   damageImage: {fileID: 9053260652111921476}
-  maxHealth: 120
-  damageLerpSpeed: 2
 --- !u!1 &8016953352868554330
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +561,7 @@ GameObject:
   - component: {fileID: 8016953352916419822}
   m_Layer: 0
   m_Name: Puncher
-  m_TagString: Untagged
+  m_TagString: Puncher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

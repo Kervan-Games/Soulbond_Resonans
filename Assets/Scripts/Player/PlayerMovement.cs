@@ -120,6 +120,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isParrying = false;
 
+    public Collider2D attackAreaCollider;
+    private AttackArea attackArea;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -127,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
         singAreaCollider = singArea.GetComponent<Collider2D>();
         umbrellaThrowCollider = umbrellaThrow.GetComponent<Collider2D>();
         playerHealth = GetComponent<PlayerHealth>();
+        attackArea = attackAreaCollider.gameObject.GetComponent<AttackArea>();
         umbrella.SetActive(false);
         canUmbrella = false;
         isFacingRight = true;
@@ -168,6 +172,8 @@ public class PlayerMovement : MonoBehaviour
         flyTrail = GetComponent<TrailRenderer>();
         standCollider.enabled = true;
         crouchCollider.enabled = false;
+        attackAreaCollider.enabled = true;
+        attackAreaCollider.gameObject.SetActive(true);
     }
 
     void Update()
@@ -1032,5 +1038,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public bool GetIsParrying() { return isParrying; }
+
+    public void DealDamage()
+    {
+        attackArea.DealDamage(20f);
+    }
 
 }

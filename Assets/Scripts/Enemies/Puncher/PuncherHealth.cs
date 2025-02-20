@@ -35,20 +35,23 @@ public class PuncherHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        currentHealth -= damageAmount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        if(currentHealth <= 0)
+        if (!isDead)
         {
-            puncher.SetIsDead(true);
-            isDead = true;  
-        }
-        
-        UpdateHealthUI();
+            currentHealth -= damageAmount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        StopAllCoroutines();
-        StartCoroutine(FlashDamageEffect());
-        StartCoroutine(SmoothDamageFill());
+            if (currentHealth <= 0)
+            {
+                puncher.SetIsDead(true);
+                isDead = true;
+            }
+
+            UpdateHealthUI();
+
+            StopAllCoroutines();
+            StartCoroutine(FlashDamageEffect());
+            StartCoroutine(SmoothDamageFill());
+        }
     }
 
     private void UpdateHealthUI()

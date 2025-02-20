@@ -76,12 +76,12 @@ public class Puncher : MonoBehaviour
         {
             if(playerMovement.GetIsParrying() == false)
             {
-                Debug.Log("DAMAGE!!");
+                //Debug.Log("DAMAGE!!");
                 playerHealth.TakeDamage(attackDamage);
             }
             else
             {
-                Debug.Log("PARRIED!!");
+                //Debug.Log("PARRIED!!");
                 GetStunned();
             }
             
