@@ -5,7 +5,7 @@ using UnityEngine;
 public class Breakable : MonoBehaviour
 {
     public GameObject[] debrisPrefabs;
-    public float maxForce = 10f; 
+    private float maxForce = 12f; 
     public bool isFacingRight = true;
 
     private float maxHealth = 60f;
@@ -13,9 +13,17 @@ public class Breakable : MonoBehaviour
 
     private int debrisAmount = 5;
 
+    private PlayerMovement playerMovement;
+
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+
     private void Start()
     {
         currentHealth = maxHealth;
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     public void TakeDamage(float damageAmount)
@@ -27,10 +35,15 @@ public class Breakable : MonoBehaviour
         {
             BreakObject();
         }
+
+        StopAllCoroutines();
+        StartCoroutine(FlashDamageEffect());
     }
 
     private void BreakObject()
     {
+        isFacingRight = playerMovement.GetIsFacingRight();
+
         if (debrisPrefabs.Length == 0) return;
 
         for (int i = 0; i < debrisAmount; i++)
@@ -40,13 +53,31 @@ public class Breakable : MonoBehaviour
 
             if (rb != null)
             {
-                Vector2 forceDirection = isFacingRight ? Vector2.right : Vector2.left;
-                forceDirection += new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1f, 1f));    
-                forceDirection.Normalize(); 
-                rb.AddForce(forceDirection * Random.Range(3f, maxForce), ForceMode2D.Impulse);
+                if (isFacingRight)
+                {
+                    Vector2 forceDirection = Vector2.right;
+                    forceDirection += new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1f, 2f));
+                    forceDirection.Normalize();
+                    rb.AddForce(forceDirection * Random.Range(5f, maxForce), ForceMode2D.Impulse);
+                }
+                else
+                {
+                    Vector2 forceDirection = Vector2.left;
+                    forceDirection += new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1f, 2f));
+                    forceDirection.Normalize();
+                    rb.AddForce(forceDirection * Random.Range(1f, maxForce), ForceMode2D.Impulse);
+                }
+                
             }
         }
 
         Destroy(gameObject);
+    }
+
+    private IEnumerator FlashDamageEffect()
+    {
+        spriteRenderer.color = Color.white;
+        yield return new WaitForSeconds(0.075f);
+        spriteRenderer.color = originalColor;
     }
 }
