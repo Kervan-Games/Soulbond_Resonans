@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 19187478}
   - component: {fileID: 19187480}
   - component: {fileID: 19187479}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpiritHold Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 57629173}
   - component: {fileID: 57629175}
   - component: {fileID: 57629174}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Landing Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9635,7 +9635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 242272133}
   - component: {fileID: 242272134}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: umbrella_closed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9719,7 +9719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 246794246}
   - component: {fileID: 246794247}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9804,7 +9804,7 @@ GameObject:
   - component: {fileID: 246899212}
   - component: {fileID: 246899213}
   - component: {fileID: 246899214}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BossLightOff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9899,7 +9899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 378770715}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UmbrellaThrowPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9931,7 +9931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519277717}
   - component: {fileID: 519277718}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NewVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10015,7 +10015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 599448829}
   - component: {fileID: 599448828}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "WhatsApp G\xF6rsel 2025-02-13 saat 19.49.25_ff06d27d"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10099,7 +10099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 667197887}
   - component: {fileID: 667197888}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WindUmbrella
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10184,7 +10184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 681190726}
   - component: {fileID: 681190727}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Umbrella_opened
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10269,7 +10269,7 @@ GameObject:
   - component: {fileID: 771862786}
   - component: {fileID: 771862788}
   - component: {fileID: 771862787}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SingParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15080,7 +15080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 791905225}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UmbrellaFlyHoldPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15113,7 +15113,7 @@ GameObject:
   - component: {fileID: 847058019}
   - component: {fileID: 847058021}
   - component: {fileID: 847058020}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Run Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19924,7 +19924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1188508945}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UmbrellaFollowPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19957,7 +19957,7 @@ GameObject:
   - component: {fileID: 1320818770}
   - component: {fileID: 1320818772}
   - component: {fileID: 1320818771}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Jump Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24770,7 +24770,7 @@ GameObject:
   - component: {fileID: 1349949907}
   - component: {fileID: 1349949909}
   - component: {fileID: 1349949908}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ScreamParticleRipple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29583,7 +29583,7 @@ GameObject:
   - component: {fileID: 1416152889}
   - component: {fileID: 1416152888}
   - component: {fileID: 2535139407042370878}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Umbrella
   m_TagString: Umbrella
   m_Icon: {fileID: 0}
@@ -29684,7 +29684,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1437883360}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EmmisionPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29717,7 +29717,7 @@ GameObject:
   - component: {fileID: 1571075238}
   - component: {fileID: 1571075240}
   - component: {fileID: 1571075239}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DidHitTriggerForMimic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29786,7 +29786,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1743938970}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29820,7 +29820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1769636720}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ThrowSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29852,7 +29852,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1845078227}
   - component: {fileID: 1845078228}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BackGroundHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29897,7 +29897,7 @@ GameObject:
   - component: {fileID: 1997398484}
   - component: {fileID: 1997398486}
   - component: {fileID: 1997398485}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DidHitTriggerForMimic (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29968,7 +29968,7 @@ GameObject:
   - component: {fileID: 2535139405473075222}
   - component: {fileID: 2535139405473075223}
   - component: {fileID: 2535139405473075220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpiritThrowRadius
   m_TagString: SpiritThrower
   m_Icon: {fileID: 0}
@@ -30027,7 +30027,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2535139405592235834}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Holder
   m_TagString: SpiritHolder
   m_Icon: {fileID: 0}
@@ -30059,7 +30059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2535139405791782641}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30093,7 +30093,7 @@ GameObject:
   - component: {fileID: 2535139406306569032}
   - component: {fileID: 2535139406306569033}
   - component: {fileID: 273325338}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SingArea
   m_TagString: SingArea
   m_Icon: {fileID: 0}
@@ -30172,7 +30172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2535139406877652488}
   - component: {fileID: 2535139406877652489}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UmbrellaFly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30260,7 +30260,7 @@ GameObject:
   - component: {fileID: 261166549}
   - component: {fileID: 261166550}
   - component: {fileID: 3832511927145538408}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30368,7 +30368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2535139407187634375}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30409,7 +30409,7 @@ GameObject:
   - component: {fileID: 2535139407251564777}
   - component: {fileID: 2535139407251564783}
   - component: {fileID: 326604409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30514,7 +30514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2535139407256590710}
   - component: {fileID: 2535139407256590711}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpiritHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30572,7 +30572,7 @@ GameObject:
   - component: {fileID: 1128626041}
   - component: {fileID: 1128626030}
   - component: {fileID: 1128626031}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -31253,7 +31253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2535139407375626201}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpiritHolder
   m_TagString: SpiritHolder
   m_Icon: {fileID: 0}
@@ -31287,7 +31287,7 @@ GameObject:
   - component: {fileID: 396009579550946023}
   - component: {fileID: 6494181399855921706}
   - component: {fileID: 2922318142082319286}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31399,7 +31399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4157561421956849022}
   - component: {fileID: 1764882127}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HoldCollider
   m_TagString: UmbrellaHolder
   m_Icon: {fileID: 0}
@@ -31448,7 +31448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 443220207553575882}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UmbrellaRotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

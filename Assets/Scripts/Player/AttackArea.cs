@@ -5,6 +5,9 @@ using UnityEngine;
 public class AttackArea : MonoBehaviour
 {
     private List<PuncherHealth> punchersInArea = new List<PuncherHealth>();
+    private List<Breakable> breakablesInArea = new List<Breakable>();
+
+    //private GameObject breakable;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,6 +17,14 @@ public class AttackArea : MonoBehaviour
             if (puncherHealth != null && !punchersInArea.Contains(puncherHealth))
             {
                 punchersInArea.Add(puncherHealth);
+            }
+        }
+        else if (other.CompareTag("Breakable"))
+        {
+            Breakable breakable = other.GetComponent<Breakable>();
+            if (breakable != null && !breakablesInArea.Contains(breakable))
+            {
+                breakablesInArea.Add(breakable);
             }
         }
     }
@@ -27,6 +38,15 @@ public class AttackArea : MonoBehaviour
             {
                 punchersInArea.Remove(puncherHealth);
             }
+
+        }
+        else if (other.CompareTag("Breakable"))
+        {
+            Breakable breakable = other.GetComponent<Breakable>();
+            if (breakable != null)
+            {
+                breakablesInArea.Remove(breakable);
+            }
         }
     }
 
@@ -39,5 +59,14 @@ public class AttackArea : MonoBehaviour
                 puncher.TakeDamage(damageAmount);
             }
         }
+
+        foreach (Breakable breakable in breakablesInArea)
+        {
+            if (breakable != null)
+            {
+                breakable.TakeDamage(damageAmount);
+            }
+        }
+
     }
 }

@@ -23,18 +23,19 @@ TagManager:
   - Mimic
   - BulletSpirit
   - Puncher
+  - Breakable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
   - Boss
   - Wall
   - Post Processing
-  - 
+  - Debris
   - 
   - 
   - 

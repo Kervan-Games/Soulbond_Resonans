@@ -123,7 +123,6 @@ public class Puncher : MonoBehaviour
         {
             Vector2 dir = new Vector2(1f, 1f);
             rb.AddForce(dir * parryPushStrength, ForceMode2D.Impulse);
-            Debug.Log("cu");
         }
         StartCoroutine(Stun());
     }
