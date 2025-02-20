@@ -123,6 +123,13 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D attackAreaCollider;
     private AttackArea attackArea;
 
+    private bool canDash = true;
+    private bool canAirDash = true;
+    private float dashStrength = 3f;
+    private bool isDashing = false;
+
+    private float dashTime = 0.25f;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -268,7 +275,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Move();
                 }
-                else
+                else if(isAttacking || isParrying) // else
                 {
                     currentSpeed = 0;
                     rb.velocity = new Vector2(0f, rb.velocity.y); // here is not necessary 
@@ -288,26 +295,76 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        float targetSpeed = moveInput.x * maxSpeed;
-        currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
-
-        rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
-        animator.SetFloat("speed", Mathf.Abs(currentSpeed));
-        if(isGrounded && Mathf.Abs(currentSpeed) > 0.1f)
+        if (!isDashing)
         {
-            if (runParticles.isPlaying == false)
+            float targetSpeed = moveInput.x * maxSpeed;
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
+
+            rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
+            animator.SetFloat("speed", Mathf.Abs(currentSpeed));
+            if (isGrounded && Mathf.Abs(currentSpeed) > 0.1f)
             {
-                runParticles.Play();
+                if (runParticles.isPlaying == false)
+                {
+                    runParticles.Play();
+                }
+            }
+            else
+            {
+                if (runParticles.isPlaying)
+                {
+                    runParticles.Stop();
+                }
             }
         }
-        else
+
+        else if (isDashing && canDash)
         {
+            Vector2 direction;
+            if (isFacingRight)
+            {
+               // Debug.Log(canDash);
+                direction = Vector2.right;
+
+                float targetSpeed = direction.x * maxSpeed * dashStrength;
+                //currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
+                currentSpeed = targetSpeed;
+
+                rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
+                animator.SetFloat("speed", Mathf.Abs(currentSpeed));
+            }
+            else
+            {
+                direction = Vector2.left;
+
+                float targetSpeed = direction.x * maxSpeed * dashStrength;
+                currentSpeed = targetSpeed;
+
+                rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
+                animator.SetFloat("speed", Mathf.Abs(currentSpeed));
+            }
+            
+
             if (runParticles.isPlaying)
             {
-                runParticles.Stop();
+                    runParticles.Stop();
             }
+            canDash = false;
+            StartCoroutine(StopDashing());
         }
+    }
 
+    private IEnumerator StopDashing()
+    {
+        yield return new WaitForSeconds(dashTime);
+        isDashing = false;
+        StartCoroutine(ActivateDashing());
+    }
+
+    private IEnumerator ActivateDashing()
+    {
+        yield return new WaitForSeconds(1);
+        canDash = true;
     }
 
     private void GroundCheck()
@@ -459,7 +516,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnUmbrellaOpen(InputAction.CallbackContext context) // fly with umbrella
     {
-        if(!isDead && !isPaused)
+        if(!isDead && !isPaused && !attackPhase)
         {
             if (context.started)
             {
@@ -602,6 +659,25 @@ public class PlayerMovement : MonoBehaviour
                     canAttack = false;
                     isAttacking = true;
                 }
+
+            }
+        }
+    }
+
+    public void OnDashPressed(InputAction.CallbackContext context)
+    {
+        if (attackPhase)
+        {
+            if ((!isDead && canDash && !isPaused && isGrounded && !isClimbing && !isParrying && !isAttacking)/* || canAirDash*/)
+            {
+                if (context.performed)
+                {
+                    isDashing = true;
+                }
+                /*if (context.canceled)
+                {
+                    isDashing = false;
+                }*/
 
             }
         }
@@ -843,7 +919,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDead = true;
         rb.velocity = new Vector2(0f, rb.velocity.y);
-        animator.SetFloat("speed", 0f);// animator setbool isdead ekle -> ölüm animasyonu
+        animator.SetFloat("speed", 0f);
         SetDepthOfField(true);
         playerHealth.Die();
 

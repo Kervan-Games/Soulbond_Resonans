@@ -64,7 +64,7 @@ public class Puncher : MonoBehaviour
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
             isAttacking = true;
-            Debug.Log("charging");
+            Debug.Log("Charging, get ready to parry!");
             StartCoroutine(Attack());
         }
     }
@@ -81,7 +81,7 @@ public class Puncher : MonoBehaviour
             }
             else
             {
-                //Debug.Log("PARRIED!!");
+                Debug.Log("PARRIED!!");
                 GetStunned();
             }
             
@@ -113,7 +113,7 @@ public class Puncher : MonoBehaviour
     private void GetStunned()
     {
         isStunned = true;
-        Debug.Log("stunned!");
+        Debug.Log("Stunned!");
         if (isFacingRight)
         {
             Vector2 dir = new Vector2(-1f,1f);
@@ -131,7 +131,7 @@ public class Puncher : MonoBehaviour
     {
         yield return new WaitForSeconds(stunTime);
         isStunned = false;
-        Debug.Log(" NOT  stunned!");
+        Debug.Log("Active Again!");
     }
 
     public void SetIsDead(bool dead)
