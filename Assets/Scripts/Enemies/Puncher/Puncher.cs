@@ -15,7 +15,7 @@ public class Puncher : MonoBehaviour
     private float distance;
     private float attackDamage = 25f;
 
-    private float stunTime = 2.5f;
+    private float stunTime = 2.2f;
 
     private bool isAttacking = false;
 
@@ -23,6 +23,8 @@ public class Puncher : MonoBehaviour
     private bool isFacingRight = true;
 
     public float parryPushStrength = 75f;
+
+    private bool isDead = false;
     private void Start()
     {
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -34,7 +36,7 @@ public class Puncher : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(distance < chaseRange && distance > stoppingRange && !isAttacking && !isStunned) 
+        if(distance < chaseRange && distance > stoppingRange && !isAttacking && !isStunned && !isDead) 
         {
             MoveToPlayer();
         }
@@ -112,7 +114,6 @@ public class Puncher : MonoBehaviour
     {
         isStunned = true;
         Debug.Log("stunned!");
-        // geriye dogru biraz it facing right degerine gore yon alarak
         if (isFacingRight)
         {
             Vector2 dir = new Vector2(-1f,1f);
@@ -132,5 +133,10 @@ public class Puncher : MonoBehaviour
         yield return new WaitForSeconds(stunTime);
         isStunned = false;
         Debug.Log(" NOT  stunned!");
+    }
+
+    public void SetIsDead(bool dead)
+    {
+        isDead = dead;
     }
 }
