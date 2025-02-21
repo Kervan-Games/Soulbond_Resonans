@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D attackAreaCollider;
     private AttackArea attackArea;
 
-    private bool canDash = true;
+    private bool canGroundDash = true;
     private bool canAirDash = true;
     private float dashStrength = 3f;
     private bool isDashing = false;
@@ -318,7 +318,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        else if (isDashing && canDash)
+        else if ((isDashing && canGroundDash) || (isDashing && canAirDash))
         {
             Vector2 direction;
             if (isFacingRight)
@@ -349,7 +349,8 @@ public class PlayerMovement : MonoBehaviour
             {
                     runParticles.Stop();
             }
-            canDash = false;
+            canGroundDash = false;
+            canAirDash = false;
             StartCoroutine(StopDashing());
         }
     }
@@ -364,7 +365,8 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator ActivateDashing()
     {
         yield return new WaitForSeconds(1);
-        canDash = true;
+        canGroundDash = true;
+        canAirDash = true;
     }
 
     private void GroundCheck()
@@ -666,19 +668,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDashPressed(InputAction.CallbackContext context)
     {
-        if (attackPhase)
+        if (attackPhase && context.performed)
         {
-            if ((!isDead && canDash && !isPaused && isGrounded && !isClimbing && !isParrying && !isAttacking)/* || canAirDash*/)
+            if ((!isDead && canGroundDash && !isPaused && isGrounded && !isClimbing && !isParrying && !isAttacking)/* || canAirDash*/)
             {
-                if (context.performed)
-                {
-                    isDashing = true;
-                }
-                /*if (context.canceled)
-                {
-                    isDashing = false;
-                }*/
-
+                isDashing = true;
+            }
+            else if (!isDead && canGroundDash && !isPaused && !isGrounded && !isClimbing && !isParrying && !isAttacking && canAirDash)
+            {
+                isDashing = true;
+                //Debug.Log("Air Dash!");
             }
         }
     }
