@@ -130,6 +130,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float dashTime = 0.25f;
 
+    public AfterImage afterImage;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -343,7 +345,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
                 animator.SetFloat("speed", Mathf.Abs(currentSpeed));
             }
-            
+            afterImage.Dash();
 
             if (runParticles.isPlaying)
             {
@@ -359,7 +361,10 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
+        //afterImage.StopDash();
         StartCoroutine(ActivateDashing());
+        yield return new WaitForSeconds(0.05f);
+        afterImage.StopDash();
     }
 
     private IEnumerator ActivateDashing()
