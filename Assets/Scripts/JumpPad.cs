@@ -9,7 +9,7 @@ public class JumpPad : MonoBehaviour
     private Rigidbody2D playerRB;
     private PlayerMovement playerMovement;
 
-    private bool canJump = true;
+    private bool canJump = false;
     private bool isInCooldown = false;
 
     private float jumpCoolDown = 5f;
