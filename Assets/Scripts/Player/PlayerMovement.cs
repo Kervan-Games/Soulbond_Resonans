@@ -984,7 +984,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     animator.SetFloat("climbSpeed", 0f);
                 }
-                
+
+                if (isFacingRight)
+                    transform.position = new Vector3(rope.transform.position.x - 0.59f, transform.position.y, transform.position.z);
+                else
+                    transform.position = new Vector3(rope.transform.position.x + 0.59f, transform.position.y, transform.position.z);
+
             }
             else if(isClimbing && !isGrounded)
             {
