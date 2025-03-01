@@ -76,8 +76,13 @@ public class Puncher : MonoBehaviour
         {
             if(playerMovement.GetIsParrying() == false)
             {
-                //Debug.Log("DAMAGE!!");
-                playerHealth.TakeDamage(attackDamage);
+                if ((transform.position.x > playerTransform.position.x && !isFacingRight) || (transform.position.x < playerTransform.position.x && isFacingRight))
+                {
+                    //Debug.Log("DAMAGE!!");
+                    playerHealth.TakeDamage(attackDamage);
+                }
+                else
+                    Debug.Log("ters");
             }
             else
             {
@@ -98,15 +103,18 @@ public class Puncher : MonoBehaviour
 
     private void HandleFlipping()
     {
-        if (transform.position.x > playerTransform.position.x)
+        if (!isAttacking)
         {
-            transform.localScale = new Vector3(-2, 2, 2);
-            isFacingRight = false;
-        }
-        else
-        {
-            transform.localScale = new Vector3(2, 2, 2);
-            isFacingRight = true;
+            if (transform.position.x > playerTransform.position.x)
+            {
+                transform.localScale = new Vector3(-2, 2, 2);
+                isFacingRight = false;
+            }
+            else
+            {
+                transform.localScale = new Vector3(2, 2, 2);
+                isFacingRight = true;
+            }
         }
     }
 

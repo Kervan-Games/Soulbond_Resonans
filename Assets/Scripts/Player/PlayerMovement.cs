@@ -132,6 +132,9 @@ public class PlayerMovement : MonoBehaviour
 
     public AfterImage afterImage;
 
+    private int playerLayer;
+    private int enemyLayer;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -183,6 +186,9 @@ public class PlayerMovement : MonoBehaviour
         crouchCollider.enabled = false;
         attackAreaCollider.enabled = true;
         attackAreaCollider.gameObject.SetActive(true);
+
+        playerLayer = LayerMask.NameToLayer("Player");
+        enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 
     void Update()
@@ -361,6 +367,7 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
         //afterImage.StopDash();
         StartCoroutine(ActivateDashing());
         yield return new WaitForSeconds(0.05f);
@@ -679,10 +686,12 @@ public class PlayerMovement : MonoBehaviour
             if ((!isDead && canGroundDash && !isPaused && isGrounded && !isClimbing && !isParrying && !isAttacking)/* || canAirDash*/)
             {
                 isDashing = true;
+                Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
             }
             else if (!isDead && canGroundDash && !isPaused && !isGrounded && !isClimbing && !isParrying && !isAttacking && canAirDash)
             {
                 isDashing = true;
+                Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
                 //Debug.Log("Air Dash!");
             }
         }
