@@ -134,6 +134,8 @@ public class PlayerMovement : MonoBehaviour
 
     private int playerLayer;
     private int enemyLayer;
+    private Coroutine stopDashCoroutine;
+    private Coroutine activateDashCoroutine;
 
     void Start()
     {
@@ -359,7 +361,19 @@ public class PlayerMovement : MonoBehaviour
             }
             canGroundDash = false;
             canAirDash = false;
-            StartCoroutine(StopDashing());
+
+            if (stopDashCoroutine != null)
+            {
+                StopCoroutine(stopDashCoroutine);
+                isDashing = false;
+                Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+                afterImage.StopDash();
+            }
+            if(activateDashCoroutine != null)
+            {
+                StopCoroutine(activateDashCoroutine);
+            }
+            stopDashCoroutine = StartCoroutine(StopDashing());
         }
     }
 
@@ -369,9 +383,10 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
         //afterImage.StopDash();
-        StartCoroutine(ActivateDashing());
+        activateDashCoroutine = StartCoroutine(ActivateDashing());
         yield return new WaitForSeconds(0.05f);
         afterImage.StopDash();
+        stopDashCoroutine = null;
     }
 
     private IEnumerator ActivateDashing()
@@ -695,6 +710,12 @@ public class PlayerMovement : MonoBehaviour
                 //Debug.Log("Air Dash!");
             }
         }
+    }
+
+    public void SetCanAirDash(bool air)
+    {
+        canAirDash = air;
+        canGroundDash = air;
     }
 
     public void OnCrouchPressed(InputAction.CallbackContext context)

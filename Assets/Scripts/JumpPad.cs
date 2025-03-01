@@ -51,6 +51,7 @@ public class JumpPad : MonoBehaviour
         {
             playerMovement.SetCurrentSpeed(-speedBonus);
         }
+        playerMovement.SetCanAirDash(true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
