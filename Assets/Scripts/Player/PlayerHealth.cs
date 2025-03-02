@@ -110,6 +110,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (!isDead)
         {
+            UpdateVignette();
             dieMenu.SetActive(true);
             Time.timeScale = 0f;
             isDead = true;
@@ -123,6 +124,7 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = 0;
         enabled = false;// optional ?
         playerMovement.enabled = false;// optional ?
+        UpdateVignette();
     }
 
     public void TakeDamage(float damage)
@@ -131,10 +133,13 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth -= damage;
             healthBar.fillAmount = currentHealth / 100f;
+            UpdateVignette();
         }
         else
         {
             playerMovement.SetAnimatorIsDeadTrue();
+            currentHealth = 1;
+            UpdateVignette();
         }
     }
 
@@ -157,6 +162,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             playerMovement.SetAnimatorIsDeadTrue();
+            UpdateVignette();
         }
     }
 

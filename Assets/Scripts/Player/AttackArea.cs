@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class AttackArea : MonoBehaviour
 {
     private List<PuncherHealth> punchersInArea = new List<PuncherHealth>();
+    private List<GiantHealth> giantsInArea = new List<GiantHealth>();
     //private List<Breakable> breakablesInArea = new List<Breakable>();
 
     private Breakable breakable;
@@ -17,6 +20,14 @@ public class AttackArea : MonoBehaviour
             if (puncherHealth != null && !punchersInArea.Contains(puncherHealth))
             {
                 punchersInArea.Add(puncherHealth);
+            }
+        }
+        else if (other.CompareTag("Giant"))
+        {
+            GiantHealth giantHealth = other.GetComponent<GiantHealth>();
+            if (giantHealth != null && !giantsInArea.Contains(giantHealth))
+            {
+                giantsInArea.Add(giantHealth);
             }
         }
         else if (other.CompareTag("Breakable"))
@@ -41,14 +52,23 @@ public class AttackArea : MonoBehaviour
             }
 
         }
+        else if (other.CompareTag("Giant"))
+        {
+            GiantHealth giantHealth = other.GetComponent<GiantHealth>();
+            if (giantHealth != null && giantsInArea.Contains(giantHealth))
+            {
+                giantsInArea.Remove(giantHealth);
+            }
+
+        }
         else if (other.CompareTag("Breakable"))
         {
-           /* Breakable breakable = other.GetComponent<Breakable>();
-            if (breakable != null)
-            {
-                breakablesInArea.Remove(breakable);
-            }*/
-           breakable = null;
+            /* Breakable breakable = other.GetComponent<Breakable>();
+             if (breakable != null)
+             {
+                 breakablesInArea.Remove(breakable);
+             }*/
+            breakable = null;
         }
     }
 
@@ -61,6 +81,14 @@ public class AttackArea : MonoBehaviour
                 puncher.TakeDamage(damageAmount);
             }
         }
+        foreach(GiantHealth giant in giantsInArea)
+        {
+            if (giant != null)
+            {
+                giant.TakeDamage(damageAmount);
+            }
+        }
+
 
         /*foreach (Breakable breakable in breakablesInArea)
         {

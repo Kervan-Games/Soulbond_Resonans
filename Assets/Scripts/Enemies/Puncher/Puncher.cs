@@ -81,8 +81,6 @@ public class Puncher : MonoBehaviour
                     //Debug.Log("DAMAGE!!");
                     playerHealth.TakeDamage(attackDamage);
                 }
-                else
-                    Debug.Log("ters");
             }
             else
             {

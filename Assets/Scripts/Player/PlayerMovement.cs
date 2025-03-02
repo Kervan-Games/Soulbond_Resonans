@@ -137,6 +137,9 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine stopDashCoroutine;
     private Coroutine activateDashCoroutine;
 
+    private float damagePushStr = 6f;
+    public float pushHorizontal = 15f;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -191,6 +194,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerLayer = LayerMask.NameToLayer("Player");
         enemyLayer = LayerMask.NameToLayer("Enemy");
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
     }
 
     void Update()
@@ -203,6 +207,11 @@ public class PlayerMovement : MonoBehaviour
                 attackPhase = true;
             }
         }
+        /*if (Input.GetKeyDown(KeyCode.G))
+        {
+            TakeDamagePush(true);
+        }*/
+
         if (!isDead)
         {
             if (!isInLanes && !attackPhase)
@@ -309,7 +318,6 @@ public class PlayerMovement : MonoBehaviour
         {
             float targetSpeed = moveInput.x * maxSpeed;
             currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref velocitySmoothing, smoothTime);
-
             rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
             animator.SetFloat("speed", Mathf.Abs(currentSpeed));
             if (isGrounded && Mathf.Abs(currentSpeed) > 0.1f)
@@ -328,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        else if ((isDashing && canGroundDash) || (isDashing && canAirDash))
+        else if ((isDashing && canGroundDash) || (isDashing && canAirDash)) //Dash
         {
             Vector2 direction;
             if (isFacingRight)
@@ -375,6 +383,40 @@ public class PlayerMovement : MonoBehaviour
             }
             stopDashCoroutine = StartCoroutine(StopDashing());
         }
+    }
+
+    public void TakeDamagePush(bool face, bool horizontal)
+    {
+        if (!face)
+        {
+            Vector2 dir = new Vector2(-1f, 1f);
+            rb.AddForce(dir * damagePushStr, ForceMode2D.Impulse);
+
+            if(horizontal)
+                currentSpeed = -pushHorizontal;
+        }
+        else if (face)
+        {
+            Vector2 dir = new Vector2(1f, 1f);
+            rb.AddForce(dir * damagePushStr, ForceMode2D.Impulse);
+
+            if (horizontal)
+                currentSpeed = pushHorizontal;
+        }
+    }
+
+
+
+    public void EnemyColliderOff()
+    {
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+        StartCoroutine(EnableEnemyCollision());
+    }
+    
+    private IEnumerator EnableEnemyCollision()
+    {
+        yield return new WaitForSeconds(1f);
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
     }
 
     private IEnumerator StopDashing()

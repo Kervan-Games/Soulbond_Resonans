@@ -24,6 +24,7 @@ TagManager:
   - BulletSpirit
   - Puncher
   - Breakable
+  - Giant
   layers:
   - Default
   - TransparentFX
