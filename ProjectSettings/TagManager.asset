@@ -25,6 +25,7 @@ TagManager:
   - Puncher
   - Breakable
   - Giant
+  - Ghost
   layers:
   - Default
   - TransparentFX

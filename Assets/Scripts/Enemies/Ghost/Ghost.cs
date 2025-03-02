@@ -9,9 +9,8 @@ public class Ghost : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
-    public float moveSpeed = 5f;
+    private float moveSpeed = 5f;
     private float chaseRange = 20f;
-    private float stoppingRange = 3f;
     private float distance = 100f;
     private float attackDamage = 25f;
 
@@ -22,22 +21,26 @@ public class Ghost : MonoBehaviour
     private bool isStunned = false;
     private bool isFacingRight = true;
 
-    public float parryPushStrength = 75f;
+    public float parryPushStrength = 20f;
 
     private bool isDead = false;
 
     private bool isCharging = false;
     private bool canCharge = true;
-    private float chargeRange = 6f;
-    private bool reverse = false;
+    private float chargeRange = 8f;
     private bool chasingRight = false;
 
     private Coroutine stopCoroutine;
     private Coroutine activateCoroutine;
-
+    private Coroutine prepareCoroutine;
     private bool preparing = false;
 
     private Vector2 chargeDirection;
+
+    public float chargeDuration = 0.5f;
+    public float chargeSpeed = 10f;
+
+    private Collider2D collider2d;
     private void Start()
     {
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -45,10 +48,12 @@ public class Ghost : MonoBehaviour
         playerHealth = playerObj.GetComponent<PlayerHealth>();
         playerTransform = playerObj.transform;
         rb = GetComponent<Rigidbody2D>();
+        collider2d = GetComponent<Collider2D>();
     }
 
     private void FixedUpdate()
     {
+        //Debug.Log(isCharging);
         if (!isDead)
         {
             if (isCharging) //charge
@@ -62,9 +67,9 @@ public class Ghost : MonoBehaviour
                     rb.velocity = new Vector2(-moveSpeed * 2f, rb.velocity.y);
                 }*/
 
-                rb.velocity = chargeDirection * moveSpeed * 2f;
+                rb.velocity = chargeDirection * chargeSpeed;
 
-                if (reverse && stopCoroutine == null)
+                if (stopCoroutine == null)
                 {
                     stopCoroutine = StartCoroutine(StopCharging());
                 }
@@ -73,7 +78,20 @@ public class Ghost : MonoBehaviour
             {
                 rb.velocity = Vector2.zero;
             }
-            else if(distance >= chaseRange)
+            /*else if (preparing && distance < chargeRange - 0.5f)  ////////////////////////////////////////////////////////////////////////////////
+            {
+                //rb.velocity = Vector2.zero;                       //////////////////////////////////////////////////////////////////////////////// SALDIRIYA HAZIRLANIRKEN DE PLAYER'I TAKIP ETMESINI SAGLAR
+                MoveFromPlayer();
+            }                                                                                                                                           EGER ACARSAN PREPARE SURESINI AZALT
+            else if (preparing && distance > chargeRange + 0.5f)        //////////////////////////////////////////////////////////////////////////////// SOR VE ONA GORE AC 
+            {
+                MoveToPlayer();
+            }
+            else if(preparing && distance >= chargeRange - 0.5f && distance <= chargeRange + 0.5f)
+            {
+                rb.velocity = Vector2.zero;
+            }*/
+            else if (distance >= chaseRange)
             {
                 rb.velocity = Vector2.zero;
             }
@@ -85,8 +103,29 @@ public class Ghost : MonoBehaviour
             else if (distance <= chargeRange && !isCharging && !isStunned && canCharge && !isAttacking && !preparing)
             {
                 preparing = true;
-                StartCoroutine(Prepare());
+                prepareCoroutine = StartCoroutine(Prepare());
             }
+            else if (distance < chargeRange - 0.5f && !canCharge && !isStunned)
+            {
+                MoveFromPlayer();
+            }
+            else if (distance > chargeRange + 0.5f && !canCharge && !isStunned)
+            {
+                MoveToPlayer();
+            }
+            else if (distance >= chargeRange - 0.5f && distance <= chargeRange + 0.5f)
+            {
+                rb.velocity = Vector2.zero;
+            }
+            /*else if(distance < 2f && !isCharging) 
+            { 
+                if(prepareCoroutine != null)
+                {
+                    StopCoroutine(prepareCoroutine);
+                    prepareCoroutine = null;
+                }
+                isCharging = true;
+            }*/
 
         }
     }
@@ -98,7 +137,7 @@ public class Ghost : MonoBehaviour
         chargeDirection = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y).normalized;
         isCharging = true;
         canCharge = false;
-        Debug.Log("Charging");
+        prepareCoroutine = null;
     }
 
     private void Update()
@@ -115,35 +154,46 @@ public class Ghost : MonoBehaviour
         }
 
 
-        if (!isStunned && !isCharging && canCharge)
+        if (!isStunned && !isCharging)
         {
             RotateTowardsPlayer();
         }
 
 
-        if ((transform.position.x > playerTransform.position.x && !isFacingRight) || (transform.position.x < playerTransform.position.x && isFacingRight))
+        /*if ((transform.position.x > playerTransform.position.x && !isFacingRight) || (transform.position.x < playerTransform.position.x && isFacingRight))
         {
             reverse = false;
         }
         else
         {
             reverse = true;
-        }
+        }*/
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.collider.CompareTag("Player") && isCharging)
+        if (collision.CompareTag("Player") && isCharging)
         {
-            playerHealth.TakeDamage(attackDamage * 2);
-            playerMovement.TakeDamagePush(isFacingRight, true);
-            playerMovement.EnemyColliderOff();
+            if (isCharging)
+            {
+                if (playerMovement.GetIsParrying() == false && playerMovement.GetIsDashing() == false)
+                {
+                    playerHealth.TakeDamage(attackDamage);
+                    playerMovement.TakeDamagePush(isFacingRight, true);
+                }
+                else if (playerMovement.GetIsParrying())
+                {
+                    Debug.Log("PARRIED!!");
+                    GetStunned();
+                }
+            }
+            
         }
     }
 
     private IEnumerator StopCharging()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(chargeDuration);
         isCharging = false;
         stopCoroutine = null;
 
@@ -155,7 +205,7 @@ public class Ghost : MonoBehaviour
 
     private IEnumerator ActivateCanCharge()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         canCharge = true;
         activateCoroutine = null;
     }
@@ -193,26 +243,15 @@ public class Ghost : MonoBehaviour
         }
     }
 
-    private void HandleFlipping()
+    private void MoveFromPlayer()
     {
-        if (!isAttacking)
-        {
-            if (transform.position.x > playerTransform.position.x)
-            {
-                transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
-                isFacingRight = false;
-            }
-            else
-            {
-                transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                isFacingRight = true;
-            }
-        }
+        Vector2 direction = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y).normalized;
+        rb.velocity = -direction * moveSpeed;
     }
 
     public void RotateTowardsPlayer()
     {
-        if (!isCharging)
+        if (!isCharging && !isStunned)
         {
             Vector2 direction = playerTransform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -229,25 +268,58 @@ public class Ghost : MonoBehaviour
     private void GetStunned()
     {
         isStunned = true;
+        isCharging = false;
+        canCharge = false;
         Debug.Log("Stunned!");
-        if (isFacingRight)
+
+        if (activateCoroutine != null)
+            StopCoroutine(activateCoroutine);
+        if (stopCoroutine != null)
+            StopCoroutine(stopCoroutine);
+        activateCoroutine = null;
+        stopCoroutine = null;
+
+        if(transform.position.y > playerTransform.position.y)
         {
-            Vector2 dir = new Vector2(-1f, 1f);
+            rb.gravityScale = 2;
+            collider2d.isTrigger = false;
+            Vector2 dir = new Vector2(transform.position.x - playerTransform.position.x, transform.position.y - playerTransform.position.y).normalized;
             rb.AddForce(dir * parryPushStrength, ForceMode2D.Impulse);
+            //playerMovement.EnemyColliderOff(stunTime);
         }
-        else if (!isFacingRight)
+        else
         {
-            Vector2 dir = new Vector2(1f, 1f);
-            rb.AddForce(dir * parryPushStrength, ForceMode2D.Impulse);
+            Vector2 dir = new Vector2(transform.position.x - playerTransform.position.x, transform.position.y - playerTransform.position.y).normalized;
+            rb.AddForce(dir * parryPushStrength / 1.25f, ForceMode2D.Impulse);
         }
-        StartCoroutine(Stun());
+
+
+
+            StartCoroutine(StunEnd());
+        StartCoroutine(StunLocationFix());
     }
 
-    private IEnumerator Stun()
+    private IEnumerator StunEnd()
     {
         yield return new WaitForSeconds(stunTime);
+        isCharging = false;
+        stopCoroutine = null;
+
+        if (activateCoroutine == null)
+        {
+            activateCoroutine = StartCoroutine(ActivateCanCharge());
+        }
         isStunned = false;
+        //canCharge = true;
+        rb.gravityScale = 0;
+        collider2d.isTrigger = true;
         Debug.Log("Active Again!");
+    }
+
+    private IEnumerator StunLocationFix()
+    {
+        yield return new WaitForSeconds(0.2f);
+        rb.velocity = Vector2.zero;
     }
 
     public void SetIsDead(bool dead)

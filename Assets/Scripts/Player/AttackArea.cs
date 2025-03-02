@@ -8,6 +8,7 @@ public class AttackArea : MonoBehaviour
 {
     private List<PuncherHealth> punchersInArea = new List<PuncherHealth>();
     private List<GiantHealth> giantsInArea = new List<GiantHealth>();
+    private List<GhostHealth> ghostsInArea = new List<GhostHealth>();
     //private List<Breakable> breakablesInArea = new List<Breakable>();
 
     private Breakable breakable;
@@ -28,6 +29,14 @@ public class AttackArea : MonoBehaviour
             if (giantHealth != null && !giantsInArea.Contains(giantHealth))
             {
                 giantsInArea.Add(giantHealth);
+            }
+        }
+        else if (other.CompareTag("Ghost"))
+        {
+            GhostHealth ghostHealth = other.GetComponent<GhostHealth>();
+            if (ghostHealth != null && !ghostsInArea.Contains(ghostHealth))
+            {
+                ghostsInArea.Add(ghostHealth);
             }
         }
         else if (other.CompareTag("Breakable"))
@@ -61,6 +70,15 @@ public class AttackArea : MonoBehaviour
             }
 
         }
+        else if (other.CompareTag("Ghost"))
+        {
+            GhostHealth ghostHealth = other.GetComponent<GhostHealth>();
+            if (ghostHealth != null && ghostsInArea.Contains(ghostHealth))
+            {
+                ghostsInArea.Remove(ghostHealth);
+            }
+
+        }
         else if (other.CompareTag("Breakable"))
         {
             /* Breakable breakable = other.GetComponent<Breakable>();
@@ -86,6 +104,13 @@ public class AttackArea : MonoBehaviour
             if (giant != null)
             {
                 giant.TakeDamage(damageAmount);
+            }
+        }
+        foreach (GhostHealth ghost in ghostsInArea)
+        {
+            if (ghost != null)
+            {
+                ghost.TakeDamage(damageAmount);
             }
         }
 

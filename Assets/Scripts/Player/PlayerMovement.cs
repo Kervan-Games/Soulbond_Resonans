@@ -407,15 +407,15 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    public void EnemyColliderOff()
+    public void EnemyColliderOff(float time = 1f)
     {
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
-        StartCoroutine(EnableEnemyCollision());
+        StartCoroutine(EnableEnemyCollision(time));
     }
-    
-    private IEnumerator EnableEnemyCollision()
+
+    private IEnumerator EnableEnemyCollision(float time)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(time);
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
     }
 
@@ -868,7 +868,10 @@ public class PlayerMovement : MonoBehaviour
         jumpForce = force;
     }
 
-    
+    public bool GetIsDashing()
+    {
+        return isDashing;
+    }
 
     private void UpdateStamina() 
     {
