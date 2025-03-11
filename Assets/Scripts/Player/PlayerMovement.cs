@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 10f;
     public float groundCheckRadius = 0.2f;
     private bool isGrounded;
+    private float initialRb;
 
     private Rigidbody2D rb;
     public Transform groundCheck;
@@ -144,6 +145,7 @@ public class PlayerMovement : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        initialRb = rb.gravityScale;
         singAreaCollider = singArea.GetComponent<Collider2D>();
         umbrellaThrowCollider = umbrellaThrow.GetComponent<Collider2D>();
         playerHealth = GetComponent<PlayerHealth>();
@@ -480,7 +482,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                rb.gravityScale = 2.0f;
+                rb.gravityScale = initialRb;
                 //umbrella.SetActive(false);
                 umbrellaScript.SetIsFlying(false);
                 flyTrail.emitting = false;
@@ -500,7 +502,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else 
         {
-            rb.gravityScale = 2.0f;
+            rb.gravityScale = initialRb;
             //umbrella.SetActive(false);
             umbrellaScript.SetIsFlying(false);
             flyTrail.emitting = false;
