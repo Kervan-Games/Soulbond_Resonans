@@ -141,6 +141,10 @@ public class PlayerMovement : MonoBehaviour
     private float damagePushStr = 6f;
     public float pushHorizontal = 15f;
 
+    private float targetZRotation = 0f;
+    private float rotationSpeed = 5f;
+    private bool isUmbrellaFlying = false;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -242,7 +246,30 @@ public class PlayerMovement : MonoBehaviour
                     rb.velocity = new Vector2(0, rb.velocity.y);
                     animator.SetFloat("speed", 0);
                 }
-                    
+
+                if (isUmbrellaFlying && !isGrounded)  // ROTATE DURING THE UMBRELLA FLY
+                {
+                    float dir = rb.velocity.x;
+
+                    if (Mathf.Abs(dir) > 3f)
+                    {
+                        targetZRotation = dir > 0 ? -20f : 20f;
+                    }
+                    else
+                    {
+                        targetZRotation = 0f;
+                    }
+
+                    Quaternion targetRotation = Quaternion.Euler(0, 0, targetZRotation);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.Euler(0, 0, 0);
+                    //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                    transform.rotation = targetRotation;
+                }
+
             }
             
             else if (isInLanes)
@@ -465,7 +492,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OpenUmbrella()
+    private void OpenUmbrella()  // fly with umbrella
     {
         if(!isGrounded && rb.velocity.y < -0.01f && !inWind && !isClimbing)
         {
@@ -475,7 +502,11 @@ public class PlayerMovement : MonoBehaviour
                 //umbrella.SetActive(true);
                 umbrellaScript.SetIsFlying(true);
                 flyTrail.emitting = true;
-                if(!isGrounded)
+
+                rb.freezeRotation = false;
+                isUmbrellaFlying = true;
+
+                if (!isGrounded)
                     animator.SetBool("isUmbrellaFly", true);
                 else
                     animator.SetBool("isUmbrellaFly", false);
@@ -486,6 +517,10 @@ public class PlayerMovement : MonoBehaviour
                 //umbrella.SetActive(false);
                 umbrellaScript.SetIsFlying(false);
                 flyTrail.emitting = false;
+
+                rb.freezeRotation = true;
+                isUmbrellaFlying = false;
+
                 animator.SetBool("isUmbrellaFly", false);
             }
         }
@@ -504,6 +539,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.gravityScale = initialRb;
             //umbrella.SetActive(false);
+            rb.freezeRotation = true;
+            isUmbrellaFlying = false;
             umbrellaScript.SetIsFlying(false);
             flyTrail.emitting = false;
         }
