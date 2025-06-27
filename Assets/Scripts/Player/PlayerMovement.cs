@@ -503,7 +503,7 @@ public class PlayerMovement : MonoBehaviour
                 umbrellaScript.SetIsFlying(true);
                 flyTrail.emitting = true;
 
-                rb.freezeRotation = false;
+                //rb.freezeRotation = false;
                 isUmbrellaFlying = true;
 
                 if (!isGrounded)
