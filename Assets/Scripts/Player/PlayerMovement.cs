@@ -10,6 +10,7 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement")]
     private float maxSpeed = 7.5f;
     public float jumpForce = 10f;
     public float groundCheckRadius = 0.2f;
@@ -46,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     private bool canSing = true;
     private bool isSinging = false;
 
+    [Header("Singing Stamina Management")]
     public Image staminaBar;
     private float maxStamina = 100f;
     private float currentStamina;
@@ -54,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isReloading = false;
     private bool isHoldingSpirit = false;
 
+    [Header("Throwing Spirits by Using Umbrella (Right Mouse Click)")]
     public GameObject umbrellaThrow;
     public GameObject umbrellaThrowVisual;
     private Collider2D umbrellaThrowCollider;
@@ -61,8 +64,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator animator;
 
+    [Header("Boss Lanes (old)")]
     private bool isInLanes = false;
-
     private float[] lanePositions = { -32f, -27f, -22f };
     private int currentLane = 0;
     public float transitionSpeed = 10f;
@@ -91,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     private GameObject rope;
 
+    [Header("Enemies")]
     private GameObject[] spiritObjects;
     private GameObject[] strongSpiritObjects;  
     private GameObject[] walkerSpiritObjects;
@@ -106,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpPressedDown = false;
     private bool isInJumpPad = false;
 
-    // ATTACK PHASE:
+    [Header("Attack Phase")]
     private bool attackPhase = false;
     private bool isAttacking = false;
     private bool canAttack = true;
@@ -124,15 +128,13 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D attackAreaCollider;
     private AttackArea attackArea;
 
+    [Header("Dash")]
     private bool canGroundDash = true;
     private bool canAirDash = true;
     private float dashStrength = 3f;
     private bool isDashing = false;
-
     private float dashTime = 0.25f;
-
     public AfterImage afterImage;
-
     private int playerLayer;
     private int enemyLayer;
     private Coroutine stopDashCoroutine;
@@ -141,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
     private float damagePushStr = 6f;
     public float pushHorizontal = 15f;
 
+    [Header("Rotation During Flying")]
     private float targetZRotation = 0f;
     private float rotationSpeed = 5f;
     private bool isUmbrellaFlying = false;
@@ -213,10 +216,6 @@ public class PlayerMovement : MonoBehaviour
                 attackPhase = true;
             }
         }
-        /*if (Input.GetKeyDown(KeyCode.G))
-        {
-            TakeDamagePush(true);
-        }*/
 
         if (!isDead)
         {
@@ -272,7 +271,7 @@ public class PlayerMovement : MonoBehaviour
 
             }
             
-            else if (isInLanes)
+            else if (isInLanes) // old version boss fight
             {
                 /*rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
 
@@ -394,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (runParticles.isPlaying)
             {
-                    runParticles.Stop();
+                runParticles.Stop();
             }
             canGroundDash = false;
             canAirDash = false;
@@ -724,7 +723,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    public void OnSingPressed(InputAction.CallbackContext context)
+    public void OnSingPressed(InputAction.CallbackContext context) // Sing for cathing spirits
     {
         if (!attackPhase)
         {
@@ -912,7 +911,7 @@ public class PlayerMovement : MonoBehaviour
         return isDashing;
     }
 
-    private void UpdateStamina() 
+    private void UpdateStamina() // For singing
     {
         //Debug.Log("Current Stamina = " + currentStamina); 
         //Debug.Log("Can Sing = " + canSing);
@@ -1049,7 +1048,7 @@ public class PlayerMovement : MonoBehaviour
         inWind = wind;
     }
 
-    private void Climb()
+    private void Climb() // Climbing on ropes
     {
         if (canClimb)
         {
@@ -1163,7 +1162,7 @@ public class PlayerMovement : MonoBehaviour
         rope = _rope;
     }
 
-    public void UpdateSpiritAmounts()
+    public void UpdateSpiritAmounts() // Holding spirits after catching them by singing
     {
         spiritObjects = GameObject.FindGameObjectsWithTag("Spirit");
 
